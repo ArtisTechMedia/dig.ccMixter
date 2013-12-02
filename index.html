@@ -17,9 +17,10 @@
         />{{/linkTo}}
         <div class='navbar-collapse collapse'>
           <ul class='nav navbar-nav navbar-right'>
-            <li>{{#linkTo "uploads" "sort=rank"}}Best{{/linkTo}}</li>
-            <li>{{#linkTo "uploads" ""}}Newest{{/linkTo}}</li>
-            <li>{{#linkTo "uploads" "lic=open&sort=rank"}}Free for Commercial Use{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "sort=rank" title="Highest ranked tracks on ccMixter"}}Top{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "sort=score" title="Tracks most recommended by ccMixter users"}}Recommended{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "lic=open&sort=rank" title="Free for Commercial Use"}}Free{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "sort=date"}}New{{/linkTo}}</li>
             <li>{{#linkTo "about"}}About{{/linkTo}}</li>
           </ul>
         </div>
@@ -119,7 +120,7 @@
         /></a>
         <h4 class='media-heading'>{{unbound upload_name}}</h4>
         <div class='attribution'>
-          by <span class='user'>{{unbound user_name}}</span>
+          by {{#linkTo 'uploads' userQuery class='user'}}{{unbound user_name}}{{/linkTo}}
         </div>
         <div class='clearfix'></div>
       </div>
@@ -132,7 +133,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.2/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.2.0-beta.4/ember.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.2.0-beta.4/ember.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/URI.js/1.7.2/URI.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
   <script src="soundmanagerv297a-20131201/script/soundmanager2.js"></script>
@@ -168,7 +169,7 @@
           }
         },
         playPrevious: function() {
-          this.controllerFor('nowPlaying').playNextTrack();
+          this.controllerFor('nowPlaying').playPreviousTrack();
         },
         playNext: function() {
           this.controllerFor('nowPlaying').playNextTrack();
@@ -230,9 +231,17 @@
 
       isPlaying: false,
 
+      userQuery: function() {
+        var name = this.get('user_name');
+        if (name) {
+          return 'u='+name;
+        }
+      }.property('user_name'),
+
       streamUrl: function() {
         var files = this.get('content.files');
         if (Em.isArray(files)) {
+          // TODO: Search list and make sure we try to get a streamable file instead of zip
           return files.get('firstObject.download_url');
         }
       }.property('content.files'),
@@ -333,7 +342,7 @@
 
       previousTrack: function() {
         var tracks = this.get('tracks'),
-            trackIndex = this.get('trackIndex') + 1;
+            trackIndex = this.get('trackIndex') - 1;
         if (!tracks.get('length')) {return;}
         if (trackIndex < 0) {
           trackIndex = tracks.get('length') - 1;
