@@ -1,10 +1,29 @@
+body.well {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  min-height: 100%;
+  border-width: 0 0 0 0;
+}
+
 .main {
-  margin-top: 70px;
-  margin-bottom: 40px;
+  margin-top: 56px;
+  margin-bottom: 50px;
 }
 .container {
   background-color: white;
   box-shadow: 0px 0px 10px #888888;
+}
+
+.container .well {
+  margin: 1em 0;
+}
+
+.about .logos {
+  text-align: center;
+}
+
+.about .logos a {
+  margin: 1em;
 }
 
 @-webkit-keyframes pulse {
@@ -41,7 +60,8 @@ h2.loading {
 }
 
 .navbar-footer {
-  border-top: 2px solid #3399CC;
+  border-width: 0 0 0 0;
+  border-top: 5px solid #3399CC;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -72,9 +92,13 @@ h2.loading {
   color: #636466;
 }
 
-.upload .media-heading,
 .upload .license {
-  margin-left: 1em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+ul.uploads {
+  margin-top: 1em;
 }
 
 .uploads .upload .media-heading {
@@ -89,14 +113,24 @@ h2.loading {
 }
 
 .uploads .is-playing,
+.uploads .is-playing a,
 .uploads .is-playing .media-heading {
   background-color: #3399CC;
   color: white;
 }
 
+.uploads .upload .play-next,
+.uploads .upload .play-previous {
+  display: none;
+}
+
+.upload .btn {
+  padding: 6px 10px;
+}
+
 article.upload {
-  line-height: 2;
-  height: 2em;
+  line-height: 34px;
+  height: 34px;
 }
 
 .now-playing .thumbnail,
