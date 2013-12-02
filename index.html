@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>dig.ccmixter</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/screen.css">
+</head>
+<body>
+  <!-- HANDLEBARS TEMPLATES -->
+  <script type="text/x-handlebars">
+    <div class='navbar navbar navbar-fixed-top'>
+      <div class='navbar-inner'>
+        {{#linkTo "index" class="navbar-brand"}}<img
+          src="http://dig.ccmixter.org/images/logo.png"
+          alt="dig.ccMixter"
+        />{{/linkTo}}
+        <div class='navbar-collapse collapse'>
+          <ul class='nav navbar-nav navbar-right'>
+            <li>{{#linkTo "uploads" "sort=rank"}}Best{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "sort=date"}}Newest{{/linkTo}}</li>
+            <li>{{#linkTo "uploads" "lic=open&sort=rank"}}Free for Commercial Use{{/linkTo}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <section class='main'>{{outlet}}</section>
+    <div class='navbar navbar navbar-footer'>
+      <div class='navbar-inner'>
+        {{outlet nowPlaying}}
+      </div>
+    </div>
+  </script>
+  <script type="text/x-handlebars" data-template-name="loading">
+    <h2 class='loading container'>Loading...</h2>
+  </script>
+  <script type="text/x-handlebars" data-template-name="index">
+    <article class='homepage container'>
+      <h2>ccMixter Music Discovery <span class='badge beta'>(BETA)</span></h2>
+      <h3>&ldquo;You already have permission&hellip;&rdquo;</h3>
+    </article>
+  </script>
+  <script type="text/x-handlebars" data-template-name="nowPlaying">
+    <section class='now-playing'>
+    {{#if content}}
+      {{#if previousTrack}}
+        <a href='#' {{action playPrevious}} class='thumbnail pull-left'><span class="glyphicon glyphicon-backward"></span></a>
+      {{/if}}
+      {{#if nextTrack}}
+        <a href='#' {{action playNext}} class='thumbnail pull-left'><span class="glyphicon glyphicon-forward"></span></a>
+      {{/if}}
+      {{#with content}}{{partial "uploadsItem"}}{{/with}}
+    {{/if}}
+    </section>
+  </script>
+  <script type="text/x-handlebars" data-template-name="uploads">
+    <article class='uploads container'>
+      <ul class='api uploads media-list'>
+      {{#each}}<li class='media upload'>{{partial "uploadsItem"}}</li>{{/each}}
+      </ul>
+    </article>
+  </script>
+  <script type="text/x-handlebars" data-template-name="uploadsItem">
+    <article {{bindAttr class=":upload isPlaying"}}>
+      <a href='#' {{action togglePlay}} class='thumbnail pull-left play'>
+        <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
+      </a>
+      <div class='media-body'>
+        <a class='license pull-right' target='_new' href='{{unbound license_url}}'><img
+          src="{{unbound license_logo_url}}"
+          alt="{{unbound license_name}}"
+          title="{{unbound license_name}}"
+        /></a>
+        <h4 class='media-heading'>{{unbound upload_name}}</h4>
+        <div class='attribution'>
+          by <span class='user'>{{unbound user_name}}</span>
+        </div>
+      </div>
+    </article>
+  </script>
+  <!-- END HANDLEBARS TEMPLATES -->
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.2.0-beta.4/ember.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/URI.js/1.7.2/URI.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
+  <script src="soundmanagerv297a-20131201/script/soundmanager2.js"></script>
+
+  <!-- BEGIN JAVSCRIPT -->
+
+  <script type="text/javascript">
+    var Dig = Em.Application.create();
+
+    // ROUTER
+
+    Dig.Router.map(function() {
+      this.resource('uploads', {path: '/tracks/*args'});
+    });
+
+    // ROUTES
+
+    Dig.ApplicationRoute = Em.Route.extend({
+      renderTemplate: function() {
+        this._super.apply(this, arguments);
+        this.render('nowPlaying', {
+          into: 'application',
+          outlet: 'nowPlaying'
+        });
+      },
+      actions: {
+        togglePlay: function() {
+          var currentTrack = this.controllerFor('nowPlaying').get('content');
+          if (currentTrack) {
+            currentTrack.togglePlay();
+          }
+        },
+        playPrevious: function() {
+          this.controllerFor('nowPlaying').playNextTrack();
+        },
+        playNext: function() {
+          this.controllerFor('nowPlaying').playNextTrack();
+        }
+      }
+    });
+
+    Dig.ApiRoute = Em.Route.extend({
+      baseUrl: "http://ccmixter.org/api/query?f=json&",
+      model: function(params) {
+        var url = this.get('baseUrl');
+        if (params.args) {
+          url += params.args;
+        }
+        return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
+          response.args = params.args;
+          return response;
+        }));
+      },
+      serialize: function(model) {
+        if (model) {
+          if (typeof(model) === 'string') {
+            return {args: model};
+          }
+          return {args: model.args};
+        }
+        return {args: ''};
+      }
+    });
+
+    Dig.UploadsRoute = Dig.ApiRoute.extend({
+      baseUrl: "http://ccmixter.org/api/query?f=json&datasource=uploads&",
+    });
+
+    // END ROUTES
+
+    // CONTROLLERS
+
+    Dig.ApiController = Em.ArrayController.extend({itemController: 'apiItem'});
+    Dig.ApiItemController = Em.ObjectController.extend();
+
+    Dig.UploadsController = Dig.ApiController.extend({
+      itemController: 'uploadsItem'
+    });
+
+    Dig.UploadsItemController = Dig.ApiItemController.extend(Em.Evented, {
+      needs: 'nowPlaying'.w(),
+      nowPlaying: Em.computed.alias('controllers.nowPlaying'),
+
+      isPlaying: false,
+
+      streamUrl: function() {
+        var files = this.get('content.files');
+        if (Em.isArray(files)) {
+          return files.get('firstObject.download_url');
+        }
+      }.property('content.files'),
+
+      /*
+      license_logo_url: function() {
+        // TODO: Make this work to pull correct images from dig
+        return "http://dig.ccmixter.org/images/" + this.get('license_name').dasherize() + '.png';
+      }.property('license_name'),
+      */
+
+      sound: function(key, value, oldValue) {
+        var item = this,
+            streamUrl = this.get('streamUrl');
+        if (streamUrl) {
+          return soundManager.createSound({
+            url: streamUrl,
+            onplay: function() {
+              Em.run(function() {
+                item.set('nowPlaying.content', item);
+                item.set('nowPlaying.currentSound', item.get('sound'));
+                item.set('isPlaying', true);
+                item.trigger('onPlay');
+              });
+            },
+            onstop: function() {
+              Em.run(function() {
+                item.set('isPlaying', false);
+                item.trigger('onStop');
+              });
+            },
+            onfinish: function() {
+              Em.run(function() {
+                item.set('isPlaying', false);
+                item.trigger('onFinish');
+              });
+            }
+          });
+        }
+      }.property('streamUrl'),
+
+      stop: function() {
+        var sound = this.get('sound');
+        if (sound) {
+          sound.stop();
+        }
+      },
+
+      play: function() {
+        var sound = this.get('sound');
+        if (sound) {
+          sound.play();
+        }
+      },
+
+      togglePlay: function() {
+        if (this.get('isPlaying')) {
+          this.stop();
+        } else {
+          this.play();
+        }
+      },
+
+      actions: {
+        togglePlay: function() {
+          this.togglePlay();
+        }
+      }
+    });
+
+    Dig.NowPlayingController = Em.ObjectController.extend({
+      needs: 'uploads'.w(),
+      tracks: Em.computed.alias('controllers.uploads'),
+
+      currentSound: null,
+
+      shouldLoadFirstItem:  false,
+      shouldContinuousPlay: true,
+
+      trackIndex: function() {
+        var track = this.get('content'),
+            tracks = this.get('tracks');
+        if (track && Em.isArray(tracks)) {
+          return tracks.indexOf(track);
+        }
+        return -1;
+      }.property('tracks.@each', 'content'),
+
+      nextTrack: function() {
+        var tracks = this.get('tracks'),
+            trackIndex = this.get('trackIndex') + 1;
+        if (!tracks.get('length')) {return;}
+        if (trackIndex >= tracks.get('length')) {
+          trackIndex = 0;
+        }
+        return tracks.objectAt(trackIndex);
+      }.property('trackIndex', 'tracks.@each'),
+
+      previousTrack: function() {
+        var tracks = this.get('tracks'),
+            trackIndex = this.get('trackIndex') + 1;
+        if (!tracks.get('length')) {return;}
+        if (trackIndex < 0) {
+          trackIndex = tracks.get('length') - 1;
+        }
+        return tracks.objectAt(trackIndex);
+      }.property('trackIndex', 'tracks.@each'),
+
+      playNextTrack: function() {
+        var next = this.get('nextTrack');
+        if (next) {next.play();}
+      },
+
+      playPreviousTrack: function() {
+        var previous = this.get('previousTrack');
+        if (previous) {previous.play();}
+      },
+
+      didFinishTrack: function() {
+        if (this.get('shouldContinuousPlay')) {
+          this.playNextTrack();
+        }
+      },
+
+      trackWillChange: function() {
+        var track = this.get('content');
+        if (track) {
+          track.off('onFinish', this, this.didFinishTrack);
+          track.stop();
+        }
+      }.observesBefore('content'),
+
+      soundWillChange: function() {
+        var sound = this.get('currentSound');
+        if (sound) {
+          sound.stop();
+        }
+      }.observesBefore('currentSound'),
+
+      trackDidChange: function() {
+        var track = this.get('content');
+        if (track) {
+          track.on('onFinish', this, this.didFinishTrack);
+        }
+      }.observes('content'),
+
+      setInitialItem: function() {
+        if (this.get('shouldLoadFirstItem')) {
+          var content = this.get('content'),
+              tracks = this.get('tracks');
+          if (!content && tracks.get('length')) {
+            this.set('content', tracks.objectAt(0));
+          }
+        }
+      }.observes('content', 'tracks.@each').on('init')
+    });
+
+    // END CONTROLLERS
+
+    soundManager.setup({
+      url: 'soundmanagerv297a-20131201/swf/',
+      debugMode: false
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+.main {
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+.container {
+  background-color: white;
+  box-shadow: 0px 0px 10px #888888;
+}
+
+@-webkit-keyframes pulse {
+    0% {background-color: rgba(255, 255, 255, 0.1);}
+    100% {background-color: rgba(255, 0, 0, 0.1);}
+}
+
+h2.loading {
+  text-align: center;
+  margin-top: 100px;
+  marign-bottom: 100px;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  -webkit-animation: pulse 1s infinite alternate;
+}
+
+.navbar {
+  background-color: #B9BFC6;
+  box-shadow: 0px 5px 5px #888888;
+}
+
+.navbar .nav a {
+  color: black;
+}
+
+.navbar .navbar-brand {
+  padding: 5px;
+}
+
+.navbar .nav .active {
+  background-color: #3399CC;
+  color: white;
+}
+
+.navbar-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  box-shadow: 0px -5px 5px #888888;
+  margin: 0 0 0 0;
+  min-height: 0;
+}
+
+.now-playing .upload .media-body,
+.now-playing .upload {
+  display: inline;
+}
+
+.media-list > .media:nth-child(even) {
+  background-color: #EEEFF0;
+}
+
+.upload .media-heading,
+.upload .license,
+.upload .attribution {
+  display: inline
+}
+
+.upload .attribution {
+  font-size: 75%;
+  color: #636466;
+}
+
+.upload .media-heading,
+.upload .license {
+  margin-left: 1em;
+}
+
+.uploads .upload .media-heading {
+  color: #3399CC;
+  font-size: 100%;
+}
+
+.uploads > .upload {
+  height: auto;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.uploads .is-playing,
+.uploads .is-playing .media-heading {
+  background-color: #3399CC;
+  color: white;
+}
+
+article.upload {
+  line-height: 2;
+  height: 2em;
+}
+
+.now-playing .thumbnail,
+.upload .thumbnail {
+  margin-bottom: 0;
+  margin-top: 0;
+}
