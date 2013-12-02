@@ -1,5 +1,5 @@
 .main {
-  margin-top: 60px;
+  margin-top: 70px;
   margin-bottom: 40px;
 }
 .container {
@@ -24,6 +24,7 @@ h2.loading {
 .navbar {
   background-color: #B9BFC6;
   box-shadow: 0px 5px 5px #888888;
+  border-bottom: 5px solid #3399CC;
 }
 
 .navbar .nav a {
@@ -40,6 +41,7 @@ h2.loading {
 }
 
 .navbar-footer {
+  border-top: 2px solid #3399CC;
   position: fixed;
   bottom: 0;
   left: 0;
