@@ -1,10 +1,10 @@
 <article {{bindAttr class=":upload isPlaying"}}>
   <div class='btn-group pull-left'>
-    <a href='#' {{action playPrevious}} class='btn pull-left play-previous'><span class="glyphicon glyphicon-backward"></span></a>
-    <a href='#' {{action togglePlay}} class='btn pull-left play'>
+    <a href='#' {{action playPrevious}} class='btn play-previous'><span class="glyphicon glyphicon-backward"></span></a>
+    <a href='#' {{action togglePlay}} class='btn play'>
       <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
     </a>
-    <a href='#' {{action playNext}} class='btn pull-left play-next'><span class="glyphicon glyphicon-forward"></span></a>
+    <a href='#' {{action playNext}} class='btn play-next'><span class="glyphicon glyphicon-forward"></span></a>
   </div>
   <div class='media-body'>
     <a class='license pull-right' target='_new' href='{{unbound license_url}}'><img
@@ -18,7 +18,7 @@
       <a
         href='{{unbound file_page_url}}'
         target="_new"
-        class='btn pull-left info'><span class="glyphicon glyphicon-info-sign"></span></a>
+        class='btn info'><span class="glyphicon glyphicon-info-sign"></span></a>
     </div>
     <div class='clearfix'></div>
   </div>
