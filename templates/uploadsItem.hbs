@@ -1,0 +1,26 @@
+<article {{bindAttr class=":upload isPlaying"}}>
+  <div class='btn-group pull-left'>
+    <a href='#' {{action playPrevious}} class='btn pull-left play-previous'><span class="glyphicon glyphicon-backward"></span></a>
+    <a href='#' {{action togglePlay}} class='btn pull-left play'>
+      <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
+    </a>
+    <a href='#' {{action playNext}} class='btn pull-left play-next'><span class="glyphicon glyphicon-forward"></span></a>
+  </div>
+  <div class='media-body'>
+    <a class='license pull-right' target='_new' href='{{unbound license_url}}'><img
+      src="{{unbound license_logo_url}}"
+      alt="{{unbound license_name}}"
+      title="{{unbound license_name}}"
+    /></a>
+    <h4 class='media-heading'>{{unbound upload_name}}</h4>
+    <div class='attribution'>
+      by {{#linkTo 'uploads' userQuery class='user'}}{{unbound user_name}}{{/linkTo}}
+      <a
+        href='{{unbound file_page_url}}'
+        target="_new"
+        class='btn pull-left info'><span class="glyphicon glyphicon-info-sign"></span></a>
+    </div>
+    <div class='clearfix'></div>
+  </div>
+  <div class='clearfix'></div>
+</article>
