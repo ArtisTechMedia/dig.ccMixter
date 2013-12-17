@@ -13,6 +13,11 @@ body.well {
   vertical-align: middle;
 }
 
+.ccmixter-donations {
+  position: relative;
+  z-index: 42;
+}
+
 .version {
   background-color: red;
 }
