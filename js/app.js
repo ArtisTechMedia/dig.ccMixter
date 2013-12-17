@@ -302,6 +302,12 @@ Dig.UploadsPlaylistComponent = Em.Component.extend({
   isLoaded:     false,
   _uploads: [],
 
+  params: function() {
+    return URI('?' + this.get('queryParams')).query(true);
+  }.property('queryParams'),
+
+  offset: 0,
+
   uploads: function() {
     var component = this;
     return this.get('_uploads').map(function(upload) {
@@ -312,13 +318,14 @@ Dig.UploadsPlaylistComponent = Em.Component.extend({
 
   uploadsPromise: function(params) {
     var queryParams = this.get('queryParams'),
-        url = this.get('baseUrl');
-    url += queryParams;
+        url = this.get('baseUrl'),
+        offset = this.get('offset');
+    url += queryParams + '&offset=' + offset;
     return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
       response.args = queryParams;
       return response;
     }));
-  }.property('queryParams'),
+  }.property('queryParams', 'offset'),
 
   uploadsPromiseDidChange: function() {
     var component = this,
@@ -332,7 +339,33 @@ Dig.UploadsPlaylistComponent = Em.Component.extend({
         });
       });
     }
-  }.observes('uploadsPromise').on('init')
+  }.observes('uploadsPromise').on('init'),
+
+  hasPreviousPage: function() {
+    return this.get('offset') > 0;
+  }.property('offset'),
+
+  hasNextPage: function() {
+    return true;
+  }.property('offset'),
+
+  actions: {
+    nextPage: function() {
+      var limit = parseInt(this.get('params.limit')) || 10,
+          offset = this.get('offset');
+      offset += limit;
+      this.set('offset', offset);
+    },
+    previousPage: function() {
+      var limit = parseInt(this.get('params.limit')) || 10,
+          offset = this.get('offset');
+      offset -= limit;
+      if (offset < 0) {
+        offset = 0;
+      }
+      this.set('offset', offset);
+    }
+  }
 });
 
 Dig.DigBarComponent = Em.Component.extend({
