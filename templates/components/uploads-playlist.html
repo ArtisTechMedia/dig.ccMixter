@@ -1,15 +1,14 @@
 {{#each uploads itemController="uploadsItem"}}<li class='media upload'>{{partial "uploadsItem"}}</li>{{/each}}
 
-<div class='well'>
-  {{#if hasPreviousPage}}
-  <a {{action previousPage}} class='previous-page btn btn-default pull-left' href='#'>
-    <span class='glyphicon glyphicon-circle-arrow-left'></span>
-    Previous Page
-  </a>
-  {{/if}}
-  <a {{action nextPage}} class='next-page btn btn-default pull-right' href='#'>
-    Next Page
-    <span class='glyphicon glyphicon-circle-arrow-right'></span>
-  </a>
-  <div class='clearfix'>&nbsp;</div>
-</div>
+<ul class="pager">
+{{#if hasPreviousPage}}
+  <li><a {{action previousPage}} href="#">
+    &larr;
+    Previous
+  </a></li>
+{{/if}}
+  <li><a {{action nextPage}} href="#">
+    Next
+    &rarr;
+  </a></li>
+</ul>
