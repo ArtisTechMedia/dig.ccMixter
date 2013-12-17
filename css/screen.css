@@ -175,3 +175,26 @@ article.upload {
   margin-bottom: 0;
   margin-top: 0;
 }
+
+.tags .checklist {
+  list-style-type: none;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  background-color: white;
+  border-radius: 1em;
+  font-size: 80%;
+  height: 125px;
+  overflow: auto;
+}
+.tags .checklist li {
+  padding-left: 0.5em;
+}
+
+.tags-list .label {
+  font-size: 100%;
+  margin-left: 1em;
+}
+
+.checklist .loading {
+  padding: 10px;
+}

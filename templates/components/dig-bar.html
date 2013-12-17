@@ -42,9 +42,40 @@
         value=params.ord
       }}
     </label>
-    <label class='direction'>
-      tags
-      {{input value=params.tags placeholder="Comma separated please" size=50}}
-    </label>
+    <div class='row tags'>
+      <div class='col-xs-4 tags-genre'>
+        <h4>genre</h4>
+        {{tags-selector bar=this
+            queryParams="pair=remix&cat=genre&cache=genre_tags"}}
+      </div>
+      <div class='col-xs-4 tags-instrument'>
+        <h4>instrument</h4>
+        {{tags-selector bar=this
+            queryParams="pair=remix&min=3&cat=instr&cache=instr_tags"}}
+      </div>
+      <div class='col-xs-4 tags-style'>
+        <h4>style</h4>
+        {{tags-selector bar=this
+            queryParams="pair=remix&min=10&cat=mood&cache=mood_tags"}}
+      </div>
+    </div>
+    {{#if tags.length}}
+      <h5 class='tags-list'>
+        tags
+        {{#each tags}}
+          <span class='label label-default'>
+            {{this}}
+            <a {{action clearTag this}} href='#'
+              class='glyphicon glyphicon-remove-circle'></a>
+          </span>
+        {{/each}}
+
+        <a {{action clearTags}} href='#'
+            class='label label-danger'>
+          Clear
+          <span class='glyphicon glyphicon-remove-circle'></span>
+        </a>
+      </h5>
+    {{/if}}
   </section>
 {{/if}}

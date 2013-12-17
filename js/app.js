@@ -1,8 +1,11 @@
 $(document).autoBars(function() {
   Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
+  Em.TEMPLATES['components/tags-selector'] = Em.TEMPLATES['tags-selector'];
   Em.TEMPLATES['components/dig-bar'] = Em.TEMPLATES['dig-bar'];
   Dig.advanceReadiness();
 });
+
+Dig.ApiCache = {};
 
 Dig.UploadsCache = {};
 
@@ -115,6 +118,28 @@ Dig.UploadsItemController = Em.ObjectController.extend({
   }
 });
 
+Dig.TagsSelectorItemController = Em.ObjectController.extend({
+  name: Em.computed.alias('tags_tag'),
+  bar:  Em.computed.alias('parentController.bar'),
+
+  isActive: function(key, value) {
+    var tags = this.get('bar.tags') || [],
+        bar = this.get('bar'),
+        params = this.get('bar.params'),
+        name = this.get('name') || '';
+    if (arguments.length > 1) {
+      if (value) {
+        tags.addObject(name);
+      } else {
+        tags.removeObject(name);
+      }
+      Em.set(params, 'tags', tags.join(','));
+      return value;
+    }
+    return tags.contains(name);
+  }.property('bar.tags', 'bar.tags.@each', 'name')
+});
+
 Dig.UserController = Em.Controller.extend({
   baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&u=',
 
@@ -213,52 +238,61 @@ Dig.NowPlayingController = Em.ObjectController.extend({
   }.observes('content', 'tracks.@each').on('init')
 });
 
-Dig.UploadsPlaylistComponent = Em.Component.extend({
-  tagName: 'ul',
-  classNames: 'api uploads media-list'.w(),
-  baseUrl: "http://ccmixter.org/api/query?f=json&datasource=uploads&",
+
+Dig.ApiComponentMixin = Em.Mixin.create({
+  baseUrl:      "http://ccmixter.org/api/query?f=json&",
   queryParams:  '',
   isLoaded:     false,
-  _uploads: [],
+  apiData:      [],
 
   params: function() {
     return URI('?' + this.get('queryParams')).query(true);
   }.property('queryParams'),
 
-  offset: 0,
-
-  uploads: function() {
-    var component = this;
-    return this.get('_uploads').map(function(upload) {
-      upload.playlist = component;
-      return Dig.UploadsCache.upload(upload);
-    });
-  }.property('_uploads'),
-
-  uploadsPromise: function(params) {
+  apiPromise: function(params) {
     var queryParams = this.get('queryParams'),
         url = this.get('baseUrl'),
         offset = this.get('offset');
     url += queryParams + '&offset=' + offset;
+    var data = Dig.ApiCache[url];
+    if (data) {return Ember.RSVP.resolve(data);}
     return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
       response.args = queryParams;
+      Dig.ApiCache[url] = response;
       return response;
     }));
   }.property('queryParams', 'offset'),
 
-  uploadsPromiseDidChange: function() {
+  apiPromiseDidChange: function() {
     var component = this,
-        promise = this.get('uploadsPromise');
+        promise = this.get('apiPromise');
     if (promise && promise.then) {
       this.set('isLoaded', false);
-      promise.then(function(uploads) {
+      promise.then(function(data) {
         component.setProperties({
-          _uploads:  uploads,
+          apiData:  data,
           isLoaded:  true
         });
       });
     }
-  }.observes('uploadsPromise').on('init'),
+  }.observes('apiPromise').on('init'),
+});
+
+Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
+  tagName: 'ul',
+  classNames: 'api uploads media-list'.w(),
+  baseUrl: "http://ccmixter.org/api/query?f=json&datasource=uploads&",
+
+  offset: 0,
+
+  uploads: function() {
+    var component = this;
+    return this.get('apiData').map(function(upload) {
+      upload.playlist = component;
+      return Dig.UploadsCache.upload(upload);
+    });
+  }.property('apiData'),
+
 
   hasPreviousPage: function() {
     return this.get('offset') > 0;
@@ -338,11 +372,36 @@ Dig.DigBarComponent = Em.Component.extend({
     this.set('queryParams', this.get('newQueryParams'));
   }.observes('newQueryParams'),
 
+  tags: function() {
+    return (this.get('params.tags') || '').split(',').map(function(tag) {
+      return (tag || '').trim();
+    }).filter(function(tag) {return !!tag;});
+  }.property('params.tags'),
+
   actions: {
     toggleAdvanced: function() {
       this.toggleProperty('showAdvanced');
+    },
+
+    clearTags: function() {
+      this.set('params.tags', '');
+      this.change();
+    },
+
+    clearTag: function(tag) {
+      var tags = this.get('tags') || [];
+      if (tag) {tag = tag.toString();}
+      tags.removeObject(tag);
+      this.set('params.tags', tags.join(','));
+      this.change();
     }
   }
+});
+
+Dig.TagsSelectorComponent = Em.Component.extend(Dig.ApiComponentMixin, {
+  baseUrl: "http://ccmixter.org/api/query?f=json&dataview=tags&sort=name&ord=asc&",
+
+  allTags: Em.computed.alias('apiData')
 });
 
 soundManager.setup({
