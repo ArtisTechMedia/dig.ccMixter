@@ -105,6 +105,13 @@ h2.loading {
   display: inline;
 }
 
+.now-playing .media-heading:before {
+  font-weight: normal;
+  font-size: 50%;
+  color: #666666;
+  content: 'now playing: ';
+}
+
 .media-list > .media:nth-child(even) {
   background-color: #EEEFF0;
 }
