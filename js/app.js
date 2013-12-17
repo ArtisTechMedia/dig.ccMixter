@@ -32,12 +32,10 @@ Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
     }
   }.property('content.files'),
 
-  /*
   license_logo_url: function() {
     // TODO: Make this work to pull correct images from dig
-    return "http://dig.ccmixter.org/images/" + this.get('license_name').dasherize() + '.png';
+    return "images/" + this.get('license_name').dasherize() + '.png';
   }.property('license_name'),
-  */
 
   sound: function(key, value, oldValue) {
     var item = this,
