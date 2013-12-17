@@ -1,4 +1,8 @@
-{{#each uploads itemController="uploadsItem"}}<li class='media upload'>{{partial "uploadsItem"}}</li>{{/each}}
+{{#if isLoaded}}
+  {{#each uploads itemController="uploadsItem"}}<li class='media upload'>{{partial "uploadsItem"}}</li>{{/each}}
+{{else}}
+  <li>{{partial "loading"}}</li>
+{{/if}}
 
 <ul class="pager">
 {{#if hasPreviousPage}}

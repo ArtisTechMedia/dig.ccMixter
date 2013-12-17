@@ -64,8 +64,6 @@ body.well {
 
 h2.loading {
   text-align: center;
-  margin-top: 100px;
-  marign-bottom: 100px;
   padding-top: 3em;
   padding-bottom: 3em;
   -webkit-animation: pulse 1s infinite alternate;
