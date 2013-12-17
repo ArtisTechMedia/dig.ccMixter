@@ -45,7 +45,7 @@ Dig.ApplicationRoute = Em.Route.extend({
   }
 });
 
-Dig.ApiRoute = Em.Route.extend({
+Dig.UploadsRoute = Em.Route.extend({
   model: function(params) {
     if (params.args) {
       return params.args;
@@ -53,7 +53,28 @@ Dig.ApiRoute = Em.Route.extend({
   }
 });
 
-Dig.UploadsRoute = Dig.ApiRoute.extend();
+Dig.ApiRoute = Em.Route.extend({
+  queryParams: '',
+  model: function() {
+    return this.get('queryParams');
+  }
+});
+
+Dig.TopRoute = Dig.ApiRoute.extend({
+  queryParams: 'sort=rank&limit=10&ord=desc&lic='
+});
+
+Dig.RecommendedRoute = Dig.ApiRoute.extend({
+  queryParams: 'sort=score&limit=10&ord=desc&lic='
+});
+
+Dig.FreeRoute = Dig.ApiRoute.extend({
+  queryParams: 'lic=open&sort=rank&limit=10&ord=desc'
+});
+
+Dig.NewRoute = Dig.ApiRoute.extend({
+  queryParams: 'sort=date&limit=10&ord=desc&lic='
+});
 
 Dig.UploadsIndexRoute = Em.Route.extend({
   redirect: function() {this.transitionTo('uploads', '');}
@@ -162,13 +183,15 @@ Dig.UploadsItemController = Em.ObjectController.extend({
 
   contentDidChange: function() {
     var item = this.get('content'),
-        controller = this;
-    if (item && item.on) {
+        nowPlaying = this.get('nowPlaying');
+        controller = this,
+        nowPlaying;
+    if (item && item.on && nowPlaying) {
       item.on('onPlay', function() {
-        controller.setProperties({
-          'nowPlaying.tracks':        item.get('playlist.uploads') || [],
-          'nowPlaying.content':       item,
-          'nowPlaying.currentSound':  item.get('sound')
+        nowPlaying.setProperties({
+          tracks:        item.get('playlist.uploads') || [],
+          content:       item,
+          currentSound:  item.get('sound')
         });
       });
     }
@@ -274,7 +297,7 @@ Dig.NowPlayingController = Em.ObjectController.extend({
 Dig.UploadsPlaylistComponent = Em.Component.extend({
   tagName: 'ul',
   classNames: 'api uploads media-list'.w(),
-  baseUrl: "http://ccmixter.org/api/query?f=json&limit=15&datasource=uploads&",
+  baseUrl: "http://ccmixter.org/api/query?f=json&datasource=uploads&",
   queryParams:  '',
   isLoaded:     false,
   _uploads: [],
@@ -317,13 +340,57 @@ Dig.DigBarComponent = Em.Component.extend({
   classNames: 'dig-bar'.w(),
   queryParams: '',
 
+  showAdvanced: false,
+
+  resultsOptions: [
+    '10',
+    '15',
+    '25',
+    '50'
+  ],
+
+  sortOptions: [
+    'rank',
+    'score',
+    'date'
+  ],
+
+  licOptions: [
+    {
+      label: 'All Licenses',
+      value: ''
+    }, {
+      label: 'Free for Commercial Use',
+      value: 'open'
+    }
+  ],
+
+  ordOptions: [
+    'desc',
+    'asc'
+  ],
+
   newQueryParams: function() {
     return URI.buildQuery(this.get('params'));
-  }.property('params'),
+  }.property('params', 'edited'),
 
   params: function() {
     return URI('?' + this.get('queryParams')).query(true);
-  }.property('queryParams')
+  }.property('queryParams'),
+
+  change: function() {
+    this.notifyPropertyChange('edited');
+  },
+
+  newQueryParamsDidChange: function() {
+    this.set('queryParams', this.get('newQueryParams'));
+  }.observes('newQueryParams'),
+
+  actions: {
+    toggleAdvanced: function() {
+      this.toggleProperty('showAdvanced');
+    }
+  }
 });
 
 // END CONTROLLERS

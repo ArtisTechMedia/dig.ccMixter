@@ -1,6 +1,43 @@
 <div class="input-group search-dig">
-  {{input class="form-control" value=newQueryParams placeholder="ccMixter Query API 2.0 URL Arguments" size="128"}}
-  {{#linkTo "uploads" newArgs class='input-group-addon btn btn-default'}}
+  {{input class="form-control" value=params.query placeholder="Search Terms" size="128"}}
+  <span class='input-group-addon'>
+    {{view Em.Select
+      content=licOptions
+      placeholder="Any"
+      optionLabelPath="content.label"
+      optionValuePath="content.value"
+      value=params.lic
+    }}
+  </span>
+  {{#linkTo "uploads" newQueryParams class='input-group-addon btn btn-default'}}
     dig
   {{/linkTo}}
 </div>
+
+{{#if showAdvanced}}
+  <section class='well advanced'>
+    <label class='results'>
+      results
+      {{view Em.Select
+        content=resultsOptions
+        value=params.limit
+      }}
+    </label>
+    <label class='sort'>
+      sort
+      {{view Em.Select
+        content=sortOptions
+        value=params.sort
+      }}
+    </label>
+    <label class='direction'>
+      {{view Em.Select
+        content=ordOptions
+        value=params.ord
+      }}
+    </label>
+  </section>
+  <a {{action toggleAdvanced}} class='toggle-advanced' href='#'>Basic dig</a>
+{{else}}
+  <a {{action toggleAdvanced}} class='toggle-advanced' href='#'>Advanced dig</a>
+{{/if}}
