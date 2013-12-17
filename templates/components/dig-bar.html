@@ -1,4 +1,10 @@
 <div class="input-group search-dig">
+  <a {{action toggleAdvanced}} class='input-group-addon' href='#' title='Advanced Dig Toggle'>
+    <span {{bindAttr
+      class=":glyphicon showAdvanced:glyphicon-chevron-down:glyphicon-chevron-right"
+    }}></span>
+  </a>
+  </span>
   {{input class="form-control" value=params.query placeholder="Search Terms" size="128"}}
   <span class='input-group-addon'>
     {{view Em.Select
@@ -41,7 +47,4 @@
       {{input value=params.tags placeholder="Comma separated please" size=50}}
     </label>
   </section>
-  <a {{action toggleAdvanced}} class='toggle-advanced' href='#'>Basic dig</a>
-{{else}}
-  <a {{action toggleAdvanced}} class='toggle-advanced' href='#'>Advanced dig</a>
 {{/if}}
