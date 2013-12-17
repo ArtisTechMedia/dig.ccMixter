@@ -1,91 +1,8 @@
-var Dig = Em.Application.create();
-Dig.deferReadiness();
-
 $(document).autoBars(function() {
   Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
   Em.TEMPLATES['components/dig-bar'] = Em.TEMPLATES['dig-bar'];
   Dig.advanceReadiness();
 });
-
-// ROUTER
-
-Dig.Router.map(function() {
-  this.resource('about');
-  this.resource('top');
-  this.resource('recommended');
-  this.resource('free');
-  this.resource('new');
-  this.resource('uploadsIndex', {path: '/dig'});
-  this.resource('uploads', {path: '/dig/*args'});
-});
-
-// ROUTES
-
-Dig.ApplicationRoute = Em.Route.extend({
-  renderTemplate: function() {
-    this._super.apply(this, arguments);
-    this.render('nowPlaying', {
-      into: 'application',
-      outlet: 'nowPlaying'
-    });
-  },
-  actions: {
-    togglePlay: function() {
-      var currentTrack = this.controllerFor('nowPlaying').get('content');
-      if (currentTrack) {
-        currentTrack.togglePlay();
-      }
-    },
-    playPrevious: function() {
-      this.controllerFor('nowPlaying').playPreviousTrack();
-    },
-    playNext: function() {
-      this.controllerFor('nowPlaying').playNextTrack();
-    },
-    dig: function(queryParams) {
-      this.transitionTo('uploads', queryParams);
-    }
-  }
-});
-
-Dig.UploadsRoute = Em.Route.extend({
-  model: function(params) {
-    if (params.args) {
-      return params.args;
-    }
-  }
-});
-
-Dig.ApiRoute = Em.Route.extend({
-  queryParams: '',
-  model: function() {
-    return this.get('queryParams');
-  }
-});
-
-Dig.TopRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=rank&limit=10&ord=desc&lic='
-});
-
-Dig.RecommendedRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=score&limit=10&ord=desc&lic='
-});
-
-Dig.FreeRoute = Dig.ApiRoute.extend({
-  queryParams: 'lic=open&sort=rank&limit=10&ord=desc'
-});
-
-Dig.NewRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=date&limit=10&ord=desc&lic='
-});
-
-Dig.UploadsIndexRoute = Em.Route.extend({
-  redirect: function() {this.transitionTo('uploads', '');}
-});
-
-// END ROUTES
-
-// CONTROLLERS
 
 Dig.UploadsCache = {};
 
@@ -106,13 +23,6 @@ Dig.UploadsCache.upload = function(upload) {
 
 Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
   isPlaying: false,
-
-  userQuery: function() {
-    var name = this.get('user_name');
-    if (name) {
-      return 'u='+name;
-    }
-  }.property('user_name'),
 
   streamUrl: function() {
     var files = this.get('content.files');
@@ -207,6 +117,14 @@ Dig.UploadsItemController = Em.ObjectController.extend({
   }
 });
 
+Dig.UserController = Em.Controller.extend({
+  baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&u=',
+
+  queryParams: function() {
+    return this.get('baseQueryParams') + this.get('model');
+  }.property('baseQueryParams', 'model')
+});
+
 Dig.NowPlayingController = Em.ObjectController.extend({
   tracks: [],
 
@@ -292,10 +210,6 @@ Dig.NowPlayingController = Em.ObjectController.extend({
     }
   }.observes('content', 'tracks.@each').on('init')
 });
-
-// END CONTROLLERS
-
-// COMPONENTS
 
 Dig.UploadsPlaylistComponent = Em.Component.extend({
   tagName: 'ul',
@@ -428,8 +342,6 @@ Dig.DigBarComponent = Em.Component.extend({
     }
   }
 });
-
-// END CONTROLLERS
 
 soundManager.setup({
   url: 'soundmanagerv297a-20131201/swf/',
