@@ -8,6 +8,14 @@ body.well {
 .main {
   margin-top: 56px;
 }
+
+.branding h2 img {
+  vertical-align: middle;
+}
+
+.version {
+  background-color: red;
+}
 .page-footer {
   font-size: .85em;
   margin-top: 1em;
