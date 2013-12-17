@@ -3,6 +3,7 @@ Dig.deferReadiness();
 
 $(document).autoBars(function() {
   Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
+  Em.TEMPLATES['components/dig-bar'] = Em.TEMPLATES['dig-bar'];
   Dig.advanceReadiness();
 });
 
@@ -266,6 +267,10 @@ Dig.NowPlayingController = Em.ObjectController.extend({
   }.observes('content', 'tracks.@each').on('init')
 });
 
+// END CONTROLLERS
+
+// COMPONENTS
+
 Dig.UploadsPlaylistComponent = Em.Component.extend({
   tagName: 'ul',
   classNames: 'api uploads media-list'.w(),
@@ -281,10 +286,6 @@ Dig.UploadsPlaylistComponent = Em.Component.extend({
       return Dig.UploadsCache.upload(upload);
     });
   }.property('_uploads'),
-
-  newParams: function() {
-    return this.get('queryParams') || '';
-  }.property('queryParams'),
 
   uploadsPromise: function(params) {
     var queryParams = this.get('queryParams'),
@@ -309,6 +310,20 @@ Dig.UploadsPlaylistComponent = Em.Component.extend({
       });
     }
   }.observes('uploadsPromise').on('init')
+});
+
+Dig.DigBarComponent = Em.Component.extend({
+  tagName: 'section',
+  classNames: 'dig-bar'.w(),
+  queryParams: '',
+
+  newQueryParams: function() {
+    return URI.buildQuery(this.get('params'));
+  }.property('params'),
+
+  params: function() {
+    return URI('?' + this.get('queryParams')).query(true);
+  }.property('queryParams')
 });
 
 // END CONTROLLERS

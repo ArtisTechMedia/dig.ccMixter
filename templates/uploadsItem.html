@@ -5,6 +5,10 @@
       <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
     </a>
     <a href='#' {{action playNext}} class='btn play-next'><span class="glyphicon glyphicon-forward"></span></a>
+    <a
+      href='{{unbound file_page_url}}'
+      target="_new"
+      class='btn info'><span class="glyphicon glyphicon-info-sign"></span></a>
   </div>
   <div class='media-body'>
     <a class='license pull-right' target='_new' href='{{unbound license_url}}'><img
@@ -15,10 +19,6 @@
     <h4 class='media-heading'>{{unbound upload_name}}</h4>
     <div class='attribution'>
       by {{#linkTo 'uploads' userQuery class='user'}}{{unbound user_name}}{{/linkTo}}
-      <a
-        href='{{unbound file_page_url}}'
-        target="_new"
-        class='btn info'><span class="glyphicon glyphicon-info-sign"></span></a>
     </div>
     <div class='clearfix'></div>
   </div>
