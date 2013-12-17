@@ -2,6 +2,7 @@ var Dig = Em.Application.create();
 Dig.deferReadiness();
 
 $(document).autoBars(function() {
+  Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
   Dig.advanceReadiness();
 });
 
@@ -9,6 +10,10 @@ $(document).autoBars(function() {
 
 Dig.Router.map(function() {
   this.resource('about');
+  this.resource('top');
+  this.resource('recommended');
+  this.resource('free');
+  this.resource('new');
   this.resource('uploadsIndex', {path: '/tracks'});
   this.resource('uploads', {path: '/tracks/*args'});
 });
@@ -40,31 +45,14 @@ Dig.ApplicationRoute = Em.Route.extend({
 });
 
 Dig.ApiRoute = Em.Route.extend({
-  baseUrl: "http://ccmixter.org/api/query?f=json&",
   model: function(params) {
-    var url = this.get('baseUrl');
     if (params.args) {
-      url += params.args;
+      return params.args;
     }
-    return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
-      response.args = params.args;
-      return response;
-    }));
-  },
-  serialize: function(model) {
-    if (model) {
-      if (typeof(model) === 'string') {
-        return {args: model};
-      }
-      return {args: model.args};
-    }
-    return {args: ''};
   }
 });
 
-Dig.UploadsRoute = Dig.ApiRoute.extend({
-  baseUrl: "http://ccmixter.org/api/query?f=json&limit=15&datasource=uploads&",
-});
+Dig.UploadsRoute = Dig.ApiRoute.extend();
 
 Dig.UploadsIndexRoute = Em.Route.extend({
   redirect: function() {this.transitionTo('uploads', '');}
@@ -74,23 +62,24 @@ Dig.UploadsIndexRoute = Em.Route.extend({
 
 // CONTROLLERS
 
-Dig.ApiController = Em.ArrayController.extend({
-  itemController: 'apiItem',
+Dig.UploadsCache = {};
 
-  newArgs: function() {
-    return this.get('content.args') || '';
-  }.property('content'),
-});
-Dig.ApiItemController = Em.ObjectController.extend();
+Dig.UploadsCache.forUrl = function(url) {
+  if (Dig.UploadsCache[url]) {
+    return Dig.UploadsCache[url];
+  }
+  var upload = Dig.Upload.create();
+  Dig.UploadsCache[url] = upload;
+  return upload;
+};
 
-Dig.UploadsController = Dig.ApiController.extend({
-  itemController: 'uploadsItem'
-});
+Dig.UploadsCache.upload = function(upload) {
+  var obj = Dig.UploadsCache.forUrl(upload.file_page_url);
+  obj.set('content', upload);
+  return obj;
+};
 
-Dig.UploadsItemController = Dig.ApiItemController.extend(Em.Evented, {
-  needs: 'nowPlaying'.w(),
-  nowPlaying: Em.computed.alias('controllers.nowPlaying'),
-
+Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
   isPlaying: false,
 
   userQuery: function() {
@@ -123,8 +112,6 @@ Dig.UploadsItemController = Dig.ApiItemController.extend(Em.Evented, {
         url: streamUrl,
         onplay: function() {
           Em.run(function() {
-            item.set('nowPlaying.content', item);
-            item.set('nowPlaying.currentSound', item.get('sound'));
             item.set('isPlaying', true);
             item.trigger('onPlay');
           });
@@ -166,17 +153,35 @@ Dig.UploadsItemController = Dig.ApiItemController.extend(Em.Evented, {
       this.play();
     }
   },
+});
+
+Dig.UploadsItemController = Em.ObjectController.extend({
+  needs: 'nowPlaying'.w(),
+  nowPlaying: Em.computed.alias('controllers.nowPlaying'),
+
+  contentDidChange: function() {
+    var item = this.get('content'),
+        controller = this;
+    if (item && item.on) {
+      item.on('onPlay', function() {
+        controller.setProperties({
+          'nowPlaying.tracks':        item.get('playlist.uploads') || [],
+          'nowPlaying.content':       item,
+          'nowPlaying.currentSound':  item.get('sound')
+        });
+      });
+    }
+  }.observes('content').on('init'),
 
   actions: {
     togglePlay: function() {
-      this.togglePlay();
+      this.get('content').togglePlay();
     }
   }
 });
 
 Dig.NowPlayingController = Em.ObjectController.extend({
-  needs: 'uploads'.w(),
-  tracks: Em.computed.alias('controllers.uploads'),
+  tracks: [],
 
   currentSound: null,
 
@@ -259,6 +264,51 @@ Dig.NowPlayingController = Em.ObjectController.extend({
       }
     }
   }.observes('content', 'tracks.@each').on('init')
+});
+
+Dig.UploadsPlaylistComponent = Em.Component.extend({
+  tagName: 'ul',
+  classNames: 'api uploads media-list'.w(),
+  baseUrl: "http://ccmixter.org/api/query?f=json&limit=15&datasource=uploads&",
+  queryParams:  '',
+  isLoaded:     false,
+  _uploads: [],
+
+  uploads: function() {
+    var component = this;
+    return this.get('_uploads').map(function(upload) {
+      upload.playlist = component;
+      return Dig.UploadsCache.upload(upload);
+    });
+  }.property('_uploads'),
+
+  newParams: function() {
+    return this.get('queryParams') || '';
+  }.property('queryParams'),
+
+  uploadsPromise: function(params) {
+    var queryParams = this.get('queryParams'),
+        url = this.get('baseUrl');
+    url += queryParams;
+    return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
+      response.args = queryParams;
+      return response;
+    }));
+  }.property('queryParams'),
+
+  uploadsPromiseDidChange: function() {
+    var component = this,
+        promise = this.get('uploadsPromise');
+    if (promise && promise.then) {
+      this.set('isLoaded', false);
+      promise.then(function(uploads) {
+        component.setProperties({
+          _uploads:  uploads,
+          isLoaded:  true
+        });
+      });
+    }
+  }.observes('uploadsPromise').on('init')
 });
 
 // END CONTROLLERS

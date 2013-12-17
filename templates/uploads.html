@@ -1,6 +1,4 @@
-    <article class='uploads container'>
-      {{partial "digBar"}}
-      <ul class='api uploads media-list'>
-      {{#each}}<li class='media upload'>{{partial "uploadsItem"}}</li>{{/each}}
-      </ul>
-    </article>
+<article class='uploads container'>
+  <h3>Uploads</h3>
+  {{uploads-playlist queryParams=model}}
+</article>
