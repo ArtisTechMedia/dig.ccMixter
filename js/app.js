@@ -125,6 +125,10 @@ Dig.UserController = Em.Controller.extend({
   }.property('baseQueryParams', 'model')
 });
 
+Dig.TagsController = Dig.UserController.extend({
+  baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&tags='
+});
+
 Dig.NowPlayingController = Em.ObjectController.extend({
   tracks: [],
 

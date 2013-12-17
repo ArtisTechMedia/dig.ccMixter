@@ -8,6 +8,7 @@ Dig.Router.map(function() {
   this.resource('free');
   this.resource('new');
   this.resource('user', {path: '/user/:username'});
+  this.resource('tags', {path: '/tags/:tags'});
   this.resource('uploadsIndex', {path: '/dig'});
   this.resource('uploads', {path: '/dig/*args'});
 });
@@ -57,6 +58,12 @@ Dig.ApiRoute = Em.Route.extend({
 Dig.UserRoute = Em.Route.extend({
   model: function(params) {
     return params.username;
+  }
+});
+
+Dig.TagsRoute = Em.Route.extend({
+  model: function(params) {
+    return (params.tags || '').replace(/ /, ',');
   }
 });
 

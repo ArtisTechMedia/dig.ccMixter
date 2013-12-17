@@ -9,9 +9,9 @@
       value=params.lic
     }}
   </span>
-  {{#linkTo "uploads" newQueryParams class='input-group-addon btn btn-default'}}
+  <a {{action default}} class='input-group-addon btn btn-default' href='#'>
     dig
-  {{/linkTo}}
+  </a>
 </div>
 
 {{#if showAdvanced}}
@@ -35,6 +35,10 @@
         content=ordOptions
         value=params.ord
       }}
+    </label>
+    <label class='direction'>
+      tags
+      {{input value=params.tags placeholder="Comma separated please" size=50}}
     </label>
   </section>
   <a {{action toggleAdvanced}} class='toggle-advanced' href='#'>Basic dig</a>

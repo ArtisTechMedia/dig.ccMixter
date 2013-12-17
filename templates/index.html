@@ -1,5 +1,5 @@
 <article class='homepage container'>
-  {{dig-bar}}
+  {{dig-bar queryParams="sort=rank&order=desc&lic=&tags=" action="dig"}}
   <h2>ccMixter Music Discovery <span class='badge beta'>(BETA)</span></h2>
   <h3>&ldquo;You Already Have Permission With Attribution&hellip;&rdquo;</h3>
   <div class="row">
@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-xs-4">
           <h3>
-            {{#linkTo "uploads" "sort=rank&tags=vocals,remix"
+            {{#linkTo "tags" "vocals,remix"
                 title="Podsafe Music"}}Podsafe Music{{/linkTo}}
           </h3>
           <p>
@@ -17,7 +17,7 @@
         </div>
         <div class="col-xs-4">
           <h3>
-            {{#linkTo "uploads" "lic=open&sort=rank&tags=instrumental"
+            {{#linkTo "tags" "instrumental&lic=open"
                 title="Instrumental Music"}}Instrumental Music for Videos & Film{{/linkTo}}
           </h3>
           <p>
@@ -26,7 +26,7 @@
         </div>
         <div class="col-xs-4">
           <h3>
-            {{#linkTo "uploads" "lic=open&sort=rank&tags=editorial_pick"
+            {{#linkTo "tags" "editorial_pick"
                 title="Featured Music"}}Featured Music for Download{{/linkTo}}
           </h3>
           <p>
@@ -37,7 +37,7 @@
       <div class="row">
         <div class="col-xs-4">
           <h3>
-            {{#linkTo "uploads" "lic=open&sort=rank"
+            {{#linkTo "free"
                 title="Commercial Use Music"}}Music Free for Commercial Use{{/linkTo}}
           </h3>
           <p>
@@ -65,9 +65,5 @@
       <a href="http://creativecommons.org"><img src="http://dig.ccmixter.org/images/cc-h.jpg" alt="Visit Creative Commons"></a>
     </div>
   </div>
-  <ul>
-    <li>{{#linkTo "uploads" "lic=open&sort=rank&tags=tubed_by_you"
-            title="YouTube Free for Commercial Use"}}Free for Commercial Use in Videos{{/linkTo}}</li>
-  </ul>
 </article>
 </script>
