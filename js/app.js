@@ -15,8 +15,8 @@ Dig.Router.map(function() {
   this.resource('recommended');
   this.resource('free');
   this.resource('new');
-  this.resource('uploadsIndex', {path: '/tracks'});
-  this.resource('uploads', {path: '/tracks/*args'});
+  this.resource('uploadsIndex', {path: '/dig'});
+  this.resource('uploads', {path: '/dig/*args'});
 });
 
 // ROUTES
@@ -41,6 +41,9 @@ Dig.ApplicationRoute = Em.Route.extend({
     },
     playNext: function() {
       this.controllerFor('nowPlaying').playNextTrack();
+    },
+    dig: function(queryParams) {
+      this.transitionTo('uploads', queryParams);
     }
   }
 });
@@ -412,7 +415,7 @@ Dig.DigBarComponent = Em.Component.extend({
   }.property('queryParams'),
 
   change: function() {
-    this.notifyPropertyChange('edited');
+    this.sendAction('action', URI.buildQuery(this.get('params')));
   },
 
   newQueryParamsDidChange: function() {
