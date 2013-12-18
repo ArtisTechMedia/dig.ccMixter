@@ -2,7 +2,7 @@ $(document).autoBars(function() {
   Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
   Em.TEMPLATES['components/tags-selector'] = Em.TEMPLATES['tags-selector'];
   Em.TEMPLATES['components/dig-bar'] = Em.TEMPLATES['dig-bar'];
-  Dig.advanceReadiness();
+  Em.run(Dig, Dig.advanceReadiness);
 });
 
 window.onbeforeunload = function(e) {
