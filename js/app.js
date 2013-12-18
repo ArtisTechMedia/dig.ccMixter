@@ -335,7 +335,7 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
 Dig.DigBarComponent = Em.Component.extend({
   tagName: 'section',
   classNames: 'dig-bar'.w(),
-  queryParams: 'sinced=&sort=rank&order=desc&lic=&tags=',
+  queryParams: 'stype=all&sinced=&sort=rank&order=desc&lic=&tags=',
 
   showAdvanced: false,
 
@@ -368,9 +368,16 @@ Dig.DigBarComponent = Em.Component.extend({
   ],
 
   sortOptions: [
-    'rank',
-    'score',
-    'date'
+    {
+      label: 'Popularity',
+      value: 'rank'
+    }, {
+      label: 'Recommends',
+      value: 'score'
+    }, {
+      label: 'Date',
+      value: 'date'
+    }
   ],
 
   licOptions: [
@@ -384,8 +391,26 @@ Dig.DigBarComponent = Em.Component.extend({
   ],
 
   ordOptions: [
-    'desc',
-    'asc'
+    {
+      label: 'Descending',
+      value: 'desc'
+    }, {
+      label: 'Ascending',
+      value: 'asc'
+    }
+  ],
+
+  stypeOptions: [
+    {
+      label: 'Any word',
+      value: 'any'
+    }, {
+      label: 'All words',
+      value: 'all'
+    }, {
+      label: 'Exact phrase',
+      value: 'match'
+    }
   ],
 
   newQueryParams: function() {

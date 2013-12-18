@@ -198,3 +198,14 @@ article.upload {
 .checklist .loading {
   padding: 10px;
 }
+
+.advanced select {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+.advanced .sort select {
+  margin-right: 0;
+}
+.advanced .direction select {
+  margin-left: 0;
+}
