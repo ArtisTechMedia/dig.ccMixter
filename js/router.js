@@ -3,6 +3,7 @@ Dig.deferReadiness();
 
 Dig.Router.map(function() {
   this.resource('about');
+  this.resource('hot');
   this.resource('top');
   this.resource('recommended');
   this.resource('free');
@@ -67,20 +68,24 @@ Dig.TagsRoute = Em.Route.extend({
   }
 });
 
+Dig.HotRoute = Dig.ApiRoute.extend({
+  queryParams: 'sinced=1 week ago&sort=rank&limit=10&ord=desc&lic='
+});
+
 Dig.TopRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=rank&limit=10&ord=desc&lic='
+  queryParams: 'sinced=&sort=rank&limit=10&ord=desc&lic='
 });
 
 Dig.RecommendedRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=score&limit=10&ord=desc&lic='
+  queryParams: 'sinced=&sort=score&limit=10&ord=desc&lic='
 });
 
 Dig.FreeRoute = Dig.ApiRoute.extend({
-  queryParams: 'lic=open&sort=rank&limit=10&ord=desc'
+  queryParams: 'sinced=&lic=open&sort=rank&limit=10&ord=desc'
 });
 
 Dig.NewRoute = Dig.ApiRoute.extend({
-  queryParams: 'sort=date&limit=10&ord=desc&lic='
+  queryParams: 'sinced=&sort=date&limit=10&ord=desc&lic='
 });
 
 Dig.UploadsIndexRoute = Em.Route.extend({

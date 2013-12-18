@@ -1,16 +1,17 @@
 <div class='navbar navbar navbar-fixed-top'>
   <div class='navbar-inner'>
-    {{#linkTo "index" class="navbar-brand"}}<img
+    {{#link-to "index" class="navbar-brand"}}<img
       src="images/logo.png"
       alt="dig.ccMixter"
-    />{{/linkTo}}
+    />{{/link-to}}
     <div class='navbar-collapse collapse'>
       <ul class='nav navbar-nav navbar-right'>
-        <li>{{#linkTo "top" title="Highest ranked tracks on ccMixter"}}Top{{/linkTo}}</li>
-        <li>{{#linkTo "recommended" title="Tracks most recommended by ccMixter users"}}Recommended{{/linkTo}}</li>
-        <li>{{#linkTo "free" title="Free for Commercial Use"}}Free{{/linkTo}}</li>
-        <li>{{#linkTo "new"}}New{{/linkTo}}</li>
-        <li>{{#linkTo "about"}}About{{/linkTo}}</li>
+        <li>{{link-to "Hot" "hot" title="Hottest tracks this week"}}</li>
+        <li>{{link-to "Top" "top" title="Highest ranked tracks on ccMixter"}}</li>
+        <li>{{link-to "Rec." "recommended" title="Tracks most recommended by ccMixter users"}}</li>
+        <li>{{link-to "Free" "free" title="Free for Commercial Use"}}</li>
+        <li>{{link-to "New" "new"}}</li>
+        <li>{{link-to "About" "about"}}</li>
       </ul>
     </div>
   </div>

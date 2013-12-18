@@ -29,6 +29,15 @@
         value=params.limit
       }}
     </label>
+    <label class='since'>
+      since
+      {{view Em.Select
+        content=sincedOptions
+        value=params.sinced
+        optionLabelPath="content.label"
+        optionValuePath="content.value"
+      }}
+    </label>
     <label class='sort'>
       sort
       {{view Em.Select

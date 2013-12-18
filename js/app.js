@@ -141,7 +141,7 @@ Dig.TagsSelectorItemController = Em.ObjectController.extend({
 });
 
 Dig.UserController = Em.Controller.extend({
-  baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&u=',
+  baseQueryParams: 'sinced=&sort=rank&limit=10&ord=desc&lic=&u=',
 
   queryParams: function() {
     return this.get('baseQueryParams') + this.get('model');
@@ -333,6 +333,25 @@ Dig.DigBarComponent = Em.Component.extend({
     '15',
     '25',
     '50'
+  ],
+
+  sincedOptions: [
+    {
+      label: 'Forever',
+      value: ''
+    }, {
+      label: 'Yesterday',
+      value: 'Yesterday'
+    }, {
+      label: '1 week ago',
+      value: '1 week ago'
+    }, {
+      label: '2 weeks ago',
+      value: '2 weeks ago'
+    }, {
+      label: '3 months ago',
+      value: '3 months ago'
+    }
   ],
 
   sortOptions: [
