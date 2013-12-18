@@ -1,5 +1,5 @@
 <div class="input-group search-dig">
-  <a {{action toggleAdvanced}} class='input-group-addon' href='#' title='Advanced Dig Toggle'>
+  <a {{action "dig" queryParams}} class='input-group-addon' href='#' title='Advanced Dig Toggle'>
     <span {{bindAttr
       class=":glyphicon showAdvanced:glyphicon-chevron-down:glyphicon-chevron-right"
     }}></span>
@@ -15,7 +15,7 @@
       value=params.lic
     }}
   </span>
-  <a {{action default}} class='input-group-addon btn btn-default' href='#'>
+  <a {{action "dig" queryParams}} class='input-group-addon btn btn-default' href='#'>
     dig
   </a>
 </div>

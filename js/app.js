@@ -398,6 +398,9 @@ Dig.DigBarComponent = Em.Component.extend({
   }.property('params.tags'),
 
   actions: {
+    dig: function() {
+      this.sendAction('action', URI.buildQuery(this.get('params')));
+    },
     toggleAdvanced: function() {
       this.toggleProperty('showAdvanced');
     },
