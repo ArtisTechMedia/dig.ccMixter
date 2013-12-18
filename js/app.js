@@ -324,9 +324,11 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
 Dig.DigBarComponent = Em.Component.extend({
   tagName: 'section',
   classNames: 'dig-bar'.w(),
-  queryParams: '',
+  queryParams: 'sinced=&sort=rank&order=desc&lic=&tags=',
 
   showAdvanced: false,
+
+  action: 'dig',
 
   resultsOptions: [
     '10',
