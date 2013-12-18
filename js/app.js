@@ -5,6 +5,14 @@ $(document).autoBars(function() {
   Dig.advanceReadiness();
 });
 
+window.onbeforeunload = function(e) {
+  // This lookup makes me feel dirty.
+  var nowPlaying = Dig.__container__.lookup('controller:nowPlaying');
+  if (nowPlaying.get('isPlaying')) {
+    return "Still Playing:\n\n\n" + nowPlaying.get('title') + ' by ' + nowPlaying.get('user_name');
+  }
+};
+
 Dig.ApiCache = {};
 
 Dig.UploadsCache = {};
@@ -25,6 +33,8 @@ Dig.UploadsCache.upload = function(upload) {
 };
 
 Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
+  title: Em.computed.alias('upload_name'),
+
   isPlaying: false,
 
   streamUrl: function() {
@@ -222,6 +232,7 @@ Dig.NowPlayingController = Em.ObjectController.extend({
 
   trackDidChange: function() {
     var track = this.get('content');
+    window.document.title = track.get('title') + ' by ' + track.get('user_name') + ' @ dig.ccmixter';
     if (track) {
       track.on('onFinish', this, this.didFinishTrack);
     }
