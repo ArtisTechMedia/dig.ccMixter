@@ -16,6 +16,7 @@ Dig.Router.map(function() {
   this.resource('hot');
   this.resource('top');
   this.resource('recommended');
+  this.resource('editorialPicks');
   this.resource('free');
   this.resource('new');
   this.resource('user', {path: '/user/:username'});
@@ -61,6 +62,10 @@ Dig.FreeRoute = Dig.ApiRoute.extend({
 
 Dig.NewRoute = Dig.ApiRoute.extend({
   queryParams: 'stype=all&sinced=&sort=date&limit=10&ord=desc&lic='
+});
+
+Dig.EditorialPicksRoute = Dig.ApiRoute.extend({
+  queryParams: 'stype=all&sinced=&sort=date&limit=10&ord=desc&lic=&tags=editorial_pick'
 });
 
 Dig.UploadsRoute = Em.Route.extend({
