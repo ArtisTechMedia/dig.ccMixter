@@ -57,7 +57,7 @@ Dig.RecommendedRoute = Dig.ApiRoute.extend({
 });
 
 Dig.FreeRoute = Dig.ApiRoute.extend({
-  queryParams: 'stype=all&sinced=&lic=open&sort=rank&limit=10&ord=desc'
+  queryParams: 'stype=all&sinced=&lic=open&sort=rank&limit=10&ord=desc&type=remix'
 });
 
 Dig.NewRoute = Dig.ApiRoute.extend({
