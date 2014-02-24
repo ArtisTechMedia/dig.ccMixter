@@ -13,6 +13,25 @@ window.onbeforeunload = function(e) {
   }
 };
 
+$.ajax("http://ccmixter.org/whoami.php", {
+  method: "GET",
+  dataType: "JSON",
+  xhrFields: {withCredentials: true}}
+).then(function(response) {
+  Em.run(function() {
+    var username = response.username;
+    if (username) {
+      Em.set(Dig, 'username', username);
+    }
+    $.ajax(
+      "http://ccmixter.org/api/query?f=json&datasource=uploads&sort=rank&limit=90000&reccby=" + username,
+      {dataType: 'json'}
+    ).then(function(results) {
+      Em.set(Dig, 'recommends', results.getEach('upload_id'));
+    });
+  });
+});
+
 Dig.ApiCache = {};
 
 Dig.UploadsCache = {};
@@ -101,7 +120,32 @@ Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
   },
 });
 
-Dig.UploadsItemController = Em.ObjectController.extend({
+Dig.ControllerMixin = Em.Mixin.create({
+  needs: 'application',
+  loggedIn: Em.computed.alias('controllers.application.username'),
+  myRecommends: Em.computed.alias('controllers.application.myRecommends'),
+});
+
+Dig.ApplicationController = Em.Controller.extend({
+  username: function() {
+    return Em.get(Dig, 'username');
+  }.property('Dig.username'),
+  myRecommends: function() {
+    return Em.get(Dig, 'recommends');
+  }.property('Dig.recommends')
+});
+
+Dig.UploadsItemControllerMixin = Em.Mixin.create({
+  isRecommended: function() {
+    return (this.get('myRecommends') || []).contains(this.get('upload_id'));
+  }.property('myRecommends.@each', 'upload_id'),
+
+  isOwnUpload: function() {
+    return (this.get('user_name') === this.get('loggedIn'));
+  }.property('loggedIn', 'user_name')
+});
+
+Dig.UploadsItemController = Em.ObjectController.extend(Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
   needs: 'nowPlaying'.w(),
   nowPlaying: Em.computed.alias('controllers.nowPlaying'),
 
@@ -150,7 +194,7 @@ Dig.TagsSelectorItemController = Em.ObjectController.extend({
   }.property('bar.tags', 'bar.tags.@each', 'name')
 });
 
-Dig.UserController = Em.Controller.extend({
+Dig.UserController = Em.Controller.extend(Dig.ControllerMixin, {
   baseQueryParams: 'sinced=&sort=rank&limit=10&ord=desc&lic=&u=',
 
   queryParams: function() {
@@ -158,17 +202,23 @@ Dig.UserController = Em.Controller.extend({
   }.property('baseQueryParams', 'model')
 });
 
-Dig.TagsController = Dig.UserController.extend({
+Dig.TagsController = Dig.UserController.extend(Dig.ControllerMixin, {
   baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&tags='
 });
 
-Dig.NowPlayingController = Em.ObjectController.extend({
+Dig.NowPlayingController = Em.ObjectController.extend(Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
   tracks: [],
 
   currentSound: null,
 
   shouldLoadFirstItem:  false,
   shouldContinuousPlay: true,
+
+  currentTrack: function() {
+    var track = this.get('content');
+    if (track) {return [track];}
+    return [];
+  }.property('content'),
 
   trackIndex: function() {
     var track = this.get('content'),
@@ -296,6 +346,8 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
 
   offset: 0,
 
+  recommend: 'recommend',
+
   uploads: function() {
     var component = this;
     return this.get('apiData').map(function(upload) {
@@ -303,7 +355,6 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
       return Dig.UploadsCache.upload(upload);
     });
   }.property('apiData'),
-
 
   hasPreviousPage: function() {
     return this.get('offset') > 0;
@@ -314,6 +365,9 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
   }.property('offset'),
 
   actions: {
+    recommend: function(id) {
+      this.sendAction('recommend', id);
+    },
     nextPage: function() {
       var limit = parseInt(this.get('params.limit')) || 10,
           offset = this.get('offset');

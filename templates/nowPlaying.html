@@ -1,5 +1,5 @@
 <section class='now-playing'>
-{{#if content}}
-  {{#with content}}{{partial "uploadsItem"}}{{/with}}
-{{/if}}
+{{#each currentTrack itemController="uploadsItem"}}
+  {{partial "uploadsItem"}}
+{{/each}}
 </section>

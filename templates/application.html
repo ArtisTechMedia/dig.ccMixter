@@ -6,6 +6,9 @@
     />{{/link-to}}
     <div class='navbar-collapse collapse'>
       <ul class='nav navbar-nav navbar-right'>
+        {{#if username}}
+        <li class='username'>{{link-to username "user" username}}</li>
+        {{/if}}
         <li>{{link-to "Hot" "hot" title="Hottest tracks this week"}}</li>
         <li>{{link-to "Top" "top" title="Highest ranked tracks on ccMixter"}}</li>
         <li>{{link-to "Picks" "editorialPicks" title="Ed Picks."}}</li>

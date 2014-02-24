@@ -110,6 +110,14 @@ Dig.ApplicationRoute = Em.Route.extend({
         // Track this pageview with Google analytics
         _gaq.push(['_trackPageview', router.get('url')]);
       });
+    },
+    recommend: function(id) {
+      var url = "http://ccmixter.org/rate/" + id + "/5?rmacro=recommends";
+      $.ajax(url, {
+        method: "POST", xhrFields: {withCredentials: true}
+      }).then(function() {
+        Em.get(Dig, 'recommends').pushObject(id);
+      });
     }
   }
 });
