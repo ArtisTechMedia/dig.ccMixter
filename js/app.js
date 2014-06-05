@@ -13,98 +13,7 @@ window.onbeforeunload = function(e) {
   }
 };
 
-$.ajax("http://ccmixter.org/whoami.php", {
-  method: "GET",
-  dataType: "JSON",
-  xhrFields: {withCredentials: true}}
-).then(function(response) {
-  Em.run(function() {
-    var username = response.username;
-    if (username) {
-      Em.set(Dig, 'username', username);
-    }
-    $.ajax(
-      "http://ccmixter.org/api/query?f=json&datasource=uploads&sort=rank&limit=90000&reccby=" + username,
-      {dataType: 'json'}
-    ).then(function(results) {
-      Em.set(Dig, 'recommends', results.getEach('upload_id'));
-    });
-  });
-});
-
-Dig.ApiCache = {};
-
-Dig.UploadsCache = {};
-
-Dig.UploadsCache.forUrl = function(url) {
-  if (Dig.UploadsCache[url]) {
-    return Dig.UploadsCache[url];
-  }
-  var upload = Dig.Upload.create();
-  Dig.UploadsCache[url] = upload;
-  return upload;
-};
-
-Dig.UploadsCache.upload = function(upload) {
-  var obj = Dig.UploadsCache.forUrl(upload.file_page_url);
-  obj.set('content', upload);
-  return obj;
-};
-
-Dig.Upload = Em.ObjectProxy.extend({
-  title: Em.computed.alias('upload_name'),
-
-  isPlaying: Em.computed.alias('media.isPlaying'),
-
-  streamUrl: function() {
-    var files = this.get('content.files');
-    if (Em.isArray(files)) {
-      // TODO: Search list and make sure we try to get a streamable file instead of zip
-      return files.get('firstObject.download_url');
-    }
-  }.property('content.files'),
-
-  license_logo_url: function() {
-    // TODO: Make this work to pull correct images from dig
-    return "images/" + this.get('license_name').dasherize() + '.png';
-  }.property('license_name'),
-
-  media: function() {
-    return MediaPlayer.Media.create({
-      track:            this,
-      artistBinding:    'track.user_name',
-      titleBinding:     'track.upload_name',
-      mp3UrlBinding:    'track.streamUrl'
-    });
-  }.property('streamUrl')
-});
-
-Dig.ControllerMixin = Em.Mixin.create({
-  needs: 'application',
-  loggedIn: Em.computed.alias('controllers.application.username'),
-  myRecommends: Em.computed.alias('controllers.application.myRecommends'),
-});
-
-Dig.ApplicationController = Em.Controller.extend({
-  username: function() {
-    return Em.get(Dig, 'username');
-  }.property('Dig.username'),
-  myRecommends: function() {
-    return Em.get(Dig, 'recommends');
-  }.property('Dig.recommends')
-});
-
-Dig.UploadsItemControllerMixin = Em.Mixin.create({
-  isRecommended: function() {
-    return (this.get('myRecommends') || []).contains(this.get('upload_id'));
-  }.property('myRecommends.@each', 'upload_id'),
-
-  isOwnUpload: function() {
-    return (this.get('user_name') === this.get('loggedIn'));
-  }.property('loggedIn', 'user_name')
-});
-
-Dig.UploadsItemController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
+Dig.UploadsItemController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, {
   needs: 'nowPlaying'.w(),
   nowPlaying: Em.computed.alias('controllers.nowPlaying'),
   playlist: Em.computed.alias('parentController.playlist')
@@ -148,46 +57,7 @@ Dig.NowPlayingController = MediaPlayer.NowPlayingController.extend(
   Dig.ControllerMixin, Dig.UploadsItemControllerMixin
 );
 
-Dig.ApiComponentMixin = Em.Mixin.create({
-  baseUrl:      "http://ccmixter.org/api/query?f=json&",
-  queryParams:  '',
-  isLoaded:     false,
-  apiData:      [],
-
-  params: function() {
-    return URI('?' + this.get('queryParams')).query(true);
-  }.property('queryParams'),
-
-  apiPromise: function(params) {
-    var queryParams = this.get('queryParams'),
-        url = this.get('baseUrl'),
-        offset = this.get('offset');
-    url += queryParams + '&offset=' + offset;
-    var data = Dig.ApiCache[url];
-    if (data) {return Ember.RSVP.resolve(data);}
-    return Ember.RSVP.resolve($.ajax({url: url, dataType: 'json'}).then(function(response) {
-      response.args = queryParams;
-      Dig.ApiCache[url] = response;
-      return response;
-    }));
-  }.property('queryParams', 'offset'),
-
-  apiPromiseDidChange: function() {
-    var component = this,
-        promise = this.get('apiPromise');
-    if (promise && promise.then) {
-      this.set('isLoaded', false);
-      promise.then(function(data) {
-        component.setProperties({
-          apiData:  data,
-          isLoaded:  true
-        });
-      });
-    }
-  }.observes('apiPromise').on('init'),
-});
-
-Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
+Dig.UploadsPlaylistComponent = Em.Component.extend(CCC.ApiComponentMixin, {
   tagName: 'ul',
   classNames: 'api uploads media-list'.w(),
   baseUrl: "http://ccmixter.org/api/query?f=json&datasource=uploads&",
@@ -202,7 +72,7 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
     var component = this;
     return this.get('apiData').map(function(upload) {
       upload.playlist = component;
-      return Dig.UploadsCache.upload(upload);
+      return CCC.UploadsCache.upload(upload);
     });
   }.property('apiData'),
 
@@ -362,7 +232,7 @@ Dig.DigBarComponent = Em.Component.extend({
   }
 });
 
-Dig.TagsSelectorComponent = Em.Component.extend(Dig.ApiComponentMixin, {
+Dig.TagsSelectorComponent = Em.Component.extend(CCC.ApiComponentMixin, {
   baseUrl: "http://ccmixter.org/api/query?f=json&dataview=tags&sort=name&ord=asc&",
 
   allTags: Em.computed.alias('apiData')

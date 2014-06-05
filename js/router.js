@@ -112,13 +112,7 @@ Dig.ApplicationRoute = Em.Route.extend({
       });
     },
     recommend: function(id) {
-      var url = "http://ccmixter.org/rate/" + id + "/5?rmacro=recommends";
-      $.ajax(url, {
-        method: "POST", xhrFields: {withCredentials: true}
-      }).then(function() {
-        Em.get(Dig, 'recommends').pushObject(id);
-      });
+      CCC.recommendId(id);
     }
   }
 });
-
