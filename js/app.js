@@ -51,10 +51,10 @@ Dig.UploadsCache.upload = function(upload) {
   return obj;
 };
 
-Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
+Dig.Upload = Em.ObjectProxy.extend({
   title: Em.computed.alias('upload_name'),
 
-  isPlaying: false,
+  isPlaying: Em.computed.alias('media.isPlaying'),
 
   streamUrl: function() {
     var files = this.get('content.files');
@@ -69,55 +69,14 @@ Dig.Upload = Em.ObjectProxy.extend(Em.Evented, {
     return "images/" + this.get('license_name').dasherize() + '.png';
   }.property('license_name'),
 
-  sound: function(key, value, oldValue) {
-    var item = this,
-        streamUrl = this.get('streamUrl');
-    if (streamUrl) {
-      return soundManager.createSound({
-        url: streamUrl,
-        onplay: function() {
-          Em.run(function() {
-            item.set('isPlaying', true);
-            item.trigger('onPlay');
-          });
-        },
-        onstop: function() {
-          Em.run(function() {
-            item.set('isPlaying', false);
-            item.trigger('onStop');
-          });
-        },
-        onfinish: function() {
-          Em.run(function() {
-            item.set('isPlaying', false);
-            item.trigger('onFinish');
-          });
-        }
-      });
-    }
-  }.property('streamUrl'),
-
-  stop: function() {
-    var sound = this.get('sound');
-    if (sound) {
-      sound.stop();
-    }
-  },
-
-  play: function() {
-    var sound = this.get('sound');
-    if (sound) {
-      sound.play();
-    }
-  },
-
-  togglePlay: function() {
-    if (this.get('isPlaying')) {
-      this.stop();
-    } else {
-      this.play();
-    }
-  },
+  media: function() {
+    return MediaPlayer.Media.create({
+      track:            this,
+      artistBinding:    'track.user_name',
+      titleBinding:     'track.upload_name',
+      mp3UrlBinding:    'track.streamUrl'
+    });
+  }.property('streamUrl')
 });
 
 Dig.ControllerMixin = Em.Mixin.create({
@@ -145,31 +104,10 @@ Dig.UploadsItemControllerMixin = Em.Mixin.create({
   }.property('loggedIn', 'user_name')
 });
 
-Dig.UploadsItemController = Em.ObjectController.extend(Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
+Dig.UploadsItemController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
   needs: 'nowPlaying'.w(),
   nowPlaying: Em.computed.alias('controllers.nowPlaying'),
-
-  contentDidChange: function() {
-    var item = this.get('content'),
-        nowPlaying = this.get('nowPlaying');
-        controller = this,
-        nowPlaying;
-    if (item && item.on && nowPlaying) {
-      item.on('onPlay', function() {
-        nowPlaying.setProperties({
-          tracks:        item.get('playlist.uploads') || [],
-          content:       item,
-          currentSound:  item.get('sound')
-        });
-      });
-    }
-  }.observes('content').on('init'),
-
-  actions: {
-    togglePlay: function() {
-      this.get('content').togglePlay();
-    }
-  }
+  playlist: Em.computed.alias('parentController.playlist')
 });
 
 Dig.TagsSelectorItemController = Em.ObjectController.extend({
@@ -206,99 +144,9 @@ Dig.TagsController = Dig.UserController.extend(Dig.ControllerMixin, {
   baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&tags='
 });
 
-Dig.NowPlayingController = Em.ObjectController.extend(Dig.ControllerMixin, Dig.UploadsItemControllerMixin, {
-  tracks: [],
-
-  currentSound: null,
-
-  shouldLoadFirstItem:  false,
-  shouldContinuousPlay: true,
-
-  currentTrack: function() {
-    var track = this.get('content');
-    if (track) {return [track];}
-    return [];
-  }.property('content'),
-
-  trackIndex: function() {
-    var track = this.get('content'),
-        tracks = this.get('tracks');
-    if (track && Em.isArray(tracks)) {
-      return tracks.indexOf(track);
-    }
-    return -1;
-  }.property('tracks.@each', 'content'),
-
-  nextTrack: function() {
-    var tracks = this.get('tracks'),
-        trackIndex = this.get('trackIndex') + 1;
-    if (!tracks.get('length')) {return;}
-    if (trackIndex >= tracks.get('length')) {
-      trackIndex = 0;
-    }
-    return tracks.objectAt(trackIndex);
-  }.property('trackIndex', 'tracks.@each'),
-
-  previousTrack: function() {
-    var tracks = this.get('tracks'),
-        trackIndex = this.get('trackIndex') - 1;
-    if (!tracks.get('length')) {return;}
-    if (trackIndex < 0) {
-      trackIndex = tracks.get('length') - 1;
-    }
-    return tracks.objectAt(trackIndex);
-  }.property('trackIndex', 'tracks.@each'),
-
-  playNextTrack: function() {
-    var next = this.get('nextTrack');
-    if (next) {next.play();}
-  },
-
-  playPreviousTrack: function() {
-    var previous = this.get('previousTrack');
-    if (previous) {previous.play();}
-  },
-
-  didFinishTrack: function() {
-    if (this.get('shouldContinuousPlay')) {
-      this.playNextTrack();
-    }
-  },
-
-  trackWillChange: function() {
-    var track = this.get('content');
-    if (track) {
-      track.off('onFinish', this, this.didFinishTrack);
-      track.stop();
-    }
-  }.observesBefore('content'),
-
-  soundWillChange: function() {
-    var sound = this.get('currentSound');
-    if (sound) {
-      sound.stop();
-    }
-  }.observesBefore('currentSound'),
-
-  trackDidChange: function() {
-    var track = this.get('content');
-    window.document.title = track.get('title') + ' by ' + track.get('user_name') + ' @ dig.ccmixter';
-    if (track) {
-      track.on('onFinish', this, this.didFinishTrack);
-    }
-  }.observes('content'),
-
-  setInitialItem: function() {
-    if (this.get('shouldLoadFirstItem')) {
-      var content = this.get('content'),
-          tracks = this.get('tracks');
-      if (!content && tracks.get('length')) {
-        this.set('content', tracks.objectAt(0));
-      }
-    }
-  }.observes('content', 'tracks.@each').on('init')
-});
-
+Dig.NowPlayingController = MediaPlayer.NowPlayingController.extend(
+  Dig.ControllerMixin, Dig.UploadsItemControllerMixin
+);
 
 Dig.ApiComponentMixin = Em.Mixin.create({
   baseUrl:      "http://ccmixter.org/api/query?f=json&",
@@ -347,6 +195,8 @@ Dig.UploadsPlaylistComponent = Em.Component.extend(Dig.ApiComponentMixin, {
   offset: 0,
 
   recommend: 'recommend',
+
+  playlist: Em.computed.mapBy('uploads', 'media'),
 
   uploads: function() {
     var component = this;
