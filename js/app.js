@@ -238,6 +238,8 @@ Dig.TagsSelectorComponent = Em.Component.extend(CCC.ApiComponentMixin, {
   allTags: Em.computed.alias('apiData')
 });
 
+Dig.PlaybackScrubberComponent = MediaPlayer.PlaybackScrubberComponent.extend();
+
 soundManager.setup({
   url: 'soundmanagerv297a-20131201/swf/',
   debugMode: false

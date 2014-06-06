@@ -209,3 +209,31 @@ article.upload {
 .advanced .direction select {
   margin-left: 0;
 }
+
+.playback-scrubber {
+  margin: 0.5em;
+  height: 1.5em;
+  width: 20%;
+  position: relative;
+  border: 2px solid white;
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.playback-scrubber .bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.playback-scrubber .loaded {
+  background-color: #EEEEEE;
+}
+
+.playback-scrubber .position {
+  background-color: #3399CC;
+}
