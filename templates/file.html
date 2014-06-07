@@ -81,6 +81,16 @@
 
 
       <h4 class='stats'>
+        {{#if track.ccc.username}}
+        {{#unless track.isOwnUpload}}
+        {{#unless track.isRecommended}}
+        <a {{action recommend track.upload_id bubbles=false}} href='#'
+            title="Recommend on ccMixter"
+            class="btn recommend glyphicon glyphicon-thumbs-up"></a>
+        {{/unless}}
+        {{/unless}}
+        {{/if}}
+
         {{#if upload_num_scores}}
           {{upload_num_scores}} Recommends
         {{/if}}

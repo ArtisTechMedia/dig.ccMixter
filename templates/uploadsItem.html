@@ -27,7 +27,7 @@
     <div class='attribution'>
       by {{#linkTo 'user' user_name class='user' bubbles=false}}{{unbound user_name}}{{/linkTo}}
     </div>
-    {{#if loggedIn}}
+    {{#if ccc.username}}
     {{#unless isOwnUpload}}
     {{#unless isRecommended}}
     <a {{action recommend upload_id bubbles=false}} href='#'
