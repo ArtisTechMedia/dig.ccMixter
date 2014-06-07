@@ -147,6 +147,7 @@ ul.uploads {
   height: auto;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+  cursor: pointer;
 }
 
 .uploads .is-playing,
@@ -221,6 +222,13 @@ article.upload {
   cursor: pointer;
 }
 
+.track-header .playback-scrubber {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  border-color: #3399CC;
+}
+
 .playback-scrubber .bar {
   position: absolute;
   top: 0;
@@ -236,4 +244,44 @@ article.upload {
 
 .playback-scrubber .position {
   background-color: #3399CC;
+}
+
+.media-list .playback-scrubber {
+  display: none;
+}
+
+.now-playing .playback-scrubber {
+  display: block;
+}
+
+ul.reviews,
+ul.remix-parents,
+ul.remix-children,
+ul.downloads {
+  list-style-type: none;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+
+.attribution,
+ul.remix-children,
+ul.remix-parents {
+  font-size: 80%;
+}
+
+.attribution {
+  /*text-align: right;*/
+}
+
+.stats {
+  text-align: center;
+}
+
+.description .avatar {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.url {
+  word-wrap: break-word;
 }

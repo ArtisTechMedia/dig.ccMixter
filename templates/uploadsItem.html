@@ -1,14 +1,14 @@
-<article {{bindAttr class=":upload isPlaying"}}>
+<article {{bind-attr class=":upload isPlaying"}} {{action togglePlay}}>
   <div class='btn-group pull-left'>
     <a href='#' {{action playPrevious}} class='btn play-previous'><span class="glyphicon glyphicon-backward"></span></a>
-    <a href='#' {{action togglePlay}} class='btn play'>
+    <a href='#' class='btn play'>
       <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
     </a>
     <a href='#' {{action playNext}} class='btn play-next'><span class="glyphicon glyphicon-forward"></span></a>
-    <a
-      href='{{unbound file_page_url}}'
-      target="_new"
-      class='btn info'><span class="glyphicon glyphicon-info-sign"></span></a>
+
+    {{#link-to 'file' user_name upload_id class='btn info' bubbles=false}}
+      <span class="glyphicon glyphicon-info-sign"></span>
+    {{/link-to}}
   </div>
   <div class='media-body'>
     <a class='license pull-right' target='_new' href='{{unbound license_url}}'><img
@@ -16,14 +16,21 @@
       alt="{{unbound license_name}}"
       title="{{unbound license_name}}"
     /></a>
-    <h4 class='media-heading'>{{unbound upload_name}}</h4>
+    {{#if isLicenseReady}}
+      <a  class='buy-license pull-right'
+          title="Obtain Commercial License"
+          target='_new' href='{{unbound purchaseLicenseUrl}}'>
+        <span class='glyphicon glyphicon-usd'></span>
+      </a>
+    {{/if}}
+    <h4 class='media-heading'>{{link-to upload_name 'file' user_name upload_id bubbles=false}}</h4>
     <div class='attribution'>
-      by {{#linkTo 'user' user_name class='user'}}{{unbound user_name}}{{/linkTo}}
+      by {{#linkTo 'user' user_name class='user' bubbles=false}}{{unbound user_name}}{{/linkTo}}
     </div>
     {{#if loggedIn}}
     {{#unless isOwnUpload}}
     {{#unless isRecommended}}
-    <a {{action recommend upload_id}} href='#'
+    <a {{action recommend upload_id bubbles=false}} href='#'
         title="Recommend on ccMixter"
         class="btn recommend glyphicon glyphicon-thumbs-up"></a>
     {{/unless}}
@@ -31,7 +38,7 @@
     {{/if}}
 
     {{#if isPlaying}}
-      {{playback-scrubber media=media classNames="pull-left"}}
+      {{playback-scrubber media=media classNames="pull-left" bubbles=false}}
     {{/if}}
     <div class='clearfix'></div>
   </div>

@@ -2,6 +2,8 @@ $(document).autoBars(function() {
   Em.TEMPLATES['components/uploads-playlist'] = Em.TEMPLATES['uploads-playlist'];
   Em.TEMPLATES['components/tags-selector'] = Em.TEMPLATES['tags-selector'];
   Em.TEMPLATES['components/dig-bar'] = Em.TEMPLATES['dig-bar'];
+  Em.TEMPLATES['user/index'] = Em.TEMPLATES['userIndex'];
+  Em.TEMPLATES['user/profile'] = Em.TEMPLATES['userProfile'];
   Em.run(Dig, Dig.advanceReadiness);
 });
 
@@ -16,7 +18,12 @@ window.onbeforeunload = function(e) {
 Dig.UploadsItemController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, {
   needs: 'nowPlaying'.w(),
   nowPlaying: Em.computed.alias('controllers.nowPlaying'),
-  playlist: Em.computed.alias('parentController.playlist')
+  playlist: Em.computed.alias('parentController.playlist'),
+
+  fileLinkParams: function() {
+    return this.get('user_name') + '/' + this.get('upload_id');
+    return '/' + this.get('user_name') + '/' + this.get('upload_id');
+  }.property('user_name', 'upload_id')
 });
 
 Dig.TagsSelectorItemController = Em.ObjectController.extend({
@@ -41,7 +48,28 @@ Dig.TagsSelectorItemController = Em.ObjectController.extend({
   }.property('bar.tags', 'bar.tags.@each', 'name')
 });
 
-Dig.UserController = Em.Controller.extend(Dig.ControllerMixin, {
+Dig.FileController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, {
+  reviews: [],
+
+  displayUrl: function() {
+    return (this.get('file_page_url') || '').replace('http://', '');
+  }.property('file_page_url'),
+
+  playlist: function() {
+    return [this.get('content')];
+  }.property('content'),
+
+  track: function() {
+    var content = this.get('content');
+    if (content) {
+      return CCC.UploadsCache.upload(content);
+    }
+  }.property('content'),
+  media: Em.computed.alias('track.media'),
+  isPlaying: Em.computed.alias('media.isPlaying')
+});
+
+Dig.UserIndexController = Em.Controller.extend(Dig.ControllerMixin, {
   baseQueryParams: 'sinced=&sort=rank&limit=10&ord=desc&lic=&u=',
 
   queryParams: function() {
@@ -49,7 +77,7 @@ Dig.UserController = Em.Controller.extend(Dig.ControllerMixin, {
   }.property('baseQueryParams', 'model')
 });
 
-Dig.TagsController = Dig.UserController.extend(Dig.ControllerMixin, {
+Dig.TagsController = Dig.UserIndexController.extend(Dig.ControllerMixin, {
   baseQueryParams: 'sort=rank&limit=10&ord=desc&lic=&tags='
 });
 

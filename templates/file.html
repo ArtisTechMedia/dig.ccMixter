@@ -1,0 +1,144 @@
+<article class='upload-detail container'>
+  {{dig-bar queryParams=queryParams}}
+
+  <div class='track-header'>
+    <h2>
+      <a href='#' {{action togglePlay}} class='btn btn-default play'>
+        <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
+      </a>
+      {{#if track.isLicenseReady}}
+        <a  class='buy-license pull-right'
+            title="Obtain Commercial License"
+            target='_new' href='{{unbound track.purchaseLicenseUrl}}'>
+          <img alt='ccPlus' src='http://tunetrack.net/media//img/cc-plus-tunetrack.png'/>
+        </a>
+      {{/if}}
+      <a class='license pull-right' target='_new' href='{{unbound license_url}}'>
+        <img
+          src="{{unbound license_logo_url}}"
+          alt="{{unbound license_name}}"
+          title="{{unbound license_name}}"
+        />
+      </a>
+      {{link-to upload_name 'file' user_name upload_id}} by {{link-to user_real_name "user" user_name}}
+    </h2>
+    {{#if isPlaying}}{{playback-scrubber media=media}}{{/if}}
+  </div>
+  <div class="row">
+    <div class='col-md-3'>
+      <div class='well license attribution'>
+        <h6>Attribution</h6>
+        <p>
+          {{link-to upload_name 'file' user_name upload_id}}<br/>
+          by {{user_real_name}}
+          {{#if upload_extra.featuring}}
+            <br/>featuring {{upload_extra.featuring}}
+          {{/if}}
+        </p>
+        <p class='url'><a {{bind-attr href=file_page_url}}>{{displayUrl}}</a></p>
+        <p>CC <a class='license' target='_new' href='{{unbound license_url}}'>{{license_name}}</a></p>
+      </div>
+      <div class='well downloads'>
+        <a href="http://www.defectivebydesign.org/drm-free" class='pull-right'>
+          <img src="https://static.fsf.org/dbd/label/DRM-free label dropshadow 125.en.png"
+          alt="DefectiveByDesign.org"
+          width="50" height="50" border="0" align="middle" /></a>
+        <ul class='downloads'>
+        {{#each files}}
+          <li class='download'>
+            <a href='{{unbound download_url}}' download='{{unbound file_name}}'>{{file_nicname}} {{file_filesize}}</a>
+          </li>
+        {{/each}}
+        </ul>
+        <div class='clearfix'></div>
+      </div>
+      {{#if track.isLicenseReady}}
+        <a  class='buy-license btn'
+            title="Obtain Commercial License"
+            target='_new' href='{{unbound track.purchaseLicenseUrl}}'>
+          <span class='glyphicon glyphicon-usd'></span> Obtain Commercial License
+        </a>
+        <div class='clearfix'></div>
+      {{/if}}
+      <a
+        href='{{unbound file_page_url}}'
+        target="_new"
+        class='btn info'><span class="glyphicon glyphicon-info-sign"></span> View on ccMixter</a>
+
+      <a href="http://ccmixter.org/share/{{unbound upload_id}}"><img src="http://ccmixter.org/ccskins/shared/images/share-link.gif" alt="Share"/></a>
+    </div><div class="col-md-6">
+      <div class='well description'>
+        {{#if user_avatar_url}}
+          {{#link-to 'user' user_name class='pull-right'}}
+            <img class='avatar' {{bind-attr src=user_avatar_url alt=user_real_name}}/>
+          {{/link-to}}
+        {{/if}}
+        {{{upload_description_html}}}
+
+        <div class='date'>{{upload_date}}</div>
+        <div class='clearfix'></div>
+      </div>
+
+
+      <h4 class='stats'>
+        {{#if upload_num_scores}}
+          {{upload_num_scores}} Recommends
+        {{/if}}
+        {{#if upload_extra.num_reviews}}
+          {{upload_extra.num_reviews}} Reviews
+        {{/if}}
+        {{#if upload_num_playlists}}
+          Found in {{upload_num_playlists}} Playlists
+        {{/if}}
+      </h4>
+      {{#if reviews.length}}
+        <ul class='reviews'>
+        {{#each reviews}}
+          <li class='well review'>
+            <blockquote>{{{topic_text_html}}}</blockquote>
+            Review by {{link-to user_real_name 'user' user_real_name}} @ <span class='date'>{{rss_pubdate}}</span>
+          </li>
+        {{/each}}
+        </ul>
+      {{/if}}
+    </div><div class='col-md-3'>
+      <div class='well tags'>
+      {{#if upload_extra.bpm}}
+        <div class='bpm'>BPM: <span>{{upload_extra.bpm}}</span></div>
+      {{/if}}
+      {{#each upload_taglinks}}
+        {{link-to tag "tags" tag}}
+      {{/each}}
+      </div>
+
+      {{#if remix_parents.length}}
+        <div class='well'>
+          <span>Uses samples from:</span>
+          <ul class='remix-parents'>
+          {{#each remix_parents}}
+            <li class='remix-parent'>
+              {{link-to upload_name 'file' user_real_name upload_id class='upload'}}
+              by
+              {{link-to user_real_name 'user' user_real_name class='user'}}
+            </li>
+          {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+      {{#if remix_children.length}}
+        <div class='well'>
+          <span>Samples are used in:</span>
+          <ul class='remix-children'>
+          {{#each remix_children}}
+            <li class='remix-child'>
+              {{link-to upload_name 'file' user_real_name pool_item_id class='upload'}}
+              by
+              {{link-to user_real_name 'user' user_real_name class='user'}}
+            </li>
+          {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</article>
