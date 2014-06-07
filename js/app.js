@@ -272,3 +272,11 @@ soundManager.setup({
   url: 'soundmanagerv297a-20131201/swf/',
   debugMode: false
 });
+
+Dig.FileView = Em.View.extend({
+  didInsertElement: function() {
+    Em.run.scheduleOnce('afterRender', this, function() {
+      this.$('.left-column').scrollToFixed({marginTop: 64});
+    });
+  }
+});
