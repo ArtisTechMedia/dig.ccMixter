@@ -48,6 +48,17 @@ Dig.TagsSelectorItemController = Em.ObjectController.extend({
   }.property('bar.tags', 'bar.tags.@each', 'name')
 });
 
+Dig.RemixPeerItemController = Em.ObjectController.extend({
+  upload_id: function() {
+    return this.get('content.upload_id') || this.get('content.pool_item_id');
+  }.property('content.upload_id', 'content.pool_item_id'),
+
+  user_name: function() {
+    var url = this.get('artist_page_url');
+    return url.split('/').pop();
+  }.property('artist_page_url')
+});
+
 Dig.FileController = Em.ObjectController.extend(MediaPlayer.TrackControllerMixin, Dig.ControllerMixin, {
   reviews: [],
 

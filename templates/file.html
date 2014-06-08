@@ -127,11 +127,11 @@
         <div class='well'>
           <span>Uses samples from:</span>
           <ul class='remix-parents'>
-          {{#each remix_parents}}
+          {{#each remix_parents itemController="remixPeerItem"}}
             <li class='remix-parent'>
-              {{link-to upload_name 'file' user_real_name upload_id class='upload'}}
+              {{link-to upload_name 'file' user_name upload_id class='upload'}}
               by
-              {{link-to user_real_name 'user' user_real_name class='user'}}
+              {{link-to user_real_name 'user' user_name class='user'}}
             </li>
           {{/each}}
           </ul>
@@ -141,11 +141,11 @@
         <div class='well'>
           <span>Samples are used in:</span>
           <ul class='remix-children'>
-          {{#each remix_children}}
+          {{#each remix_children itemController="remixPeerItem"}}
             <li class='remix-child'>
-              {{link-to upload_name 'file' user_real_name pool_item_id class='upload'}}
+              {{link-to upload_name 'file' user_name pool_item_id class='upload'}}
               by
-              {{link-to user_real_name 'user' user_real_name class='user'}}
+              {{link-to user_real_name 'user' user_name class='user'}}
             </li>
           {{/each}}
           </ul>
