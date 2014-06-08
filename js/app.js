@@ -287,7 +287,7 @@ soundManager.setup({
 Dig.FileView = Em.View.extend({
   didInsertElement: function() {
     Em.run.scheduleOnce('afterRender', this, function() {
-      this.$('.left-column').scrollToFixed({marginTop: 64});
+      this.$('.left-column').scrollToFixed({minWidth: 992, marginTop: 64});
     });
   }
 });
