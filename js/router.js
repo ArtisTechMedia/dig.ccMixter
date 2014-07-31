@@ -22,6 +22,9 @@ Dig.Router.map(function() {
   this.resource('new');
   this.resource('pells');
   this.resource('samples');
+  this.resource('freeMusicForYoutube', {path: '/free-music-for-youtube'});
+  this.resource('freeMusicToRemix', {path: '/free-music-to-remix'});
+  this.resource('safeForCommercialLicensing', {path: '/safe-for-commercial-licensing'});
   this.resource('fileUser', {path: '/files/:username'}, function() {
     this.resource('file', {path: '/:file_id'});
   });
@@ -125,6 +128,18 @@ Dig.RecommendedRoute = Dig.ApiRoute.extend({
 
 Dig.FreeRoute = Dig.ApiRoute.extend({
   queryParams: 'stype=all&sinced=&lic=open&sort=rank&limit=10&ord=desc&tags=remix'
+});
+
+Dig.FreeMusicForYoutubeRoute = Dig.ApiRoute.extend({
+  queryParams: 'stype=all&sinced=&sort=rank&tags=instrumental&limit=10&ord=desc&lic='
+});
+
+Dig.FreeMusicToRemixRoute = Dig.ApiRoute.extend({
+  queryParams: 'stype=all&sinced=&sort=rank&tags=samples&limit=10&ord=desc&lic='
+});
+
+Dig.SafeForCommercialLicensingRoute = Dig.ApiRoute.extend({
+  queryParams: 'stype=all&sinced=&sort=rank&tags=ccplus&limit=10&ord=desc&lic='
 });
 
 Dig.NewRoute = Dig.ApiRoute.extend({

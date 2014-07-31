@@ -1,0 +1,26 @@
+<article class='free-music-to-remix container'>
+  {{dig-bar queryParams=model}}
+  <h3>
+     <a href="http://dig.ccmixter.org/tags/instrumental">ccMixter Tracks Free to Remix - Just Give Us Credit</a>
+  </h3>
+  <div class='row'>
+    <div class='col-md-3'>
+      <p>
+        <a href="http://ccmixter.org/">ccMixter.org</a> offers over 30,000 <a href="http://dig.ccmixter.org/hot">original tracks</a>
+        that can be used freely in your remixes - as long as you give us credit, aka Attribution.
+      </p><p style="text-align: center;">
+        <a href="http://creativecommons.org/licenses/by/3.0/"><img
+          alt="CC BY " src="http://ccmixter.org/ccskins/shared/images/lics/by-3.png" style="width: 88px; height: 31px;"
+        /></a><a href="http://creativecommons.org/licenses/by-nc/3.0/"><img
+          alt="CC BY NC" src="http://ccmixter.org/ccskins/shared/images/lics/by-nc-3.png" style="width: 88px; height: 31px;"
+         /></a>
+      </p><p>
+        Tracks with a <a href="http://creativecommons.org/licenses/by/3.0/">CC BY</a> license can even be used commercially with Attribution.
+        <a href="http://creativecommons.org/licenses/by-nc/3.0/">CC BY NC</a> tracks can be used freely for noncommercial purposes, with Attribution.
+      </p>
+    </div><div class='col-md-9'>
+      {{partial "howToAttribute"}}
+    </div>
+  </div>
+  {{uploads-playlist queryParams=content}}
+</article>
