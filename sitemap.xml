@@ -9,6 +9,18 @@
         <changefreq>monthly</changefreq>
     </url>
     <url>
+        <loc>http://dig.ccmixter.org/free-music-for-youtube</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>http://dig.ccmixter.org/free-music-to-remix</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>http://dig.ccmixter.org/safe-for-commercial-licensing</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
         <loc>http://dig.ccmixter.org/hot</loc>
         <changefreq>daily</changefreq>
     </url>
