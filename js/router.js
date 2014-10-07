@@ -13,6 +13,7 @@ Dig.deferReadiness();
 
 Dig.Router.map(function() {
   this.resource('about');
+  this.resource('keep-ccmixter-open-and-free');
   this.resource('hot');
   this.resource('top');
   this.resource('recommended');

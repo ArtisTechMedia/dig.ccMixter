@@ -52,4 +52,8 @@
         <loc>http://dig.ccmixter.org/ccplus</loc>
         <changefreq>daily</changefreq>
     </url>
+    <url>
+        <loc>http://dig.ccmixter.org/keep-ccmixter-open-and-free</loc>
+        <changefreq>weekly</changefreq>
+    </url>
 </urlset>
