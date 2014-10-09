@@ -38,6 +38,10 @@ Dig.Router.map(function() {
   this.resource('uploads', {path: '/dig/*args'});
 });
 
+Dig.Router.reopen({
+  location: 'history'
+});
+
 Dig.ApiRoute = Em.Route.extend({
   queryParams: '',
   model: function() {
