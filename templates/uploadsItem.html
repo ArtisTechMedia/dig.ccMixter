@@ -1,7 +1,7 @@
-<article {{bind-attr class=":upload isPlaying"}} {{action togglePlay}}>
+<article {{bind-attr class=":upload isPlaying"}}>
   <div class='btn-group pull-left'>
     <a href='#' {{action playPrevious}} class='btn play-previous'><span class="glyphicon glyphicon-backward"></span></a>
-    <a href='#' class='btn play'>
+    <a href='#' class='btn play' {{action togglePlay}}>
       <span {{bindAttr class=":glyphicon isPlaying:glyphicon-pause:glyphicon-play"}}></span>
     </a>
     <a href='#' {{action playNext}} class='btn play-next'><span class="glyphicon glyphicon-forward"></span></a>
