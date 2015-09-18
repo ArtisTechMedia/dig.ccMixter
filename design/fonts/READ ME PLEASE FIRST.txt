@@ -1,0 +1,12 @@
+in external link font use (recommended):
+
+1. for Title of Content
+https://www.google.com/fonts#Review…n:Playfair
+
+2. for Normal font
+https://www.google.com/fonts#UsePla…ion:Glegoo
+
+for all icons:
+download first the fonts(Font-Awesome),
+http://fortawesome.github.io/Font-Awesome/icons/
+very much icon on that.

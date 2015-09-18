@@ -1,0 +1,20 @@
+{{yield}}
+<select {{action 'change' on='change'}} class="form-control form-inline">
+  {{#if prompt}}
+    <option disabled selected={{is-not selection}}>
+      {{prompt}}
+    </option>
+  {{/if}}
+
+  {{#each content as |item|}}
+    {{#if (get item optionValuePath) }}
+        <option value="{{get item optionValuePath}}" selected={{is-equal (get item optionValuePath) selection}}>
+            {{t (get item optionLabelPath)}}
+        </option>
+    {{else}}
+        <option selected={{is-equal item selection}}>
+            {{if translate (t item) item}}
+        </option>
+    {{/if}}  
+  {{/each}}
+</select>

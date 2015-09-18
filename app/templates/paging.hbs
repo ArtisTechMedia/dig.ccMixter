@@ -1,0 +1,35 @@
+{{#if (is-or showPrev showNext)}}
+    <div class="paging" data-spy="affix" data-offset-bottom="200">
+        <ul class="pagination">    
+            <li class="{{unless offset 'disabled'}}">
+                {{#if offset}}
+                    {{#link-to (query-params offset=0)}}<i class="fa fa-2x fa-angle-double-left"></i>{{/link-to}}
+                {{else}}
+                    <a href="javascript:// "><i class="fa fa-2x fa-angle-double-left"></i></a>
+                {{/if}}
+            </li>
+            <li class="{{unless showPrev 'disabled'}}">
+                {{#if showPrev}}
+                    {{#link-to (query-params offset=prevValue)}}<i class="fa fa-2x fa-arrow-left"></i>{{/link-to}}
+                {{else}}
+                    <a href="javascript:// "><i class="fa fa-2x fa-arrow-left"></i></a>
+                {{/if}}
+            </li>
+            <li class="{{unless showNext 'disabled'}}">
+                {{#if showNext}}
+                    {{#link-to (query-params offset=nextValue)}}<i class="fa fa-2x fa-arrow-right"></i>{{/link-to}}
+                {{else}}
+                    <a href="javascript:// "><i class="fa fa-2x fa-arrow-right"></i></a>
+                {{/if}}
+            </li>
+            <li class="{{unless showLast 'disabled'}}">
+                {{#if showLast}}
+                    {{#link-to (query-params offset=lastPage)}}<i class="fa fa-2x fa-angle-double-right"></i>{{/link-to}}
+                {{else}}
+                    <a href="javascript:// "><i class="fa fa-2x fa-angle-double-right"></i></a>
+                {{/if}}
+            </li>
+        </ul>
+        <div class="center-text">{{commaize printableOffset}} - {{commaize lastValue}} of {{commaize model.total}}</div>
+    </div>
+{{/if}}

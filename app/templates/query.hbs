@@ -1,0 +1,37 @@
+<div class="page-header">
+    <div class="container">
+    {{#if categories}}        
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            {{#each catNames as |cat|}}
+                <div class="col-sm-3">
+                    <h4 class="center-text">{{t (mp 'tags.categories' cat)}}</h4>
+                    {{selectable-tags target=selectedTags tags=(get categories cat) catId=cat}}
+                </div>
+            {{/each}}
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 tags editable">
+                {{#each selectedTags key="@index" as |tag|}} 
+                    <a href="#" {{action 'remove' tag}} class="btn-exp btn-tag"><i class="fa fa-2x fa-times-circle"></i> <span>{{tag.id}}</span></a>
+                {{/each}}
+                {{#if selectedTags.length}}
+                    <a href="#" {{action 'clear'}} class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> {{t 'tags.clear'}}</a>
+                {{/if}}     
+            </div>   
+        </div>
+    {{else}}
+        <h4 class="center-text">{{t 'query.loadingOptions'}} <i class="fa fa-spinner fa-pulse"></i></h4>
+    {{/if}}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            {{#if model.playlist}}
+                {{partial 'playlist'}}
+            {{/if}}
+        </div>
+    </div>
+</div>

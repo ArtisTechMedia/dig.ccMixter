@@ -1,0 +1,31 @@
+<script>$('.footer').addClass('footer-pad');</script>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <article class="clear-both audio-player {{if nowPlaying.isPlaying 'is-playing'}}">
+            <div class='btn-group pull-left'>
+                    <a href='#' {{action 'playPrevious'}} class="btn play-previous {{unless audioPlayer.hasPrev 'disabled'}}" >
+                        <span class="glyphicon glyphicon-backward"></span>
+                    </a>
+                    <a href='#' class='btn play' {{action 'togglePause'}}>
+                        <span class="glyphicon {{if nowPlaying.isPaused 'glyphicon-play' 'glyphicon-pause'}}"></span>
+                    </a>
+                    <a href='#' {{action 'playNext'}} class="btn play-next {{unless audioPlayer.hasNext 'disabled'}}">
+                        <span class="glyphicon glyphicon-forward"></span>
+                    </a>
+            </div>
+            <div class='media-body'>
+            `   {{#if audioPlayer.playlist}} 
+                    <div class="pull-right">
+                        {{link-to (t 'audioPlayer.playlist') 'nowplaying' class='btn btn-sm' id='playlist-button'}}
+                    </div>
+                {{/if}}
+                <h4 class='media-heading'>{{link-to nowPlaying.name 'uploads' nowPlaying.artist.id nowPlaying.id bubbles=false}}</h4>
+                {{#link-to 'users' nowPlaying.artist.id class='user' bubbles=false}}<span class='light-color'>{{nowPlaying.artist.name}}</span>{{/link-to}}
+                 {{playback-scrubber media=nowPlaying bubbles=false}}
+                <div class='clearfix'></div>
+            </div>
+            <div class='clearfix'></div>
+        </article>
+    </div>
+</nav>
+

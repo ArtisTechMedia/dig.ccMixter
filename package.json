@@ -1,0 +1,45 @@
+{
+  "name": "dig8",
+  "version": "0.0.2",
+  "description": "Small description for dig8 goes here",
+  "private": true,
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "ember server",
+    "build": "ember build",
+    "test": "ember test"
+  },
+  "repository": "",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "broccoli-asset-rev": "^2.0.2",
+    "broccoli-funnel": "^0.2.3",
+    "ember-cli": "1.13.1",
+    "ember-cli-app-version": "0.4.0",
+    "ember-cli-babel": "^5.0.0",
+    "ember-cli-content-security-policy": "0.4.0",
+    "ember-cli-dependency-checker": "^1.0.0",
+    "ember-cli-fastboot": "ArtisTechMedia/ember-cli-fastboot.git#master",
+    "ember-cli-htmlbars": "0.7.9",
+    "ember-cli-htmlbars-inline-precompile": "^0.1.1",
+    "ember-cli-ic-ajax": "0.2.1",
+    "ember-cli-inject-live-reload": "^1.3.0",
+    "ember-cli-qunit": "0.3.15",
+    "ember-cli-release": "0.2.3",
+    "ember-cli-uglify": "^1.0.1",
+    "ember-disable-proxy-controllers": "^1.0.0",
+    "ember-export-application-global": "^1.0.2",
+    "ember-i18n": "4.1.2",
+    "ember-metrics": "0.2.0"
+  },
+  "dependencies": {
+    "rsvp": "^3.1.0"
+  }
+}

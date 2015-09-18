@@ -1,0 +1,107 @@
+#!/usr/bin/env node
+
+/*
+    Requirements: 
+        RSVP
+            npm install --save rsvp
+
+    What:           
+       This script replaces the corresponding sources in downloaded
+       sources (e.g. bower_components, node_components) with symlinks
+       to hacked versions here. This allows us to keep version
+       controlled versions of hacks without forking the original
+       libraries.
+   
+    When:
+        - Run as the last step of installing/building the repo
+        - Run again after you update bower and node components
+        - Run after you've copied a file from the <project-dir>
+           to ./hacks in order to hack on it
+        
+    Assumptions: 
+        - You have cloned the dig repo
+        - You have otherwise installed all components (npm,bower)
+        - You are running this script in <project_dir>/hacks directory
+        
+   How:
+      - walk the current directory (./hacks) and collect file names 
+        noting the directory structure
+      - DELETE the file in the corresponding dir structure from the
+        project root 
+      - create a symlink from the project's dir to the corresponding
+        file in the ./hacks directory
+        
+   This script is Public Domain. You're welcome.
+*/
+var fs = require('fs');
+var path = require('path');
+var RSVP = require('rsvp');
+var util = require('util');
+
+var fs_readdir = RSVP.denodeify(fs.readdir);
+
+function SymlinkBuilder(sourceDirectory,targetDirectory) {
+    this.files = [ ];
+    this.sourceDirectory = sourceDirectory;
+    this.targetDirectory = targetDirectory;
+}
+
+SymlinkBuilder.prototype.addRelPath = function(filename) {
+    var fullPath = path.resolve(filename);
+    if( fullPath !== __filename && path.basename(filename).charAt(0) !== '.' ) {
+        this.files.push(filename);
+    }
+}
+
+SymlinkBuilder.prototype.collectFiles = function() {
+    var me = this;
+    function walk(dir) {    
+        function mapFunc(filename) {
+            return walk( dir + '/' + filename );
+        }
+        function success(filenames) {
+            return RSVP.allSettled( filenames.map( mapFunc ) );
+        }
+        function failure(err) {
+            if( err.code == 'ENOTDIR' ) {
+                me.addRelPath( path.normalize(err.path) );
+            }
+            else {
+                util.log( err );
+            }
+        }
+        return fs_readdir(dir).then( success, failure );
+    }
+    
+    return walk(this.sourceDirectory);
+}
+
+SymlinkBuilder.prototype.buildLinks = function() {
+  var me = this;
+  this.files.forEach( function(filename) {
+    var src  = path.resolve(me.sourceDirectory + '/' + filename);
+    var dest = path.resolve(me.targetDirectory + '/' + filename);
+    util.log( dest + " [maps to:]->\n                   " + src );
+    fs.unlinkSync(dest);
+    fs.symlinkSync( src, dest );
+  });  
+}
+
+SymlinkBuilder.prototype.run = function() {
+    function errFunc(err) {
+        util.log(err);
+    }
+    function doneFunc() {
+        util.log('Done');
+    }
+    
+    this.collectFiles()
+        .then( this.buildLinks.bind(this) )
+        .then( doneFunc, errFunc );
+}
+
+
+new SymlinkBuilder( '.', '..' ).run();
+
+
+

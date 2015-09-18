@@ -1,0 +1,94 @@
+<div id="msg" style="z-index:100;position:fixed; top: 100px; right:200px; height: 100px; width: 160px; opacity: 0.8; font-size: 11px;padding: 5px;border: 1px white solid;border-radius:5px;background-color:wheat;">
+<span {{action 'closePopup'}} class="close pull-right" style="margin: 3px" id="xx">&times;</span>Please don't share this url. There are MANY known issues with formatting, query results, stability, etc. Just would like your OVERALL impression.
+</div>
+<div class="dig-img container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-12">
+        <h1>{{{t 'homepage.mainHeading' break='<br class="hidden-xs" />'}}}</h1>
+        <h3>{{{t 'homepage.subHeading' break='<br class="hidden-xs" />'}}}</h3>
+    </div>
+  </div>
+</div>
+ <a name='howitworks'></a>
+<h2 class="center-text">{{t 'homepage.howItWorks'}}</h2>
+<div class="container-fluid">
+    <div class="row how panel-group">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="home-glyph musicians-glyph"></div>
+                    <!-- i class="fa fa-chevron-right"></i -->
+                </div>
+                <div class="panel-footer center-text">
+                    {{t 'homepage.musicians'}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="home-glyph findMusic-glyph">
+                        <div class="urHere">
+                            {{{t 'homepage.urHere'}}}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer center-text">
+                    {{t 'homepage.findMusic'}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="home-glyph project-glyph"></div>
+                </div>
+                <div class="panel-footer center-text">
+                    {{t 'homepage.project'}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+    </div><!-- row -->
+
+    <div class="row gso-links panel-group">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{t 'homepage.instrHead'}}</h1>
+                </div>
+                <div class="panel-body">
+                    {{t 'homepage.instrSub'}}
+                </div>
+                <div class="panel-footer center-text">
+                    {{link-to (t 'homepage.more') 'video' class="btn btn-default"}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{t 'homepage.freeHead'}}</h1>
+                </div>
+                <div class="panel-body">
+                    {{t 'homepage.freeSub'}}
+                </div>
+                <div class="panel-footer center-text">
+                    {{link-to (t 'homepage.more') 'free' class="btn btn-default"}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{t 'homepage.gamesHead'}}</h1>
+                </div>
+                <div class="panel-body">
+                    {{t 'homepage.gamesSub'}}
+                </div>
+                <div class="panel-footer center-text">
+                    {{link-to (t 'homepage.more') 'games' class="btn btn-default"}}
+                </div>
+            </div><!-- panel -->
+        </div><!--- col -->
+    </div><!-- row -->
+</div>

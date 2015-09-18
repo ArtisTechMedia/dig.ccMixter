@@ -1,0 +1,89 @@
+{{yield}}
+  <a data-toggle="modal" href="#trackbackForm" id="trackbackFormTriggerLink" class=""></a>
+  <div class="modal fade" id="trackbackForm" tabindex="-1" role="dialog" aria-labelledby="trackbackFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">{{t 'tbForm.title' name=upload.name}}</h4>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+            {{#if message}}
+                <div class="center-text">
+                    <span class="label label-{{messageType}}">{{t message}} {{#if icon}}<i class="fa fa-spinner fa-pulse"></i>{{/if}}</span>
+                </div>
+            {{else}}
+                <fieldset>
+                    {{#if showValidationMessage}}
+                        <div class="form-group">
+                          <label class="col-md-4 control-label" for="validation"></label>  
+                          <div class="col-md-6">
+                              <label class="label label-warning">{{t showValidationMessage}}</label>
+                          </div>
+                        </div>
+                    {{/if}}
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="yourName">{{t "tbForm.yourName"}}</label>  
+                      <div class="col-md-6">
+                          {{input value=yourName id="yourName" name="yourName" type="text" placeholder=(t "tbForm.tellUs") class="form-control input-md" }}    
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-4 control-label required" for="email">{{t "tbForm.youEmail"}}</label>  
+                      <div class="col-md-6">
+                          {{input value=email id="email" name="email" type="text" placeholder=(t "tbForm.weMayCon") class="form-control input-md"}}
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="artist">{{t "tbForm.artist"}}</label>  
+                      <div class="col-md-6">
+                          {{input value=artist id="artist" name="artist" type="text" placeholder=(t "tbForm.whoMade") class="form-control input-md" }}
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-4 control-label required" for="link">{{t "tbForm.URL"}}</label>  
+                      <div class="col-md-6">
+                          {{input value=link id="link" name="link" type="text" placeholder=(t "tbForm.exURL") class="form-control input-md"}}
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="mtype">
+                        {{t "tbForm.medType"}}
+                     </label>
+                      <div class="col-md-5">
+                        <select id="mtype" name="mtype" class="form-control" {{action 'typeChange' on='change'}}>
+                            {{#each types as |type|}}
+                              <option value="{{type}}">{{t (mp "tbForm.types" type)}}</option>
+                             {{/each}} 
+                        </select>
+                      </div>
+                    </div>
+
+                    {{#if showEmbed}}
+                        <div class="form-group">
+                          <label class="col-md-4 control-label" for="embed">{{t "tbForm.embed"}}</label>
+                          <div class="col-md-4">                     
+                            <textarea class="form-control" id="embed" name="embed"></textarea>
+                          </div>
+                        </div>
+                    {{/if}}
+
+                </fieldset>
+            {{/if}}
+            </form>
+        </div><!-- modal-body -->
+        <div class="modal-footer">
+        {{#unless message}}
+          <a href="#" class="btn btn-primary btn-success" {{action "post"}}><span class="glyphicon glyphicon-share-alt"></span> {{t "tbForm.submit"}}</a>
+        {{/unless}}
+        <button type="button" class="btn btn-default btn-warning" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> {{t 'dlPopup.close'}}</button>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
