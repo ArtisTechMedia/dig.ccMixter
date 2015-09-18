@@ -2,24 +2,26 @@
 
 ## Installation
 
-### You don't have NPM Installed
+### If you don't have NPM Installed
 
 If you are not using NVM to manage your NodeJS installation then first, remove any [previous version of Node](http://www.nearform.com/nodecrunch/nodejs-sudo-free/).
 
 To install NVM 
 
-`curl https://raw.githubusercontent.com/creationix/nvm/v0.25.0/install.sh | bash`
+* `curl https://raw.githubusercontent.com/creationix/nvm/v0.25.0/install.sh | bash`
 
 To install Node (version is important!)
 
-`nvm install v0.12.7` 
-`nvm use v0.12.7` 
+*`nvm install v0.12.7` 
+*`nvm use v0.12.7` 
 
-### You don't have Ember tools installed 
+### If you don't have Ember tools installed 
 
-`npm install -g ember-cli`
-`npm install -g bower`
+* `npm install -g ember-cli`
+* `npm install -g bower`
  
+
+### Install dig
 
 N.B. Whenever prompted to resolve conflicts always pick the 'canary' version
 
