@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+// TODO: this is kind of broken
+
 export default Ember.Component.extend({
     tagName: 'span',
     className: 'hidden',

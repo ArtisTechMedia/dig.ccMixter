@@ -1,6 +1,7 @@
 import Query from '../models/query';
 import Uploads from '../models/uploads';
 import Tags from '../models/tags';
+import Topics from '../models/topics';
 
 export default {
     name: 'inject-store',
@@ -17,5 +18,8 @@ export default {
         
         var STORE_TAGS = 'store:tags';
         app.register(STORE_TAGS, Tags);
+        
+        var STORE_TOPICS = 'store:topics';
+        app.register(STORE_TOPICS, Topics);
     }
 };

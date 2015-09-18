@@ -214,6 +214,15 @@ var Tag = Model.extend( {
     countBinding: 'tags_count'
 });
 
+var Topic = Model.extend({
+    publishedBinding: 'topic_date',
+    idBinding: 'topic_id',
+    nameBinding: 'topic_name',
+    rawBinding: 'topic_text',
+    htmlBinding: 'topic_text_html',
+    textBinding: 'topic_text_plain',
+});
+
 function reBind(props)
 {
     var model = Model.create();
@@ -243,7 +252,8 @@ var models = {
     user: User,
     tag: Tag,
     userBasic: UserBasic,
-    source: Source
+    source: Source,
+    topic: Topic
 };
 
 export default function modelWrap(param,model) {
