@@ -1,23 +1,23 @@
 {
-  "name": "dig8",
-  "version": "0.0.2",
-  "description": "Small description for dig8 goes here",
+  "name": "dig.ccMixter",
+  "version": "2.0.1",
+  "description": "A music discovery site owned by ArtisTech Media, founded by Creative Commons",
   "private": true,
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
+    "start": "ember serve",
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": "https://github.com/ArtisTechMedia/dig.ccMixter",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "Victor Stone, Alex Goodwin",
+  "license": "GPL",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
     "broccoli-funnel": "^0.2.3",
@@ -37,9 +37,9 @@
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
     "ember-i18n": "4.1.2",
-    "ember-metrics": "0.2.0"
+    "ember-metrics": "0.2.0",
+    "rsvp": "^3.1.0"
   },
   "dependencies": {
-    "rsvp": "^3.1.0"
   }
 }

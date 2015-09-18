@@ -3,11 +3,11 @@
 # compiled output
 /dist
 /tmp
+/fastboot-dist
 
 # dependencies
 /node_modules
 /bower_components
-/fastboot-dist
 
 # misc
 /.sass-cache
@@ -16,5 +16,3 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
-
-public/dig-images/small-flat.html

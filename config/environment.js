@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
     var ENV = {
-        modulePrefix: 'dig8',
+        modulePrefix: 'dig.ccMixter',
         environment: environment,
         baseURL: '/',
         locationType: 'auto',
