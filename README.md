@@ -25,7 +25,7 @@ To install Node (version is important!)
 
 N.B. Whenever prompted to resolve conflicts always pick the 'canary' version
 
-* `git clone <repository-url> <your-dig-directory>` this repository
+* `git clone <repository-url> <your-dig-directory>`
 * change into your dig directory
 * `git checkout fastboot` (I think)
 * `npm cache clean && bower cache clean`
