@@ -15,7 +15,8 @@ export default Ember.Route.extend( PopupInvoker, {
   onPopupClosed: function() {
     try {
         this.disconnectOutlet( { outlet: 'modal', parentView: 'application' } );
-      } catch() {
+      } 
+    catch(e) {
         // In some (all?) cases this call is triggering the follow assert:
         //
         // Uncaught Error: Assertion Failed: You must use Ember.set() to set 
