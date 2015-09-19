@@ -1,28 +1,13 @@
-{{yield}}
-  <a data-toggle="modal" href="#sharePopup" id="sharePopupTriggerLink" class=""></a>
-  <div class="modal fade" id="sharePopup" tabindex="-1" role="dialog" aria-labelledby="sharePopupLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title"><span  class="light-color">{{t "share.share"}}</span> {{upload.name}}</h4>
-        </div>
-        <div class="modal-body">
-            <ul class="actions actions-centered">
-                <li>
-                    <a href="{{fbLink}}" class="btn btn-success"><i class="fa fa-facebook"></i> {{t "share.fb"}}</a>            
-                </li>
-                <li>
-                    <a href="{{twitterLink}}" class="btn btn-success"><i class="fa fa-twitter"></i> {{t "share.twitter"}}</a>            
-                </li>
-                <li>
-                    <a href="{{mailLink}}" class="btn btn-success"><i class="fa fa-envelope-o"></i> {{t "share.email"}}</a>
-                </li>
-            </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">{{t 'dlPopup.close'}}</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+{{#modal-popup showing=true subTitle=(t 'share.share') title=upload.name}}
+  <ul class="actions actions-centered">
+    <li>
+      <a href="{{fbLink}}" class="btn btn-success"><i class="fa fa-facebook"></i> {{t "share.fb"}}</a>            
+    </li>
+    <li>
+      <a href="{{twitterLink}}" class="btn btn-success"><i class="fa fa-twitter"></i> {{t "share.twitter"}}</a>            
+    </li>
+    <li>
+      <a href="{{mailLink}}" class="btn btn-success"><i class="fa fa-envelope-o"></i> {{t "share.email"}}</a>
+    </li>
+  </ul>
+{{/modal-popup}}

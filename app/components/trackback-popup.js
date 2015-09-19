@@ -1,9 +1,5 @@
-import Ember from 'ember';
+import ModalCommon from './modal-common';
 
-export default Ember.Component.extend({
-
-    actions: {
-        close: function() {
-        },
-    },    
+export default ModalCommon.extend({
+  modalName: 'trackback',
 });

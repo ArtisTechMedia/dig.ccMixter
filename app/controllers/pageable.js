@@ -1,9 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  queryOptions: Ember.inject.service(),
 
   queryParams: [ 'offset' ],
-  queryOptions: Ember.inject.service(),
+
   offset: 0,
   
   _lastTotal: -1,
@@ -15,47 +16,11 @@ export default Ember.Controller.extend({
     }
   }.observes('model.total'),          
 
-  printableOffset: function() {
-    return Number(this.get('offset')) + 1;
-  }.property('offset'),
-  
-  showPrev: function() {
-    return this.get('offset') > 0;    
-  }.property('offset'),
-    
-  showNext: function() {
-    return  this.get('offset') + this.get('queryOptions.limit') < this.get('model.total');
-  }.property('offset', 'model.total' /*, 'queryOptions.limit' */ ),
-  
-  prevValue: function() {
-    var val = this.get('offset') - this.get('queryOptions.limit');
-    if(  val < 0 ) {
-      val = 0;
-    }
-    return val;
-  }.property('offset', 'model' /*,'queryOptions.limit' */),
-  
-  nextValue: function() {
-    return this.get('offset') + this.get('queryOptions.limit');
-  }.property('offset', 'model' /* ,'queryOptions.limit' */),
+  _setupWatcher: function() {
+    this.get('queryOptions').on('optionsChanged',this,this._optionsWatcher);
+  }.on('init'),
 
-  lastValue: function() {
-    var off = this.get('offset');
-    var count = this.get('model.playlist.length');
-    var limit = this.get('queryOptions.limit');
-    return off + ( count < limit ? count : limit);
-  }.property('model'),
-  
-  lastPage: function() {
-    var total = this.get('model.total');
-    var off = this.get('offset');
-    var limit = this.get('queryOptions.limit');
-    if( total - limit > off ) { 
-      return total - limit;
-    }
-    return false;
-  }.property('model'),
-  
-  showLast: Ember.computed.alias('lastPage'),
-  
+  _optionsWatcher: function() {
+    this.set('offset',0);
+  },
 });

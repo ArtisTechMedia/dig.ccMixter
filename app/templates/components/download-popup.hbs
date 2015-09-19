@@ -1,74 +1,59 @@
-{{yield}}
-  <div class="modal fade" id="downloadPopup" tabindex="-1" role="dialog" aria-labelledby="downloadPopupLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title"><span class="light-color">{{t 'dlPopup.download'}}</span> {{upload.name}}</h4>
+{{#modal-popup subTitle=(t 'dlPopup.download')  showing=true title=upload.name}}
+  <div class="row">
+    <div class="col-md-5">
+      <div class="col-panel">
+        <p class="text-primary">{{{t 'dlPopup.toUseThisMusic'}}}</p>
+        <div>
+          <ul class="nav nav-tabs">
+            <li role="presentation" class="{{if plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'plain'}}>{{t 'dlPopup.plainText'}}</a></li>
+            <li role="presentation" class="{{unless plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'html'}}>{{t 'dlPopup.HTML'}}</a></li>
+          </ul>
+          <textarea id="attributionText" readonly="1" cols="30" rows="2">{{#if plainSelected}}{{t 'dlPopup.licenseTextPlain' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url}}{{else}}{{{t 'dlPopup.licenseTextHTML' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url licenseURL=upload.licenseURL}}}{{/if}}{{#if upload.featuring}} {{#if plainSelected}}{{t 'dlPopup.featuring' ft=upload.featuring}}{{else}}{{{t 'dlPopup.featuringHTML' ft=upload.featuring}}}{{/if}}{{/if}}</textarea>
+          <div class="text-center">
+            <button class="btn btn-sm btn-info" {{action 'copyToClip'}}><i class="fa fa-files-o"></i> {{t 'dlPopup.copyToClip'}}</button>
+          </div>
         </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="col-panel">
-                        <p class="text-primary">{{{t 'dlPopup.toUseThisMusic'}}}</p>
-                        <div>
-                            <ul class="nav nav-tabs">
-                                <li role="presentation" class="{{if plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'plain'}}>{{t 'dlPopup.plainText'}}</a></li>
-                                <li role="presentation" class="{{unless plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'html'}}>{{t 'dlPopup.HTML'}}</a></li>
-                            </ul>
-                            <textarea id="attributionText" readonly="1" cols="30" rows="2">{{#if plainSelected}}{{t 'dlPopup.licenseTextPlain' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url}}{{else}}{{{t 'dlPopup.licenseTextHTML' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url licenseURL=upload.licenseURL}}}{{/if}}{{#if upload.featuring}} {{#if plainSelected}}{{t 'dlPopup.featuring' ft=upload.featuring}}{{else}}{{{t 'dlPopup.featuringHTML' ft=upload.featuring}}}{{/if}}{{/if}}</textarea>
-                            <div class="text-center">
-                                <button class="btn btn-sm btn-info" {{action 'copyToClip'}}><i class="fa fa-files-o"></i> {{t 'dlPopup.copyToClip'}}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                                
-                <div class="col-md-6">
-                    <ul class="actions actions-centered">
-                        <li>
-                            <a class="btn btn-success btn-lg" href="{{upload.mediaURL}}" download><i class="fa fa-2x fa-cloud-download pull-left"></i> {{t 'dlPopup.downloadButtonText'}} <small>{{downloadSize}}</small></a>
-                        </li>
-                        <li class="license-badge">
-                            <a href="{{upload.licenseURL}}"><img src="{{upload.licenseLogoURL}}" /></a>                    
-                            <a {{action "doLicensePopup"}}><i class="fa fa-question-circle"></i></a>
-                        </li>
-                        {{#if upload.purchaseLogoURL}}
-                            <li class="license-badge">
-                                <a href="{{upload.purchaseLicenseURL}}"><img src="{{upload.purchaseLogoURL}}" /></a>
-                                <a {{action "doLicensePopup"}}><i class="fa fa-question-circle"></i></a>
-                            </li>
-                        {{/if}}
-                        <li> <p>
-                            {{#if upload.isOpen}} 
-                                {{t 'dlPopup.freeToUse'}}
-                            {{else}}
-                                {{t 'dlPopup.forNonComm'}}
-                            {{/if}}
-                            </p>
-                        </li>
-                    </ul>
-                </div><!-- col -->
-            </div><!-- row --> 
-            {{#if upload.isCCPlus}}
-                <div class="row">
-                    <div class="col-xs-12 text-center padded10">
-                        <ul class="actions actions-centered">
-                            <li>
-                                <a href='{{upload.purchaseLicenseURL}}' class="btn btn-success"><i class="fa fa-usd"></i> {{t 'dlPopup.buyALicense1'}}</a>
-                            </li>
-                            <li>
-                                <p>{{t 'dlPopup.buyALicense2'}}</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            {{/if}}                
-        </div><!-- model-body -->
-        <div class="modal-footer">
-          <button type="button" id="downloadPopupClose" class="btn btn-default" data-dismiss="modal">{{t 'dlPopup.close'}}</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
+      </div>
+    </div>          
+    <div class="col-md-6">
+      <ul class="actions actions-centered">
+        <li>
+          <a class="btn btn-success btn-lg" href="{{upload.mediaURL}}" download><i class="fa fa-2x fa-cloud-download pull-left"></i> {{t 'dlPopup.downloadButtonText'}} <small>{{downloadSize}}</small></a>
+        </li>
+        <li class="license-badge">
+          <a href="{{upload.licenseURL}}"><img src="{{upload.licenseLogoURL}}" /></a>          
+          <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
+        </li>
+        {{#if upload.purchaseLogoURL}}
+          <li class="license-badge">
+            <a href="{{upload.purchaseLicenseURL}}"><img src="{{upload.purchaseLogoURL}}" /></a>
+            <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
+          </li>
+        {{/if}}
+        <li> 
+          <p>
+            {{#if upload.isOpen}} 
+              {{t 'dlPopup.freeToUse'}}
+            {{else}}
+              {{t 'dlPopup.forNonComm'}}
+            {{/if}}
+          </p>
+        </li>
+      </ul>
+    </div><!-- col -->
+  </div><!-- row --> 
+  {{#if upload.isCCPlus}}
+    <div class="row">
+      <div class="col-xs-12 text-center padded10">
+        <ul class="actions actions-centered">
+          <li>
+            <a href='{{upload.purchaseLicenseURL}}' class="btn btn-success"><i class="fa fa-usd"></i> {{t 'dlPopup.buyALicense1'}}</a>
+          </li>
+          <li>
+            <p>{{t 'dlPopup.buyALicense2'}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  {{/if}}        
+{{/modal-popup}}

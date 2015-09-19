@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import ModalCommon from './modal-common';
 
-export default Ember.Component.extend({
+export default ModalCommon.extend({
+  modalName: 'license'
 });

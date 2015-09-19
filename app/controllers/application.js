@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import PopupInvoker from '../mixins/popup-invoker';
 import { translationMacro as t } from "ember-i18n";
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend( PopupInvoker, {
 
   i18n:         Ember.inject.service(),
   audioPlayer:  Ember.inject.service(),  
@@ -104,11 +105,6 @@ export default Ember.Controller.extend({
   },
     
   actions: {
-    doDownloadPopup: function(upload) {      
-      this.set('uploadForDownloadPopup', upload);
-      Ember.run.next( this, () => Ember.$('#downloadPopup').modal('show') );
-    },
-
     toggleOptions: function() {
       if(  this.toggleProperty('optionsOpen') ) {
         Ember.$('#query-opts').slideDown(600);
@@ -119,9 +115,11 @@ export default Ember.Controller.extend({
     },
 
     showOptions: function() {
-      if( !this.get('optionsOpen') ) {
-        Ember.run.next(this,() => Ember.$('.query-options-toggle').click());
-      }      
+      if( !Ember.isFastBoot() ) {
+        if( !this.get('optionsOpen') ) {
+          Ember.run.next(this,() => Ember.$('.query-options-toggle').click());
+        }      
+      }
     },
 
     goToAnchor: function(routeName,anchor) {

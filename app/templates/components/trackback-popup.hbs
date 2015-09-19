@@ -1,21 +1,5 @@
-{{yield}}
-  <div class="modal fade" id="trackbackPopup" tabindex="-1" role="dialog" aria-labelledby="trackbackPopupLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title"><span  class="light-color">{{t 'tbPopup.trackback'}}</span> {{t 'tbPopup.title' name=trackback.name artist=trackback.artist.name}}</h4>
-          <h5>{{t 'tbPopup.featuring' name=upload.name artist=upload.artist.name}}</h5>
-        </div>
-        <div class="modal-body">
-            {{{trackback.embed}}}
-            <a href="{{trackback.url}}" class="btn btn-default"><span class="glyphicon glyphicon-new-window"></span> {{t 'tbPopup.original'}}</a>
-        </div>
-        <div class="modal-footer">
-          <button type="button" {{action 'close'}} class="btn btn-default" data-dismiss="modal">{{t 'tbPopup.close'}}</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-
+{{#modal-popup showing=true subTitle=(t 'tbPopup.trackback') title=(t 'tbPopup.title' name=trackback.name artist=trackback.artist.name)}}
+  {{{trackback.embed}}}
+  <a href="{{trackback.url}}" class="btn btn-default"><span class="glyphicon glyphicon-new-window"></span> {{t 'tbPopup.original'}}</a>
+{{/modal-popup}}
 

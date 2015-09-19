@@ -1,2 +1,2 @@
-{{partial 'paging'}}
-{{play-list model=model skipUserListing=skipUserListing togglePlay="togglePlay" doDownloadPopup="doDownloadPopup"}}
+{{paging-widget offset=offset length=model.length limit=queryOptions.limit total=model.total}}
+{{play-list model=model skipUserListing=skipUserListing togglePlay="togglePlay" popup="popup"}}

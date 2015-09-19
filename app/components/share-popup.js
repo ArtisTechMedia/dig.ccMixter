@@ -1,8 +1,10 @@
-import Ember from 'ember';
+/* globals Ember */
+import ModalCommon from './modal-common';
 import { translationMacro as t } from "ember-i18n";
 
-export default Ember.Component.extend({
+export default ModalCommon.extend({
   i18n: Ember.inject.service(),
+  modalName: 'share',
   
   shareSubject: t("share.subject"),
   shareBody: t("share.body"),

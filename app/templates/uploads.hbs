@@ -1,6 +1,12 @@
-{{trackback-popup upload=model trackback=poolItemForTrackbackPopup}}
-{{trackback-form upload=model}}    
-{{share-popup upload=model}}    
+{{#if showTrackbackPopup}}
+  {{trackback-popup upload=model trackback=poolItemForTrackbackPopup}}
+{{/if}}
+{{#if showTrackbackFormPopup}}
+  {{trackback-form upload=model}}    
+{{/if}}
+{{#if showSharePopup}}
+  {{share-popup upload=model}}    
+{{/if}}
 <div class="page-header">
     <h1 class="center-text">{{model.name}}</h1>
 </div>
@@ -25,12 +31,12 @@
                     <ul class="actions">
                         <li class="license-badge">
                             <a href="{{model.license_url}}"><img class="download-license" src="{{model.licenseLogoURL}}" /></a>    
-                            <a {{action "doLicensePopup"}}><i class="fa fa-question-circle"></i></a>
+                            <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
                         </li>
                         {{#if model.purchaseLogoURL}}
                             <li class="license-badge">
                                 <a href="{{model.purchaseLicenseURL}}"><img src="{{model.purchaseLogoURL}}" /></a>
-                            <a {{action "doLicensePopup"}}><i class="fa fa-question-circle"></i></a>
+                            <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
                             </li>
                         {{/if}}
                         <li>
@@ -55,12 +61,12 @@
         <div class="col-md-5 col-md-offset-1 col-sm-12 trackbacks">
             <div class="center-text">
                 <h3 class="inlined">{{t 'upload.trackbacks'}}</h3>
-                <a href="#" {{action 'doTrackbackForm'}} class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> {{t 'upload.addTrackback'}}</a>
+                <a href="#" {{action 'popup' 'trackback-form' (h upload=model)}} class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> {{t 'upload.addTrackback'}}</a>
             </div>
             <ul class="list-group remix-list">
             {{#each model.trackbacks as |tb|}}
                 <li class="list-group-item"><p>{{#if (is-embeddable tb.embed)}}
-                        <a href="#" {{action 'doTrackbackPopup' tb}}>
+                        <a href="#" {{action 'popup' 'trackback' (h trackback=tb)}}>
                             <i class="fa fa-youtube-play"></i>
                             {{{tb.name}}}
                         </a>

@@ -65,7 +65,7 @@
           className='form-control'
       }}  
   
-      <button class="btn btn-xs form-control" {{action "doLicensePopup"}}><i class="fa fa-question-circle"></i></button>
+      <button class="btn btn-xs form-control" {{action "popup" "license"}}><i class="fa fa-question-circle"></i></button>
       </div>
     {{/unless}}
     {{#unless queryOptions.hidden.instrumentalOnly}}
@@ -178,11 +178,8 @@
   </div>
   </div>
 </div>
-{{license-popup licenseInfo=licenseInfo}}
-{{#if uploadForDownloadPopup}}
-  {{download-popup upload=uploadForDownloadPopup}}   
-{{/if}}
+{{outlet "modal"}}
 {{#if audioPlayer.nowPlaying}} 
   {{audio-player}}
 {{/if}}
-{{wrapper-adjust}}
+{{browser-scripts playerShowing=audioPlayer.nowPlaying}}
