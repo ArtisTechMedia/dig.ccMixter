@@ -55,17 +55,47 @@ h4.inlined, h4.inlined,
   padding: 0px 4px;
 
 }
+.required::after {
+  content: '*';
+  color: #F88;
+}
+
+.navbar {
+  margin-bottom: 0px;
+  padding-bottom: 12px
+}
+
+nav input ,
+nav .form-control {
+  height: initial;
+}
+nav .form-group > label,
+nav .form-group > .btn {
+  background-color: transparent;
+  color: #DDD;
+  font-weight: normal;
+}
+
+nav .form-group > label:hover,
+nav .form-group > .btn:hover {
+  color: white;
+}
+.query-opts {
+  padding-top: 12px;
+}
+.query-opts .form-group {
+  margin-left: 17px;
+  margin-right: 4px;
+}
+
+
+/*
 .navbar {
   margin-bottom: 0px;
 }
  
 .navbar-brand {
   padding-top: 6px;
-}
-
-.required::after {
-  content: '*';
-  color: #F88;
 }
 
 .navbar-right {
@@ -109,6 +139,7 @@ nav .form-control {
   height: initial;
   padding: initial;  
 }
+*/
 
 .page-header h1 i {
   color: #777;

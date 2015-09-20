@@ -18,7 +18,7 @@ export default Ember.Component.extend({
   },
 
   detachScript: function(name,hash) {
-    this[('detach-'+name).camelize()][hash];
+    this[('detach-'+name).camelize()](hash);
   },
     
   watchForAudioPlayer: function() {
