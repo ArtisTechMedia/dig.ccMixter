@@ -15,7 +15,7 @@
       <div class='media-body'>
       `   {{#if audioPlayer.playlist}} 
           <div class="pull-right">
-            {{link-to (t 'audioPlayer.playlist') 'nowplaying' class='btn btn-sm' id='playlist-button'}}
+            {{#link-to 'nowplaying' class='btn btn-sm btn-info' id='playlist-button'}}<i class="fa fa-music"></i> {{t 'audioPlayer.playlist'}}{{/link-to}}
           </div>
         {{/if}}
         <h4 class='media-heading'>{{link-to nowPlaying.name 'uploads' nowPlaying.artist.id nowPlaying.id bubbles=false}}</h4>

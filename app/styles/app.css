@@ -121,6 +121,9 @@ nav .form-control {
 
 /* playlist */
 
+.actions {
+  padding-left: 0px;
+}
 .actions li {
   margin-bottom: 15px;  
 }

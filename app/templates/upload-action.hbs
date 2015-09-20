@@ -2,10 +2,11 @@
     <li>
         <a class="btn btn-lg btn-info"    href="#" {{action "togglePlay" model}}>{{#if model.media.isPlaying }}<i class="fa fa-4x fa-fw fa-stop"></i>{{else}}<i class="fa fa-4x fa-fw fa-play"></i>{{/if}}</a>
     </li>
-    <li>                
+    <li class="hidden-xs">                
         <a class="btn btn-lg btn-warning" href="#" {{action "popup" "download" (h upload=model)}}  ><i class="fa fa-4x fa-fw fa-cloud-download"></i></a>
     </li>
     <li>
         <a class="btn btn-lg btn-success" href="#" {{action "popup" "share" (h upload=model)}}  ><i class="fa fa-4x fa-fw fa-share-alt"></i></a>
     </li>
 </ul>
+

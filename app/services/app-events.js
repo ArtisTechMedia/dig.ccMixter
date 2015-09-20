@@ -5,17 +5,23 @@ export default Ember.Service.extend(Ember.Evented, {
   
   on: function(name,target,method) {
     this._super(name,target,method);
+    var args;
     if( name in this.waiting ) {
-      this.trigger.apply(this,this.waiting[name]);
+      args = [name].concat(this.waiting[name]);
+      this.trigger.apply(this,args);
       delete this.waiting[name];
     }
   },
-  
+
+  /**
+      same as trigger but if no one is 
+      listening now, it will be triggered
+      the next time someone signs up
+  */  
   triggerWhen: function(name,...args) {
     if( this.has(name) ) {
       this.trigger(...arguments);
     } else {
-      args.splice(0,0,name);
       this.waiting[name] = args;
     }
   },

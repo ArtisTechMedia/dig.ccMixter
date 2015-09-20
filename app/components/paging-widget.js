@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-
+  appEvents: Ember.inject.service(),
+  
   printableOffset: function() {
     return Number(this.get('offset')) + 1;
   }.property('offset'),
@@ -45,4 +46,11 @@ export default Ember.Component.extend({
   
   showLast: Ember.computed.alias('lastPage'),
   
+  didInsertElement: function() {
+    this.get('appEvents').triggerWhen('browser.script.run','scroll-watcher',this.get('element'));
+  },
+  
+  willDestroyElement: function() {
+    this.get('appEvents').trigger('browser.script.detach','scroll-watcher',this.get('element'));
+  },
 });
