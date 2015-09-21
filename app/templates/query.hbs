@@ -20,6 +20,13 @@
                     <a href="#" {{action 'clear'}} class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> {{t 'tags.clear'}}</a>
                 {{/if}}     
             </div>   
+            <div class="col-md-2">
+              {{#if enoughForMatchAny}}
+                <label class="btn btn-primary btn-sm">
+                  {{input type="checkbox" checked=matchAnyTags disabled=application.loading}} match any tag
+                </label>
+              {{/if}}
+            </div>
         </div>
     {{else}}
         <h4 class="center-text">{{t 'query.loadingOptions'}} <i class="fa fa-spinner fa-pulse"></i></h4>

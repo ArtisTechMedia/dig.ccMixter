@@ -2,14 +2,9 @@ import PageableRoute from './pageable';
 
 export default PageableRoute.extend({
 
-    routeQueryOptions: {
-        matchAnyTags: false,
-    },
-            
     translateDynamicParamsToQuery: function( params ) {
         return { u: params.user_id };
     },
-
 
     model: function(params,transition) {
         this.setTrackerURL(params,transition);

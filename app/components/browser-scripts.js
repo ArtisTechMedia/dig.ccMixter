@@ -9,6 +9,7 @@ export default Ember.Component.extend({
       this.get('appEvents').on( 'browser.script.detach', this, this.detachScript );
       Ember.run.scheduleOnce('afterRender', this, () => {
         this.fixWindow();
+        this.hookOptionsButton();
       });
     }
   },
@@ -42,6 +43,17 @@ export default Ember.Component.extend({
     Ember.$('[data-toggle="dropdown"] + ul li').click(function() {    
       var text = Ember.$(this).data('dropdown-hint') || Ember.$(this).find('a').text();
       Ember.$(this).closest('div').find('a strong').text(text);
+    });
+  },
+  
+  hookOptionsButton: function() {
+    Ember.$('.query-options-toggle').click( function() {
+      var $bar = Ember.$('#qop');
+      if( $bar.is(':visible') ) {
+        $bar.slideUp(300);
+      } else {
+        $bar.slideDown(300);
+      }      
     });
   },
   

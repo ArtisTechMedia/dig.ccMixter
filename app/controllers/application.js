@@ -13,36 +13,6 @@ export default Ember.Controller.extend( PopupInvoker, {
     return licController.get('licenseInfo');
   }.property(),
     
-  // UI model
-
-  menu: [
-    { name: 'navbar.links.free',
-      linkto:  'free',
-      title: 'navbar.links.freetitle' }, 
-    { name: 'navbar.links.ccplus',
-      linkto:  'ccplus',
-      title: 'navbar.links.ccplustitle' }, 
-    { name:'navbar.links.film',
-      linkto: 'video',
-      title: 'navbar.links.filmtitle'}, 
-    { name: 'navbar.links.games',
-      linkto: 'games',
-      title: 'navbar.links.gamestitle'},
-    { name: 'navbar.links.how',
-      anchor: 'howitworks',
-      route: 'index',
-      title: 'navbar.links.howtitle' }
-  ],
-  
-  licenses: [
-      { title: 'queryOptions.licenses.all', id: 'all' },
-      { title: 'queryOptions.licenses.free', id: 'open' },
-      { title: 'queryOptions.licenses.ccplus', id: 'ccplus' },
-    ],
-    
-  genres: [ 'all', 'hip_hop', 'electronica', 'rock', 'ambient', 'dance', 'country', 'jazz' ],
-
-  limits: [ 10, 20, 50, 100 ],
   
   searchCollector: '',
 
@@ -63,33 +33,6 @@ export default Ember.Controller.extend( PopupInvoker, {
   setPageTitle: function() {
     this.container.lookup('application:main').setPageTitle( this.get('pageTitle'), this );
   }.observes('currentPath'),
-  
-  // UI state
-  optionsOpen: Ember.computed.alias('queryOptions.userEditing'),
-
-  _init: function() {
-    this.get('queryOptions').on('optionBarChanged',this, this._watchForOptionBarChange);
-  }.on('init'),
-  
-  _watchForOptionBarChange: function(hash) {
-    if( this.get('optionsOpen') ) {
-      Ember.run.next( this, () => {
-        var css = { height: Ember.$('.inner-qo').outerHeight() };
-        var $qo = Ember.$('.query-opts');
-        $qo.css(css);
-        Ember.$('.inner-qo').slideUp(300, () => {
-          this.set('queryOptions.hidden',hash);
-          Ember.run.next( this, () => {
-            Ember.$('.inner-qo').slideDown(300,function() {
-              $qo.removeAttr('style');
-            });
-          });
-        });
-      });
-    } else {
-      this.set('queryOptions.hidden',hash);
-    }
-  },
   
   scrollToAnchor: function(name) {
     try {  

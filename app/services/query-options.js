@@ -19,10 +19,6 @@ var QueryOption = Ember.Object.extend({
     // like searchText then set this to false
     updatesParams: true,
     
-    // Use the value in the option even if the user
-    // has closed the options UI. 
-    alwaysHonor: false,
-    
     // The corresponding Query API parameter to use
     // when generating 
     queryParam: '',
@@ -50,15 +46,6 @@ var optionsMeta = [
                               alwaysHonor: true,
                               defaultValue: 10,
                               queryParam: 'limit' }),
-        QueryOption.create( { name: 'genre',                            
-                              defaultValue: '*',
-                              queryParam: 'tags' }),
-        QueryOption.create( { name: 'extraTags',                            
-                              defaultValue: '*',
-                              queryParam: 'tags' }),
-        QueryOption.create( { name: 'digDeep',                            
-                              defaultValue: true,
-                              queryParam: '' }),
         QueryOption.create( { name: 'instrumentalOnly',
                               defaultValue: false,
                               queryParam: 'tags',
@@ -67,10 +54,6 @@ var optionsMeta = [
                               defaultValue: false,
                               queryParam: 'sinced',
                               model: '3 months ago' } ),
-        QueryOption.create( { name: 'matchAnyTags',
-                              defaultValue: false,
-                              queryParam: 'type',
-                              model: 'any' } ),
     ]; 
     
 /**
@@ -86,7 +69,7 @@ var optionsMeta = [
             ...
         }.on('queryParams.optionsChanged'),
     
-    For routes that want to own the options call 'setBatch()' which
+    For routes that want to populate the options call 'setBatch()' which
     returns a Query API ready hash 
     
 */
@@ -95,55 +78,22 @@ export default Ember.Service.extend(Ember.Evented, {
     userEditing: false,
     hidden: { },
 
-    /**
-        This method is a little swiss-army-knife-ish.
-        
-        Call from route:model to:
-        
-            - alert the system what query options this route
-              wants to own and therefore hide from the user
-              
-            - get back a Query API hash of options
-            
-        Also:
-            - Triggers a 'optionBarChange' event with
-              a hash of what to hide and what to show.
-              
-        In Addition:
-            - bwahahahaha
-            - I'm so proud
-        
-    */
-    setBatch: function(routeName,  routeValues) {
+    setBatch: function( routeName,  routeValues) {
+        var queryParams = { };
+        this._tags.clear(); 
 
-        var props = Ember.merge({},routeValues);
-        
-        var honor = (routeName === this._prevRouteName);
-        var hidden = { };
-        
-        this._forEachUpdatingOption(  opt => { 
-            var hide = true;
-            if( typeof(props[opt.name]) === 'undefined' ) {
-                props[opt.name] = this._setHonorable(opt,honor);
-                hide = false;
+        // update the UI but don't trigger
+        // events to the internal app
+        this._ignoreChange = true;
+        this._forEachUpdatingOption(  opt => {           
+            if( typeof routeValues[opt.name] !== 'undefined' ) {
+                this.set(opt.name,routeValues[opt.name]);
             }
-            hidden[opt.name] = hide;
+            opt.convertToQueryParam(queryParams,this,this.get(opt.name));
         });        
-
-        var optionsBarHasChanged = false;
-        for( var k in hidden ) {
-            if( this.get('hidden.' + k) !== hidden[k] ) {
-                optionsBarHasChanged = true;
-                break;
-            }
-        }
-        if( optionsBarHasChanged ) {
-            this.trigger('optionBarChanged',hidden);
-        }
-        
-        this._prevRouteName = routeName;
+        this._ignoreChange = false;
             
-        return this.convertToQueryParams(props);
+        return queryParams;
     },
 
     convertToQueryParams: function(routeValues) {
@@ -157,12 +107,14 @@ export default Ember.Service.extend(Ember.Evented, {
             }
         });
         
+        if( 'tags' in queryParams && !queryParams.tags ) {
+          delete queryParams['tags'];
+        }
         return queryParams;
     },
     
     _options: [ ],
     _optionsMeta: Ember.Object.create(),
-    _prevRouteName: '',
         
     _tags: TagUtils.create(),
 
@@ -177,16 +129,6 @@ export default Ember.Service.extend(Ember.Evented, {
             }
         });
     }.on('init'),
-    
-    _setHonorable: function(opt, allowValue) {
-        var value = opt.get('defaultValue');
-        if( !(allowValue || opt.alwaysHonor) && (this.get(opt.name) !== value) ) {
-            this._ignoreChange = true;
-            this.set(opt.name, value);
-            this._ignoreChange = false;
-        }
-        return this.get(opt.name);
-    },
     
     _optionChanged: function(me,key,value) {
         if( !this._ignoreChange ) {

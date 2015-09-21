@@ -4,10 +4,6 @@ import models from '../models/models';
 
 export default PageableRoute.extend({
 
-  routeQueryOptions: {
-    matchAnyTags: false,
-  },
-  
   routeQueryParams: function() {
       return { 
            searchp: this.get('queryOptions.searchText'),
@@ -17,7 +13,9 @@ export default PageableRoute.extend({
     }.property('queryOptions.searchText'),
 
   _watcher: function() {
-    this.refresh();
+    if( this.router.currentRouteName === 'dig' ) {
+      this.refresh();
+    }
   }.observes('queryOptions.searchText'),
   
   didYouMean: function() {

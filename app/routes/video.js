@@ -3,10 +3,12 @@ import PageableRoute from './pageable';
 export default PageableRoute.extend({
 
     routeQueryOptions: {
-        genre: '*',
         instrumentalOnly: true,
-        matchAnyTags: false,
-    },
+   },
 
+    routeQueryParams: {
+        tags: 'soundtrack,ambient,music_for_film',
+        type: 'any'        
+    },
     
 });

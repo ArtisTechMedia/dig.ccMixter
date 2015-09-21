@@ -1,0 +1,102 @@
+<nav class="navbar navbar-inverse">
+<div class="container-fluid">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dig-collapse" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    </button>
+    {{#link-to 'index' class="navbar-brand"}}<img src="dig-images/logo.png" title="dig.ccMixter" />{{/link-to}}
+  </div>
+
+  <div class="collapse navbar-collapse" id="dig-collapse">
+    <ul class="nav navbar-nav">
+      <li>
+          <div class="btn-group">
+              {{query-opt 'licenseScheme' 'open'   'free'     activate=1 class="btn btn-default"}}
+              {{query-opt 'licenseScheme' 'ccplus' 'licensed' activate=1 class="btn btn-default"}}
+              {{query-opt 'licenseScheme' 'all'    'all'      activate=1 class="btn btn-default"}}
+          </div>
+      </li>
+      <li>
+        <div class="btn-group">
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="light-text">project type</span> <strong id="project-type">any</strong>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" data-update-hint="project-type">
+            <li data-dropdown-hint="video">{{link-to 'music for video' 'video' }}</li>
+            <li data-dropdown-hint="games">{{link-to 'music for games' 'games' }}</li>
+            <li class="divider"></li>
+            <li>{{link-to 'any' 'dig' }}</li>
+          </ul>
+        </div>
+      </li>          
+      <li class="hidden-sm hidden-xs">
+        {{link-to (t 'queryOptions.deep') 'query'}}
+      </li>
+      <li>
+        {{#if loading}}<a href='#'><i style="color:white" class="fa fa-spinner fa-pulse"></i></a>{{/if}}
+      </li>    
+    </ul>{{! main navbar }}
+    <form role="search" class="navbar-form navbar-right">
+      <div class="form-group input-group input-group-small">
+          {{input type="text" 
+            class="form-control" 
+            value=searchCollector
+            enter="search"
+            id="dig"
+            size="20"
+            placeholder=(t 'navbar.searchPlaceHolder')
+          }}
+        <span class="input-group-addon">              
+          <a href='#' {{action "search" searchCollector}} ><i class="fa fa-search"></i></a>
+        </span>
+      </div>      
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a href="#" {{action 'goToAnchor' 'index' 'howitworks'}}>how it works</a>
+      </li>
+      <li>
+        {{link-to 'licenses' 'licenses'}}
+      </li>
+      <li>
+          <a href="#" class="query-options-toggle" {{action 'toggleOptions'}}>{{t 'navbar.options'}} 
+            <span class="glyphicon glyphicon-chevron-{{if optionsOpen 'down' 'up'}}" aria-hidden="true"></span>
+          </a>
+      </li>
+    </ul>    
+  </div>{{! -- collapse -- }}
+</div>{{! container-fluid }}
+
+<article class="container-fluid center-text" id="qop" style="display:none">
+  <form class="form-inline">
+    <div class="form-group">
+      <label class="btn btn-primary btn-sm">
+        {{input type="checkbox" disabled=loading checked=queryOptions.instrumentalOnly }} instrumentals only
+      </label>
+    </div>
+    <div class="form-group">
+      <div class="btn-group">
+        <a class="btn dropdown-toggle btn-primary {{if loading 'disabled'}}" data-toggle="dropdown" href="#">
+          <span class="light-text">results</span> <strong>{{queryOptions.limit}}</strong>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+              <li>{{query-opt "limit" 10 }}</li>
+              <li>{{query-opt "limit" 20 }}</li>
+              <li>{{query-opt "limit" 50 }}</li>
+              <li>{{query-opt "limit" 100 }}</li>
+        </ul>
+      </div>
+    </div>        
+    <div class="form-group">
+      <label class="btn btn-primary btn-sm">
+        {{input type="checkbox" disabled=loading checked=queryOptions.recent }} recent
+      </label>
+    </div>
+  </form>
+</article>
+</nav>  

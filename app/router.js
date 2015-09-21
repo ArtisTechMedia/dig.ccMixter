@@ -56,8 +56,8 @@ Ember.Route.reopen({
 Router.map(function() {
   this.route('uploads', { path: '/files/:user/:upload_id' } );
   this.route('users', { path: '/people/:user_id' });
-  this.route('query');
-  this.route('dig');
+  this.route('query'); /* dig deep */
+  this.route('dig');   /* text search */
   this.route('free');
   this.route('video');
   this.route('ccplus');

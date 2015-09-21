@@ -13,20 +13,13 @@ export default Ember.Route.extend( PopupInvoker, {
   }.on('init'),
   
   onPopupClosed: function() {
-    try {
-      Ember.run.next(this, () => {
-          this.disconnectOutlet( { outlet: 'modal', parentView: 'application' } );
-        });
-      } 
-    catch(e) {
-        // In some (all?) cases this call is triggering the follow assert:
-        //
-        // Uncaught Error: Assertion Failed: You must use Ember.set() to set 
-        // the `element` property (of <dig.ccMixter@component:modal-popup::ember895>) to `null`.
-        //
-        // Should probably track that down one of these days
-      }
-
+    // In some (all?) cases this call is triggering the follow assert:
+    //
+    // Uncaught Error: Assertion Failed: You must use Ember.set() to set 
+    // the `element` property (of <dig.ccMixter@component:modal-popup::ember895>) to `null`.
+    //
+    // Should probably track that down one of these days
+    this.disconnectOutlet( { outlet: 'modal', parentView: 'application' } );
     this.set('currentOpenModal',null);
   },
 
@@ -58,7 +51,9 @@ export default Ember.Route.extend( PopupInvoker, {
 
     search: function(text) {
       this.set('queryOptions.searchText', text);
-      this.transitionTo('dig');
+      if( this.router.currentRouteName !== 'dig' ) {
+        this.transitionTo('dig');
+      }
     },
 
     togglePlay: function(upload) {

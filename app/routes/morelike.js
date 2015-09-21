@@ -3,10 +3,6 @@ import PageableRoute from './pageable';
 
 export default PageableRoute.extend({
 
-  routeQueryOptions: {
-    matchAnyTags: false,
-  },
-  
   genreTags: null,
   
   translateDynamicParamsToQuery: function( params ) {

@@ -16,15 +16,17 @@ export default Ember.Route.extend({
     this.get('queryOptions').on('optionsChanged',this,this._optionsWatcher);
   }.on('init'),
   
-  _optionsWatcher: function() {
+  _optionsWatcher: function(optName) {
     // This is broken for sub-routes
     if( this.router.currentRouteName === this.routeName ) {
-      Ember.run.once( this, 'onOptionsChanged' );
+      this.onOptionsChanged(optName,this.get('queryOptions.' + optName));
     }
   },
   
-  onOptionsChanged: function() {
-    this.refresh();
+  onOptionsChanged: function(optName) {
+    if( optName !== 'searchText' ) {
+      this.refresh();
+    }
   },
 
   safeMergeParameters: function(...paramHashes) {

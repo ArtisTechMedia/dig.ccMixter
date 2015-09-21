@@ -6,11 +6,25 @@ import { translationMacro as t } from "ember-i18n";
 export default PageableController.extend({
   i18n:     Ember.inject.service(),
   queryOptions: Ember.inject.service(),
+  application: Ember.inject.controller('application'),
+  
+  matchAnyTags: false,  
   
   selectedTags: [ ],
+  
+  tagQueryString: function() {
+    return TagUtils.create( { source: this.selectedTags.mapBy( 'id' ) } ).toString();
+  }.property('selectedTags.[]'),
+  
   catNames: ['genre', 'instr', 'mood'],
+  
   categories: null,
+  
   title: t('queryOptions.deep'),
+  
+  enoughForMatchAny: function() {
+    return this.get('selectedTags.length') > 1;
+  }.property('selectedTags.[]'),
   
   setupCategories: function() {
     var tagStore = this.container.lookup('store:tags');
@@ -27,12 +41,5 @@ export default PageableController.extend({
       this.selectedTags.forEach( t => t.set('isSelected',false) );
       this.set('selectedTags',[ ]);
     }
-  },
-  
-  _tagWatcher: function() {
-    var tags = TagUtils.create( { source: this.selectedTags.mapBy( 'id' ) } );
-    this.set('queryOptions.extraTags', tags);
-  }.observes( 'selectedTags.[]'),
-    
-    
+  },  
 });
