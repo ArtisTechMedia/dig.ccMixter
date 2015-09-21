@@ -53,7 +53,6 @@ export default Ember.Component.extend({
   showLast: Ember.computed.alias('lastPage'),
   
   didInsertElement: function() {
-    Ember.debug('requesting scroll watcher');
     this.hookScript();
   },
   

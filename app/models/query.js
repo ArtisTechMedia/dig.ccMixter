@@ -7,7 +7,6 @@ export default Ember.Object.extend({
   }.property(),
   
   find: function(name,id) {
-    Ember.debug('Looking for adapter: ' + name);
     if( name === 'user' ) {
       return this.findUser(id);
     } else {

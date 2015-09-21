@@ -10,6 +10,12 @@ Ember.MODEL_FACTORY_INJECTIONS = true;
 
 Ember.isFastBoot = function() { return typeof FastBoot !== 'undefined'; };
 
+if( Ember.isFastBoot() ) {
+  window.clearTimeout = function() {
+    Ember.debug('clearTimeout() called in server mode');
+  };
+}
+
 App = Ember.Application.extend({
   modulePrefix:  config.modulePrefix,
   podModulePrefix: config.podModulePrefix,

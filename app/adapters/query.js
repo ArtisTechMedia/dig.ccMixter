@@ -12,12 +12,18 @@ function _makeQ(qparams) {
 export default Ember.Object.extend( {
   queryHost: 'http://ccmixter.org/api/query?',
   
+
+  _serverAjax: function() {
+      var ajax = this.container.lookup('ajax:node');
+      return ajax;
+  },
+  
   _query: function(qString,isSingleton) {
     var url = this.queryHost + qString;
 
     if ( Ember.isFastBoot() ) {    
-//      FastBoot.debug('Using NodeJS for AJAX');
-      var ajax = this.container.lookup('ajax:node');
+      var ajax = this._serverAjax();
+      
       return ajax( url, 'GET', {} ).then( function( json ) {
             var arr = eval(json);
             if( isSingleton ) {
@@ -26,7 +32,6 @@ export default Ember.Object.extend( {
             return arr;
           } );
     } else {
-//      Ember.debug('Using jQuery Ajax');
       var args = {
           url: url,
           method: 'GET',

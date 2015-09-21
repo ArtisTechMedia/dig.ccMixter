@@ -58,7 +58,6 @@ export default Ember.Component.extend({
   },
   
   scrollWatcher: function(context) {
-    Ember.debug('scrollWatcher starting');
     var isAlreadyInstalled = false;
     var $elements = Ember.$('[data-keep-above],[data-keep-below]',context);
 
@@ -75,7 +74,6 @@ export default Ember.Component.extend({
     });  
     
     if( isAlreadyInstalled ) {
-      Ember.debug('scrollWatcher already installed');
       return;
     }
     
@@ -132,7 +130,6 @@ export default Ember.Component.extend({
         var f = 'keep-between-'+k;
         if( $e.data(f) ) {
           Ember.$(window).off('scroll',$e.data(f));
-          Ember.debug('detaching scrollWatcher');
           $e.data(f,null);
         }
       });
