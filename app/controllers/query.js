@@ -30,16 +30,19 @@ export default PageableController.extend({
     var tagStore = this.container.lookup('store:tags');
     tagStore.query( { categories: this.catNames, details: true } )
       .then( tags => this.set('categories',tags) );
-  }.on('init'),
+  },
   
   actions: {
+  
     remove: function(tag) {
       tag.set('isSelected',false);
       this.selectedTags.removeObject(tag);
     },
+
     clear: function() {
       this.selectedTags.forEach( t => t.set('isSelected',false) );
       this.set('selectedTags',[ ]);
     }
+
   },  
 });

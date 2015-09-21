@@ -23,6 +23,9 @@ export default PageableController.extend({
   }.property('queryOptions.searchText'),
   
   hasDidYouMean: function() {
-    return !!this.get('model.didYouMean').findBy('items.length');
+    if( this.get('model') ) {
+      return !!this.get('model.didYouMean').findBy('items.length');
+    }
+    return false;
   }.property('model.didYouMean.@each.items'),
 });

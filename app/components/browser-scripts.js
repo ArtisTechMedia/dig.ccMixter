@@ -91,7 +91,12 @@ export default Ember.Component.extend({
     });  
     
     function setupBump($e,$bumper,isKeepAbove) {
-      var eHeight      = $e.outerHeight() + 3;
+    
+      if( !$e.is(':visible') ) {
+        return;
+      }
+      
+      var eHeight      = $e.outerHeight() + 3;      
       var propName     = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
       
       $e.data( propName, function() {

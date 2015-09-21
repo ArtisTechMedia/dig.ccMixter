@@ -42,7 +42,7 @@
         {{#if loading}}<a href='#'><i style="color:white" class="fa fa-spinner fa-pulse"></i></a>{{/if}}
       </li>    
     </ul>{{! main navbar }}
-    <form role="search" class="navbar-form navbar-right">
+    <div role="search" class="navbar-form navbar-right">
       <div class="form-group input-group input-group-small">
           {{input type="text" 
             class="form-control" 
@@ -56,7 +56,7 @@
           <a href='#' {{action "search" searchCollector}} ><i class="fa fa-search"></i></a>
         </span>
       </div>      
-    </form>
+    </div>
     <ul class="nav navbar-nav navbar-right">
       <li>
         <a href="#" {{action 'goToAnchor' 'index' 'howitworks'}}>how it works</a>

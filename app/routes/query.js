@@ -24,13 +24,14 @@ export default PageableRoute.extend({
       var c = this.controllerFor('query');
       c.addObserver('matchAnyTags',this,this._doRefresh);
       c.addObserver('tagQueryString', this,this._doRefresh);
-      this._refreshParams();
+      // this._refreshParams();
     });
   }.on('init'),
   
   setupController: function() {
-      this.controllerFor('application').send('showOptions');
       this._super(...arguments);
+      this.controllerFor('application').send('showOptions');
+      this.controllerFor('query').setupCategories();
   },
     
 });
