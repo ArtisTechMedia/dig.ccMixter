@@ -58,7 +58,38 @@ export default Ember.Component.extend({
   },
   
   scrollWatcher: function(context) {
+    Ember.debug('scrollWatcher starting');
+    var isAlreadyInstalled = false;
+    var $elements = Ember.$('[data-keep-above],[data-keep-below]',context);
 
+    $elements.each( function() { // no => here
+      var $e = Ember.$(this);
+      var data = $e.data();
+      ['keep-between-a','keep-between-b'].forEach( k => {
+        if( k in data ) {
+          $e.data(k)(); // run it!
+          isAlreadyInstalled = true;
+        }
+      });
+      return !isAlreadyInstalled;
+    });  
+    
+    if( isAlreadyInstalled ) {
+      Ember.debug('scrollWatcher already installed');
+      return;
+    }
+    
+    $elements.each( function() { // no =>
+      var $e = Ember.$(this);
+      var data = $e.data();
+      if( 'keepAbove' in data ) {
+        setupBump( $e, Ember.$(data.keepAbove), true );
+      }
+      if( 'keepBelow' in data ) {
+        setupBump( $e, Ember.$(data.keepBelow), false );
+      }
+    });  
+    
     function setupBump($e,$bumper,isKeepAbove) {
       var eHeight      = $e.outerHeight() + 3;
       var propName     = 'keep-between-' + (isKeepAbove ? 'a' : 'b');
@@ -87,16 +118,6 @@ export default Ember.Component.extend({
       $e.data(propName)();
     }
     
-    Ember.$('[data-keep-above],[data-keep-below]',context).each( function() { // no =>
-      var $e = Ember.$(this);
-      var data = $e.data();
-      if( 'keepAbove' in data ) {
-        setupBump( $e, Ember.$(data.keepAbove), true );
-      }
-      if( 'keepBelow' in data ) {
-        setupBump( $e, Ember.$(data.keepBelow), false );
-      }
-    });  
   },
   
   detachScrollWatcher: function(context) {  
@@ -106,6 +127,7 @@ export default Ember.Component.extend({
         var f = 'keep-between-'+k;
         if( $e.data(f) ) {
           Ember.$(window).off('scroll',$e.data(f));
+          Ember.debug('detaching scrollWatcher');
           $e.data(f,null);
         }
       });

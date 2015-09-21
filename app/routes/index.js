@@ -15,8 +15,8 @@ export default Ember.Route.extend({
       if( optName === 'licenseScheme' ) {
         var value = this.get('queryOptions.' + optName) ;
         if( value === 'all' ) {
-          value = 'query';
-        }
+          value = 'dig';
+        } 
         this.transitionTo(value);
       }
     }

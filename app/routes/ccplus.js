@@ -13,7 +13,7 @@ export default PageableRoute.extend({
       }
       this.transitionTo(value);
     } else {
-      this.super(...arguments);
+      this._super(...arguments);
     }
   },
     

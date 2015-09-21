@@ -3,6 +3,12 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   appEvents: Ember.inject.service(),
   
+  shouldShow: function() {
+    var show = this.get('showPrev') || this.get('showNext');
+    Ember.run.next(this, show ? this.hookScript : this.unhookScript );
+    return show;
+  }.property('showPrev','showNext'),
+  
   printableOffset: function() {
     return Number(this.get('offset')) + 1;
   }.property('offset'),
@@ -47,10 +53,19 @@ export default Ember.Component.extend({
   showLast: Ember.computed.alias('lastPage'),
   
   didInsertElement: function() {
-    this.get('appEvents').triggerWhen('browser.script.run','scroll-watcher',this.get('element'));
+    Ember.debug('requesting scroll watcher');
+    this.hookScript();
   },
   
   willDestroyElement: function() {
+    this.unhookScript();
+  },
+  
+  hookScript: function() {
+    this.get('appEvents').triggerWhen('browser.script.run','scroll-watcher',this.get('element'));
+  },
+  
+  unhookScript: function() {
     this.get('appEvents').trigger('browser.script.detach','scroll-watcher',this.get('element'));
   },
 });

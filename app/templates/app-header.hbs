@@ -14,11 +14,12 @@
     <ul class="nav navbar-nav">
       <li>
           <div class="btn-group">
-              {{query-opt 'licenseScheme' 'open'   'free'     activate=1 class="btn btn-default"}}
+              {{query-opt 'licenseScheme' 'free'   'free'     activate=1 class="btn btn-default"}}
               {{query-opt 'licenseScheme' 'ccplus' 'licensed' activate=1 class="btn btn-default"}}
               {{query-opt 'licenseScheme' 'all'    'all'      activate=1 class="btn btn-default"}}
           </div>
       </li>
+      <!--
       <li>
         <div class="btn-group">
           <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -33,6 +34,7 @@
           </ul>
         </div>
       </li>          
+      -->
       <li class="hidden-sm hidden-xs">
         {{link-to (t 'queryOptions.deep') 'query'}}
       </li>

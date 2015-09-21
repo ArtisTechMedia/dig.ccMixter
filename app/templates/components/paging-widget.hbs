@@ -1,4 +1,4 @@
-{{#if (is-or showPrev showNext)}}
+{{#if shouldShow}}
   <div class="paging" data-keep-above=".footer" data-keep-below=".page-header">
     <ul class="pagination">  
       <li class="{{unless offset 'disabled'}}">
