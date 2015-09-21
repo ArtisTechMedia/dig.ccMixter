@@ -14,7 +14,9 @@ export default Ember.Route.extend( PopupInvoker, {
   
   onPopupClosed: function() {
     try {
-        this.disconnectOutlet( { outlet: 'modal', parentView: 'application' } );
+      Ember.run.next(this, () => {
+          this.disconnectOutlet( { outlet: 'modal', parentView: 'application' } );
+        });
       } 
     catch(e) {
         // In some (all?) cases this call is triggering the follow assert:

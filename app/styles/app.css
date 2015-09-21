@@ -62,85 +62,45 @@ h4.inlined, h4.inlined,
 
 .navbar {
   margin-bottom: 0px;
-  padding-bottom: 12px
+}
+.navbar-collapse {
+    padding-left: 2%;
+
 }
 
-nav input ,
-nav .form-control {
-  height: initial;
+.collapse .navbar-nav .btn-group {
+  margin-right: 7px;
 }
-nav .form-group > label,
-nav .form-group > .btn {
-  background-color: transparent;
-  color: #DDD;
-  font-weight: normal;
+.collapse .navbar-nav .dropdown-toggle {
+  color: #9d9d9d;
 }
-
-nav .form-group > label:hover,
-nav .form-group > .btn:hover {
-  color: white;
+.collapse .navbar-nav > li > a {
+  margin-top: 10px; 
 }
-.query-opts {
-  padding-top: 12px;
+.collapse .navbar-nav > li > input,
+.collapse .navbar-nav > li > div {
+  margin-top: 17px;
 }
-.query-opts .form-group {
-  margin-left: 17px;
-  margin-right: 4px;
+.collapse .form-group {
+  margin-top: 8px;
+  margin-bottom: 0px
+  padding: 0px;
 }
 
-
-/*
-.navbar {
-  margin-bottom: 0px;
-}
- 
-.navbar-brand {
-  padding-top: 6px;
+nav article {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
-.navbar-right {
-  margin-top: 15px;
+nav article .form-group {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
-.navbar-inverse {
-  border-radius: 0px;
+nav article .dropdown-menu {
+    min-width: 70px;
+    left: 33px;
 }
-
-.query-opts .form-group {
-  margin-left: 17px;
-}
-.navbar-right .form-group {
-  margin-right: 17px;
-}
-
-.query-opts select {
-  font-size: 11px;
-}
-
-
-nav .form-group > label,
-nav .form-group > .btn {
-  font-weight: normal;
-  font-size:12px;
-}
-
-nav .form-group > label,
-nav .form-group > .btn {
-  background-color: transparent;
-  color: #DDD;
-}
-
-nav .form-group > label:hover,
-nav .form-group > .btn:hover {
-  color: white;
-}
-
-nav .form-control {
-  height: initial;
-  padding: initial;  
-}
-*/
-
 .page-header h1 i {
   color: #777;
   text-shadow: 5px 5px 4px #ddd;

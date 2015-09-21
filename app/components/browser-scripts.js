@@ -7,7 +7,7 @@ export default Ember.Component.extend({
     if( !Ember.isFastBoot() ) {
       this.get('appEvents').on( 'browser.script.run',    this, this.runScript );
       this.get('appEvents').on( 'browser.script.detach', this, this.detachScript );
-      Ember.run.scheduleOnce('afterRender', this, function() {
+      Ember.run.scheduleOnce('afterRender', this, () => {
         this.fixWindow();
       });
     }
@@ -35,6 +35,14 @@ export default Ember.Component.extend({
       adjustFooter();
     });
     Ember.run.next(this,adjustFooter);
+  },
+  
+  // not used but fun to write:
+  monitorDropdowns: function() {
+    Ember.$('[data-toggle="dropdown"] + ul li').click(function() {    
+      var text = Ember.$(this).data('dropdown-hint') || Ember.$(this).find('a').text();
+      Ember.$(this).closest('div').find('a strong').text(text);
+    });
   },
   
   scrollWatcher: function(context) {

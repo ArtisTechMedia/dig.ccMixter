@@ -3,6 +3,7 @@ import Query from './query';
 import models from './models';
 
 export default Query.extend({
+
   find: function(name,id) {
 
     var queries = {

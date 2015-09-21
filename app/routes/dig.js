@@ -24,7 +24,7 @@ export default PageableRoute.extend({
 
     var text = this.get('queryOptions.searchText');
     if( !text ) {
-      return null;
+      return [ ];
     }
     var didYouMean = { 
       artists: this.store.query({

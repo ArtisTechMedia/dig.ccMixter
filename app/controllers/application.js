@@ -52,7 +52,6 @@ export default Ember.Controller.extend( PopupInvoker, {
   
   pageTitle: function() {
     var forRoute = this.get('currentPath');
-    Ember.debug('Trying to find controller for: ' + forRoute);
     var title = this.get('title');
     var c = this.container.lookup('controller:' + forRoute);
     if( c && c.get('title') ) {
