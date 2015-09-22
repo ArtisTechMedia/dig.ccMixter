@@ -29,6 +29,13 @@ export default Ember.Route.extend({
     }
   },
 
+  enteringRoute: function() {
+    var opts = this.get('routeQueryOptions');
+    if( Object.keys(opts) ) {
+      this.get('queryOptions').applyRouteOptions( opts );
+    }
+  }.on('activate'),
+  
   safeMergeParameters: function(...paramHashes) {
     var target = {};
     Ember.merge(target,paramHashes[0]);
@@ -100,10 +107,7 @@ export default Ember.Route.extend({
     // Route specific additions
     var routeParams = this.get('routeQueryParams');
 
-    // query settings from UI (limit, genre, etc) 
-    var userOptions = this.get('queryOptions').setBatch( this.routeName, 
-                               this.get('routeQueryOptions') );
-
+    var userOptions = this.get('queryOptions.queryParams');
     // Ember's dynamic url parts (/:user_id)
     var dynParams = this.translateDynamicParamsToQuery(params);
 

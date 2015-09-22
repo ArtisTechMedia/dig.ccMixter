@@ -21,8 +21,11 @@
        <div class="input-group-btn">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-chevron-down"></i></button>
           <ul class="dropdown-menu">
-            <li data-dropdown-hint="video">{{link-to 'music for video' 'video' }}</li>
-            <li data-dropdown-hint="games">{{link-to 'music for games' 'games' }}</li>
+            <li> {{#link-to 'video'  }}<i class="fa fa-fw fa-film"   ></i> {{qt 'navbar.links.film'}}{{/link-to}}</li>
+            <li> {{#link-to 'games'  }}<i class="fa fa-fw fa-gamepad"></i> {{qt 'navbar.links.games'}}{{/link-to}}</li>
+            <li class="divider"></li>            
+            <li> {{#link-to 'free'   }}<i class="fa fa-fw fa-beer"   ></i> {{qt 'navbar.links.free'}}{{/link-to}}</li>
+            <li> {{#link-to 'ccplus' }}<i class="fa fa-fw fa-usd"    ></i> {{qt 'navbar.links.ccplus'}}{{/link-to}}</li>
           </ul>
         </div>
            {{input type="text" 
@@ -40,38 +43,38 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a href="#" {{action 'goToAnchor' 'index' 'howitworks'}}>how it works</a>
+        <a href="#" {{action 'goToAnchor' 'index' 'howitworks'}}>{{qt 'navbar.links.how'}}</a>
       </li>
       <li>
-        {{link-to 'licenses' 'licenses'}}
+        {{link-to (qt 'navbar.links.licenses') 'licenses'}}
       </li>
       <li class="hidden-xs hidden-sm">
-        {{#link-to  'query'}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
+        {{#link-to  'query'}}<i class="fa fa-tags"></i> {{qt 'queryOptions.deep'}}{{/link-to}}
       </li>
       
     </ul>    
   </div>{{! -- collapse -- }}
 </div>{{! container-fluid }}
 
-<article class="container-fluid center-text" id="qop" style="display:none">
+<article class="container-fluid center-text" id="qop">
   <form class="form-inline">
     <div class="form-group">
         <div class="btn-group">
-            {{query-opt 'licenseScheme' 'free'   'free'     activate=1 class="btn btn-primary btn-sm"}}
-            {{query-opt 'licenseScheme' 'ccplus' 'licensed' activate=1 class="btn btn-primary btn-sm"}}
-            {{query-opt 'licenseScheme' 'all'    'all'      activate=1 class="btn btn-primary btn-sm"}}
+            {{query-opt 'licenseScheme' 'open'   (qt 'queryOptions.licenses.free')   activate=1 class="btn btn-primary btn-sm"}}
+            {{query-opt 'licenseScheme' 'ccplus' (qt 'queryOptions.licenses.ccplus') activate=1 class="btn btn-primary btn-sm"}}
+            {{query-opt 'licenseScheme' 'all'    (qt 'queryOptions.licenses.all')    activate=1 class="btn btn-primary btn-sm"}}
         </div>
         <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>        
     </div>  
     <div class="form-group">
       <label class="btn btn-primary btn-sm">
-        {{input type="checkbox" disabled=loading checked=queryOptions.instrumentalOnly }} instrumentals only
+        {{input type="checkbox" disabled=loading checked=queryOptions.instrumentalOnly }} {{t 'queryOptions.instrumental'}}
       </label>
     </div>
     <div class="form-group">
       <div class="btn-group">
         <a class="btn dropdown-toggle btn-primary {{if loading 'disabled'}}" data-toggle="dropdown" href="#">
-          <span class="light-text">results</span> <strong>{{queryOptions.limit}}</strong>
+          <span class="light-text">{{qt 'queryOptions.limit'}}</span> <strong>{{queryOptions.limit}}</strong>
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -84,11 +87,11 @@
     </div>        
     <div class="form-group">
       <label class="btn btn-primary btn-sm">
-        {{input type="checkbox" disabled=loading checked=queryOptions.recent }} recent
+        {{input type="checkbox" disabled=loading checked=queryOptions.recent }} {{qt 'queryOptions.recent'}}
       </label>
     </div>
     <div class="form-group">
-        <a href='#' class="btn btn-sm btn-warning {{if queryOptions.optionsAreClean 'disabled'}}" {{action "clearOptions"}}><i class="fa fa-power-off"></i> reset</a>
+        <a href='#' class="btn btn-sm btn-warning {{if queryOptions.optionsAreClean 'disabled'}}" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
     </div>
   </form>
 </article>

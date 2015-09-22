@@ -1,11 +1,4 @@
-/* globals Ember */
-import PageableController from './pageable';
-import { translationMacro as t } from "ember-i18n";
+import Licensed from './licensed';
 
-export default PageableController.extend({
-  i18n: Ember.inject.service(),
-
-  title: t('ccplus.title'),
-  icon: 'usd',
-
+export default Licensed.extend({
 });

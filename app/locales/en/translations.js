@@ -7,27 +7,24 @@ export default {
             limit: 'results',
             recent: 'recent',
             deep: 'dig deep',
+            reset: 'reset',
             matchAnyTags: 'match any tags',
             licenses: {
-                all: 'All licenses',
-                free: 'Free for commercial use',
-                ccplus: 'Royalty free license',
+                all: 'all',
+                free: 'free',
+                ccplus: 'licensed',
                 },
         },
     navbar: {
         searchPlaceHolder: "genre, instrument, etc.",
         options: 'options',
         links: {
-            free: 'free',
-            ccplus: 'licensed',
             film: 'music for film',
             games: 'music for games',
             how: 'how it works',
-            freetitle: 'Free for Commercial Use',
-            ccplustitle: 'Royalty Free Licensed',
-            filmtitle: 'Music for Film and Video', 
-            gamestitle: 'Music for Video Games',
-            howtitle: 'How this site works',
+            free: 'free for commercial use',
+            ccplus: 'royalty free licensed',
+            licenses: 'licenses',
         },
     },
     dlPopup: {
@@ -125,12 +122,17 @@ export default {
     ccplus: {
         title: "Music Available for Royalty-Free License",
     },
+    
+    instrumental: "Instrumental",
+    
     games: {
-        title: "Instrumental Music for Video Games",
+        title: "Music for Video Games",
     },
+    
     video: {
-        title: "Instrumental Music for Film and Video",
+        title: "Music for Film and Video",
     },
+    
     licenses: {
         title: "Our Licenses Overview",
         by: "Free to use, even in commercial projects " +

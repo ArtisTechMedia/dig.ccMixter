@@ -6,15 +6,4 @@ export default PageableRoute.extend({
     licenseScheme: 'ccplus',
   },
     
-  onOptionsChanged: function(opt,value) {
-    if( opt === 'licenseScheme' && value !== 'ccplus' ) {
-      if( value === 'all' ) {
-        value = 'query';
-      }
-      this.transitionTo(value);
-    } else {
-      this._super(...arguments);
-    }
-  },
-    
 });

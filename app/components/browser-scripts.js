@@ -136,4 +136,13 @@ export default Ember.Component.extend({
     });
   },
   
+  
+  responsiveIframes: function () {
+    var $ = Ember.$;
+    if( $('iframe').length ) {
+      $('iframe').each( function() {
+          $(this).css( { overflow: 'hidden', width: '100%', 'max-height': '300px' } );
+        });
+      }
+  }  
 });

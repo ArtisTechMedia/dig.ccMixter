@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import PopupInvoker from '../mixins/popup-invoker';
 
-export default Ember.Route.extend( PopupInvoker, {
+export default Ember.Route.extend( {
   audioPlayer:  Ember.inject.service(),
   queryOptions: Ember.inject.service(),
   appEvents:    Ember.inject.service(),
@@ -24,16 +23,16 @@ export default Ember.Route.extend( PopupInvoker, {
   },
 
   openPopup: function(name,hash) {
-      this.render( name + '-shim', { 
-        into: 'application', 
-        outlet: 'modal',
-       });
-      
-      this.set('currentOpenModal',name);
-      
-      if( typeof hash !== 'undefined' && Object.keys(hash).length > 0 ) {
-          this.get('appEvents').triggerWhen( 'popup.properties.'+name, hash );
-      }
+    this.render( name + '-shim', { 
+      into: 'application', 
+      outlet: 'modal',
+     });
+  
+    this.set('currentOpenModal',name);
+  
+    if( typeof hash !== 'undefined' && Object.keys(hash).length > 0 ) {
+        this.get('appEvents').triggerWhen( 'popup.properties.'+name, hash );
+    }
   },
     
   actions: {
@@ -60,4 +59,5 @@ export default Ember.Route.extend( PopupInvoker, {
       this.get('audioPlayer').togglePlay(upload);
     },
   },
+  
 });

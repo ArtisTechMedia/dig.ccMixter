@@ -1,5 +1,7 @@
 {{#modal-popup showing=true subTitle=(t 'tbPopup.trackback') title=(t 'tbPopup.title' name=trackback.name artist=trackback.artist.name)}}
-  {{{trackback.embed}}}
+  <div class="">
+    {{{trackback.embed}}}
+  </div>
   <a href="{{trackback.url}}" class="btn btn-default"><span class="glyphicon glyphicon-new-window"></span> {{t 'tbPopup.original'}}</a>
 {{/modal-popup}}
 

@@ -1,24 +1,47 @@
 import Ember from 'ember';
-import PopupInvoker from '../mixins/popup-invoker';
 import Pageable from '../routes/pageable';
 import { translationMacro as t } from "ember-i18n";
 
-export default Ember.Controller.extend( PopupInvoker, {
+var queryOpts = {
+
+  licenseScheme: { 
+    defaultValue: 'all',
+    queryParam: 'lic' 
+  },   
+
+  limit: {
+    defaultValue: 10,
+    queryParam: 'limit' 
+  },   
+
+  instrumentalOnly: {
+    defaultValue: false,
+    queryParam: 'reqtags',
+    model: 'instrumental,-vocals,-male_vocals,-female_vocals' 
+  },   
+
+  recent: {
+    defaultValue: false,
+    queryParam: 'sinced',
+    model: '3 months ago' 
+  }, 
+}; 
+
+export default Ember.Controller.extend( {
 
   i18n:         Ember.inject.service(),
   audioPlayer:  Ember.inject.service(),  
   queryOptions: Ember.inject.service(),
 
-  licenseInfo: function() {
-    var licController = this.container.lookup('controller:licenses');
-    return licController.get('licenseInfo');
-  }.property(),
-    
   searchCollector: '',
 
   titlePrefix: 'dig: ',
   
   title:  t('app.pageTitle'),
+  
+  _init: function() {
+    this.get('queryOptions').installOptions(queryOpts);
+  }.on('init'),
   
   pageTitle: function() {
     var forRoute = this.get('currentPath');
@@ -71,7 +94,7 @@ export default Ember.Controller.extend( PopupInvoker, {
   actions: {
 
     clearOptions: function() {
-      this.get('queryOptions').setAllToDefault();
+      this.get('queryOptions').applyDefaults();
     },
     
     goToAnchor: function(routeName,anchor) {
@@ -84,5 +107,11 @@ export default Ember.Controller.extend( PopupInvoker, {
       }
     },
   },
+  
+  licenseInfo: function() {
+    var licController = this.container.lookup('controller:licenses');
+    return licController.get('licenseInfo');
+  }.property(),
+      
 });
 

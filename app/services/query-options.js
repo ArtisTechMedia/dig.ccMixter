@@ -1,180 +1,98 @@
 import Ember from 'ember';
-import TagUtils from '../lib/tags';
 
-var QueryOption = Ember.Object.extend({
-
-    // the name to use in the template
-    name: '',          
-    
-    // the actual value to use if other than the value 
-    // e.g. recent is a boolean, but the model is
-    //      what is passed to 'sinced' like '3 months ago'
-    model: undefined,  
-    
-    // system default
-    defaultValue: '',
-    
-    // automatically update the outgoing corresponding
-    // Query API value - if you handle this elsewhere
-    // like searchText then set this to false
-    updatesParams: true,
-    
-    // The corresponding Query API parameter to use
-    // when generating 
-    queryParam: '',
-
-    // serialize this option to a valid Query API param
-    convertToQueryParam: function(qparams,service,value) { 
-        if( this.queryParam && value ) {
-            value = this.model || value; 
-            if( this.queryParam === 'tags' ) {
-                qparams.tags = service._tags.add( value ).toString();
-            } else {
-                    qparams[this.queryParam] = value;
-            }
-        }
-    }
-});
-
-var optionsMeta = [
-        QueryOption.create( { name: 'searchText' ,
-                              updatesParams: false } ),
-        QueryOption.create( { name: 'licenseScheme',
-                              defaultValue: 'all',
-                              queryParam: 'lic' }),
-        QueryOption.create( { name: 'limit',
-                              alwaysHonor: true,
-                              defaultValue: 10,
-                              queryParam: 'limit' }),
-        QueryOption.create( { name: 'instrumentalOnly',
-                              defaultValue: false,
-                              queryParam: 'tags',
-                              model: 'instrumental,-vocals,-male_vocals,-female_vocals' } ),
-        QueryOption.create( { name: 'recent',
-                              defaultValue: false,
-                              queryParam: 'sinced',
-                              model: '3 months ago' } ),
-    ]; 
-    
-/**
-    Templates are bound to variables on this service:
-    
-        ````{{input type="checkbox" value=queryOptions.recent ...
-        
-    When the user changes one, this service updates the queryParams
-    property (which is Query API ready) and fires a 'optionsChanged' event 
-    with the name and new value:
-    
-        optChanged: function(optName,newValue) {
-            ...
-        }.on('queryParams.optionsChanged'),
-    
-    For routes that want to populate the options call 'setBatch()' which
-    returns a Query API ready hash 
-    
-*/
 export default Ember.Service.extend(Ember.Evented, {
 
-    userEditing: false,
-    hidden: { },
+  /**
+    these options will participate in queryParams
+    and will trigger queryParams.optionsChanged
+    events
+  */
+  _updating: null,
+  
+  /**
+    used internally to avoid noisy eventing
+  */
+  _ignoreChange: false,
+    
+  /*
+    Allows a route to setup initial values
+    when entering the route. This will update
+    the UI but not send events out
+  */
+  applyRouteOptions: function(routeValues) {
+    this._ignoreChange = true;
+    this.setProperties(routeValues);
+    this._ignoreChange = false;
+  },
 
-    setBatch: function( routeName,  routeValues) {
-        var queryParams = { };
-        this._tags.clear(); 
+  /**
+    what it says on the tin
+  */  
+  applyDefaults: function() {
+    var properties = { };
+    var updating = this._updating;
+    
+    for( var k in updating ) {
+        properties[k] = updating[k].defaultValue;
+    }
 
-        // update the UI but don't trigger
-        // events to the internal app
-        this._ignoreChange = true;
-        this._forEachUpdatingOption(  opt => {           
-            if( typeof routeValues[opt.name] !== 'undefined' ) {
-                this.set(opt.name,routeValues[opt.name]);
-            }
-            opt.convertToQueryParam(queryParams,this,this.get(opt.name));
-        });        
-        this._ignoreChange = false;
-            
-        return queryParams;
-    },
+    this.setProperties(properties);  
+  },
+  
+  installOptions: function( updating ) {
 
-    convertToQueryParams: function(routeValues) {
-        var queryParams = { };
-        this._tags.clear(); 
-        
-        this._forEachUpdatingOption( opt => {
-            var value = routeValues[opt.name];
-            if( typeof value !== 'undefined' ) {
-                opt.convertToQueryParam(queryParams,this,value);
-            }
-        });
-        
-        if( 'tags' in queryParams && !queryParams.tags ) {
-          delete queryParams['tags'];
+    function optionsAreClean() {
+        var updating = this._updating;
+        for( var k in updating ) {
+          if(this.get(k) !== updating[k].defaultValue) {
+            return false;
+          }
         }
-        return queryParams;
-    },
+        return true;
+      }    
     
-    setAllToDefault: function() {
-      var properties = { };
-      
-      this._forEachUpdatingOption( opt => {
-        properties[opt.name] = opt.get('defaultValue');
-      });
-      
-      this.setProperties(properties);    
-    },
+    function queryParams() {
+        var qp = { };
+        var updating = this._updating;
     
-    _options: [ ],
-    _optionsMeta: Ember.Object.create(),
-        
-    _tags: TagUtils.create(),
-
-    _setupOptions: function() {    
-        optionsMeta.forEach( optMeta => {
-            var name = optMeta.get('name');
-            this._optionsMeta.set(name,optMeta);
-            this.set(name, optMeta.get('defaultValue'));
-            if( optMeta.updatesParams ) {
-                this._options.push(name);
+        for( var k in updating ) {
+            var meta = updating[k];
+            var value = this.get(k);
+            if( meta.model ) {
+              if( value ) {
+                qp[meta.queryParam] = meta.model;
+              }
+            } else {
+              qp[meta.queryParam] = value;
             }
-        });
-        this._options.forEach( name => {
-          this.addObserver(name,this,this._optionChanged);
-        });
+        }
         
-    }.on('init'),
-    
-    _setupClean: false,
-    
-    _optionChanged: function(me,key,value) {
-      if( !this._setupClean ) {
-        this._setupClean = true;
-        var args = this._options.slice(0);
-        args.push(this._optionsAreClean);
-        this.set('optionsAreClean', Ember.computed.apply(null,args) );
+        return qp;
       }
+      
+    function optionsChanged(me,key) {
       if( !this._ignoreChange ) {
-        this.trigger('optionsChanged',key,value);
+        this.trigger('optionsChanged',key,this.get(key));
       }
-    },
+    }
+    
+    function _a(...args) {
+      return Object.keys(updating).concat(args);
+    }    
+    
+    this._updating = updating;      
+    
+    var names = Object.keys(updating);
+    
+    this.applyDefaults();
 
-    optionsAreClean: function() { return true; }.property(),
-    
-    _optionsAreClean: function() {
-        var clean = true;
-        this._forEachUpdatingOption( opt => {
-          clean = clean && (this.get(opt.name) === opt.get('defaultValue'));
-        });
-        return clean;
-    },
-    
+    names.forEach( k => { this.addObserver(k,this,optionsChanged); } );
 
-    _ignoreChange: false,
-        
-    _forEachUpdatingOption: function( callback ) {            
-      this._options.forEach( oName => {
-        callback.call(this,this._optionsMeta[oName]);
-      });
-    },
-    
+    this.set('optionsAreClean', Ember.computed.apply(null,_a(optionsAreClean)));
+    this.set('queryParams',     Ember.computed.apply(null,_a(queryParams)));
+  },  
+  
+
+  
 });
-    
+  

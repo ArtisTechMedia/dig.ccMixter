@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   _triedAlready: false,
     
   _presentBanner: function() {
-    Ember.$(this.get('element')).find('div').slideDown(300);
+    Ember.$(this.element).find('div').slideDown(300);
   },
   
   didInsertElement: function() {

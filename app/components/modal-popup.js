@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   appEvents:    Ember.inject.service(),
   
   $e: function() {
-    return Ember.$(this.get('element'));
+    return Ember.$(this.element);
   }.property('element'),
   
   showModal: function() {

@@ -61,10 +61,10 @@ export default Ember.Component.extend({
   },
   
   hookScript: function() {
-    this.get('appEvents').triggerWhen('browser.script.run','scroll-watcher',this.get('element'));
+    this.get('appEvents').triggerWhen('browser.script.run','scroll-watcher',this.element);
   },
   
   unhookScript: function() {
-    this.get('appEvents').trigger('browser.script.detach','scroll-watcher',this.get('element'));
+    this.get('appEvents').trigger('browser.script.detach','scroll-watcher',this.element);
   },
 });

@@ -1,11 +1,14 @@
 /* globals Ember */
 import PageableController from './pageable';
-import { translationMacro as t } from "ember-i18n";
+import QuickText from '../mixins/quickt';
 
-export default PageableController.extend({
-    i18n: Ember.inject.service(),
+export default PageableController.extend( QuickText, {
+  queryOptions: Ember.inject.service(),
 
-    title: t('games.title'),
-    icon: 'gamepad'
+  icon: 'gamepad',
+  
+  title: function() {
+    return this.qt('games.title') + (this.get('queryOptions.instrumentalOnly') ? ' (' + this.qt('instrumental') + ')' : '');
+  }.property('queryOptions.instrumentalOnly'),
     
 });

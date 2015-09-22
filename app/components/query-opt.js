@@ -14,7 +14,11 @@ const QueryOptComponent = Ember.Component.extend({
   },
   
   optionChanged: function() {
-    Ember.$(this.get('element')).toggleClass('active',this.get('queryOptions.'+this.get('opt')) === this.get('val'));
+    var optName = this.get('opt');
+    var val     = this.get('val');
+    var qVal    = this.get( 'queryOptions.' + optName );
+    
+    Ember.$(this.element).toggleClass('active', qVal === val);
   },
   
   didInsertElement: function() {
