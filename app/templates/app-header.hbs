@@ -45,6 +45,10 @@
       <li>
         {{link-to 'licenses' 'licenses'}}
       </li>
+      <li class="hidden-xs hidden-sm">
+        {{#link-to  'query'}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
+      </li>
+      
     </ul>    
   </div>{{! -- collapse -- }}
 </div>{{! container-fluid }}
@@ -83,8 +87,8 @@
         {{input type="checkbox" disabled=loading checked=queryOptions.recent }} recent
       </label>
     </div>
-    <div class="form-group hidden-sm hidden-xs">
-      {{#link-to  'query'}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
+    <div class="form-group">
+        <a href='#' class="btn btn-sm btn-warning {{if queryOptions.optionsAreClean 'disabled'}}" {{action "clearOptions"}}><i class="fa fa-power-off"></i> reset</a>
     </div>
   </form>
 </article>

@@ -103,6 +103,12 @@ nav article .dropdown-menu {
     min-width: 70px;
     left: 33px;
 }
+
+nav article i.fa-question-circle {
+  margin-left: 4px;
+  color: #ccc;
+}
+
 .page-header h1 i {
   color: #777;
   text-shadow: 5px 5px 4px #ddd;

@@ -70,6 +70,10 @@ export default Ember.Controller.extend( PopupInvoker, {
 
   actions: {
 
+    clearOptions: function() {
+      this.get('queryOptions').setAllToDefault();
+    },
+    
     goToAnchor: function(routeName,anchor) {
       if( this.get('currentPath') === routeName ) {
         this.scrollToAnchor(anchor);

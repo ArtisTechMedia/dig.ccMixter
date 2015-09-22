@@ -113,6 +113,16 @@ export default Ember.Service.extend(Ember.Evented, {
         return queryParams;
     },
     
+    setAllToDefault: function() {
+      var properties = { };
+      
+      this._forEachUpdatingOption( opt => {
+        properties[opt.name] = opt.get('defaultValue');
+      });
+      
+      this.setProperties(properties);    
+    },
+    
     _options: [ ],
     _optionsMeta: Ember.Object.create(),
         
@@ -121,29 +131,49 @@ export default Ember.Service.extend(Ember.Evented, {
     _setupOptions: function() {    
         optionsMeta.forEach( optMeta => {
             var name = optMeta.get('name');
-            this._options.push(name);
             this._optionsMeta.set(name,optMeta);
             this.set(name, optMeta.get('defaultValue'));
             if( optMeta.updatesParams ) {
-                this.addObserver(name,this,this._optionChanged);
+                this._options.push(name);
             }
         });
+        this._options.forEach( name => {
+          this.addObserver(name,this,this._optionChanged);
+        });
+        
     }.on('init'),
     
+    _setupClean: false,
+    
     _optionChanged: function(me,key,value) {
-        if( !this._ignoreChange ) {
-            this.trigger('optionsChanged',key,value);
-        }
+      if( !this._setupClean ) {
+        this._setupClean = true;
+        var args = this._options.slice(0);
+        args.push(this._optionsAreClean);
+        this.set('optionsAreClean', Ember.computed.apply(null,args) );
+      }
+      if( !this._ignoreChange ) {
+        this.trigger('optionsChanged',key,value);
+      }
     },
+
+    optionsAreClean: function() { return true; }.property(),
+    
+    _optionsAreClean: function() {
+        var clean = true;
+        this._forEachUpdatingOption( opt => {
+          clean = clean && (this.get(opt.name) === opt.get('defaultValue'));
+        });
+        return clean;
+    },
+    
 
     _ignoreChange: false,
         
     _forEachUpdatingOption: function( callback ) {            
-        this._options.forEach( oName => {
-            if( this._optionsMeta[oName].updatesParams ) {
-                callback.call(this,this._optionsMeta[oName]);
-            }
-        });
+      this._options.forEach( oName => {
+        callback.call(this,this._optionsMeta[oName]);
+      });
     },
     
 });
