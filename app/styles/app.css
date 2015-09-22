@@ -93,7 +93,7 @@ span.light-color a {
   padding: 0px;
 }
 
-nav article {
+nav > article {
   margin-top: 12px;
   margin-bottom: 12px;
   display: none;

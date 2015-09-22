@@ -19,7 +19,11 @@ export default Ember.Component.extend({
       } else {      
         this.sendAction('popup',name,hash);
       }
-    }
+    },
+    
+    clearOptions: function() {
+      this.sendAction('clearOptions');
+    },
   }
 
 });

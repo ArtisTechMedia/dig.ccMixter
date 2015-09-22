@@ -93,10 +93,6 @@ export default Ember.Controller.extend( {
 
   actions: {
 
-    clearOptions: function() {
-      this.get('queryOptions').applyDefaults();
-    },
-    
     goToAnchor: function(routeName,anchor) {
       if( this.get('currentPath') === routeName ) {
         this.scrollToAnchor(anchor);

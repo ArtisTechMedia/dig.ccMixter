@@ -12,7 +12,19 @@
             {{/unless}}
           </li>
         {{else}}
-          <li><div class="jumbotron">{{t 'playlist.noMatches'}}</div></li>
+          <li>
+            <div class="jumbotron">
+              <div>
+                {{t 'playlist.noMatches'}}
+              </div>
+              {{#unless optionsAreClean}}
+                <div>
+                  {{t 'playlist.tryReset'}} 
+                          <a href='#' class="btn btn-sm btn-warning" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
+                </div>
+              {{/unless}}
+            </div>
+          </li>
         {{/each}}
       </ul>
     </div>

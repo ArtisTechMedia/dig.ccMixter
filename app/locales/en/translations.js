@@ -161,7 +161,8 @@ export default {
         match: 'match any tag',
     },
     playlist: {
-        noMatches: 'Hrumph. No matches for your search. Try again....',
+        noMatches: 'Hrumph. No matches for your search.',
+        tryReset: 'Trying resetting your options: ',
         loading: 'Hold on... ',
     },
     query: {
