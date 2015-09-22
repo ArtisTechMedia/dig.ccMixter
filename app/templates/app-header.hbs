@@ -13,45 +13,26 @@
   <div class="collapse navbar-collapse" id="dig-collapse">
     <ul class="nav navbar-nav">
       <li>
-          <div class="btn-group">
-              {{query-opt 'licenseScheme' 'free'   'free'     activate=1 class="btn btn-default"}}
-              {{query-opt 'licenseScheme' 'ccplus' 'licensed' activate=1 class="btn btn-default"}}
-              {{query-opt 'licenseScheme' 'all'    'all'      activate=1 class="btn btn-default"}}
-          </div>
-      </li>
-      <!--
-      <li>
-        <div class="btn-group">
-          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            <span class="light-text">project type</span> <strong id="project-type">any</strong>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu" data-update-hint="project-type">
-            <li data-dropdown-hint="video">{{link-to 'music for video' 'video' }}</li>
-            <li data-dropdown-hint="games">{{link-to 'music for games' 'games' }}</li>
-            <li class="divider"></li>
-            <li>{{link-to 'any' 'dig' }}</li>
-          </ul>
-        </div>
-      </li>          
-      -->
-      <li class="hidden-sm hidden-xs">
-        {{link-to (t 'queryOptions.deep') 'query'}}
-      </li>
-      <li>
         {{#if loading}}<a href='#'><i style="color:white" class="fa fa-spinner fa-pulse"></i></a>{{/if}}
       </li>    
     </ul>{{! main navbar }}
     <div role="search" class="navbar-form navbar-right">
       <div class="form-group input-group input-group-small">
-          {{input type="text" 
-            class="form-control" 
-            value=searchCollector
-            enter="search"
-            id="dig"
-            size="20"
-            placeholder=(t 'navbar.searchPlaceHolder')
-          }}
+       <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-chevron-down"></i></button>
+          <ul class="dropdown-menu">
+            <li data-dropdown-hint="video">{{link-to 'music for video' 'video' }}</li>
+            <li data-dropdown-hint="games">{{link-to 'music for games' 'games' }}</li>
+          </ul>
+        </div>
+           {{input type="text" 
+          class="form-control" 
+          value=searchCollector
+          enter="search"
+          id="dig"
+          size="30"
+          placeholder=(t 'navbar.searchPlaceHolder')
+        }}
         <span class="input-group-addon">              
           <a href='#' {{action "search" searchCollector}} ><i class="fa fa-search"></i></a>
         </span>
@@ -64,17 +45,20 @@
       <li>
         {{link-to 'licenses' 'licenses'}}
       </li>
-      <li>
-          <a href="#" class="query-options-toggle" {{action 'toggleOptions'}}>{{t 'navbar.options'}} 
-            <span class="glyphicon glyphicon-chevron-{{if optionsOpen 'down' 'up'}}" aria-hidden="true"></span>
-          </a>
-      </li>
     </ul>    
   </div>{{! -- collapse -- }}
 </div>{{! container-fluid }}
 
 <article class="container-fluid center-text" id="qop" style="display:none">
   <form class="form-inline">
+    <div class="form-group">
+        <div class="btn-group">
+            {{query-opt 'licenseScheme' 'free'   'free'     activate=1 class="btn btn-primary btn-sm"}}
+            {{query-opt 'licenseScheme' 'ccplus' 'licensed' activate=1 class="btn btn-primary btn-sm"}}
+            {{query-opt 'licenseScheme' 'all'    'all'      activate=1 class="btn btn-primary btn-sm"}}
+        </div>
+        <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>        
+    </div>  
     <div class="form-group">
       <label class="btn btn-primary btn-sm">
         {{input type="checkbox" disabled=loading checked=queryOptions.instrumentalOnly }} instrumentals only
@@ -98,6 +82,9 @@
       <label class="btn btn-primary btn-sm">
         {{input type="checkbox" disabled=loading checked=queryOptions.recent }} recent
       </label>
+    </div>
+    <div class="form-group hidden-sm hidden-xs">
+      {{#link-to  'query'}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
     </div>
   </form>
 </article>

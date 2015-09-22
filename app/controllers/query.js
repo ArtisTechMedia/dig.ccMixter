@@ -13,7 +13,7 @@ export default PageableController.extend({
   selectedTags: [ ],
   
   tagQueryString: function() {
-    return TagUtils.create( { source: this.selectedTags.mapBy( 'id' ) } ).toString();
+    return TagUtils.create( { source: this.get('selectedTags').mapBy( 'id' ) } ).toString();
   }.property('selectedTags.[]'),
   
   catNames: ['genre', 'instr', 'mood'],
@@ -27,10 +27,18 @@ export default PageableController.extend({
   }.property('selectedTags.[]'),
   
   setupCategories: function() {
-    var tagStore = this.container.lookup('store:tags');
-    tagStore.query( { categories: this.catNames, details: true } )
-      .then( tags => this.set('categories',tags) );
+    if( this.categories === null ) {
+      var tagStore = this.container.lookup('store:tags');
+      tagStore.query( { categories: this.catNames, details: true } )
+        .then( tags => this.set('categories',tags) );
+    }
   },
+
+  /*  
+  _pumpForObservers: function() {
+    this.set('tagQueryString','');
+  }.on('init'),
+  */
   
   actions: {
   

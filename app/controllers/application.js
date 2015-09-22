@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import PopupInvoker from '../mixins/popup-invoker';
+import Pageable from '../routes/pageable';
 import { translationMacro as t } from "ember-i18n";
 
 export default Ember.Controller.extend( PopupInvoker, {
@@ -13,7 +14,6 @@ export default Ember.Controller.extend( PopupInvoker, {
     return licController.get('licenseInfo');
   }.property(),
     
-  
   searchCollector: '',
 
   titlePrefix: 'dig: ',
@@ -33,7 +33,29 @@ export default Ember.Controller.extend( PopupInvoker, {
   setPageTitle: function() {
     this.container.lookup('application:main').setPageTitle( this.get('pageTitle'), this );
   }.observes('currentPath'),
+
+  considerOptions: function() {
+    if( !Ember.isFastBoot() ) {
+      var route = this.container.lookup('route:' + this.get('currentPath'));
+      this.toggleOptions( route instanceof Pageable );
+    }
+  }.observes('currentPath'),
+    
+  _optionsShowing: false,
   
+  toggleOptions: function(show) {
+    Ember.run.next(this,() => {
+      if( !this._optionsShowing && show ) {
+        this._optionsShowing = true;
+        Ember.$('#qop').slideDown(600);
+      }
+      else if( this._optionsShowing && !show ) {
+        this._optionsShowing = false;
+        Ember.$('#qop').slideUp(400);
+      }
+    });
+  },
+    
   scrollToAnchor: function(name) {
     try {  
       var anchor = Ember.$('a[name="'+name+'"]');
@@ -45,24 +67,8 @@ export default Ember.Controller.extend( PopupInvoker, {
       Ember.debug('wups ' + e.toString() );
     }
   },
-    
-  actions: {
-    toggleOptions: function() {
-      if(  this.toggleProperty('optionsOpen') ) {
-        Ember.$('#query-opts').slideDown(600);
-      }
-      else {
-        Ember.$('#query-opts').slideUp(400);
-      }
-    },
 
-    showOptions: function() {
-      if( !Ember.isFastBoot() ) {
-        if( !this.get('optionsOpen') ) {
-          Ember.run.next(this,() => Ember.$('.query-options-toggle').click());
-        }      
-      }
-    },
+  actions: {
 
     goToAnchor: function(routeName,anchor) {
       if( this.get('currentPath') === routeName ) {

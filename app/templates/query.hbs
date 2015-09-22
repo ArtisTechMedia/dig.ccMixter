@@ -19,13 +19,13 @@
                 {{#if selectedTags.length}}
                     <a href="#" {{action 'clear'}} class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> {{t 'tags.clear'}}</a>
                 {{/if}}     
-            </div>   
-            <div class="col-md-2">
               {{#if enoughForMatchAny}}
-                <label class="btn btn-primary btn-sm">
-                  {{input type="checkbox" checked=matchAnyTags disabled=application.loading}} match any tag
+                <label class="btn btn-primary btn-xs">
+                  {{input type="checkbox" checked=matchAnyTags disabled=application.loading}} {{t 'tags.match'}}
                 </label>
               {{/if}}
+            </div>   
+            <div class="col-md-2">
             </div>
         </div>
     {{else}}

@@ -23,9 +23,6 @@ export default PageableController.extend({
   }.property('queryOptions.searchText'),
   
   hasDidYouMean: function() {
-    if( this.get('model') ) {
-      return !!this.get('model.didYouMean').findBy('items.length');
-    }
-    return false;
+    return !!this.get('model.didYouMean').findBy('items.length');
   }.property('model.didYouMean.@each.items'),
 });

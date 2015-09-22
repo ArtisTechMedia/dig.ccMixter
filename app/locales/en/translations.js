@@ -156,6 +156,7 @@ export default {
             },
         clear: 'clear',
         subTitle: 'tagged with',
+        match: 'match any tag',
     },
     playlist: {
         noMatches: 'Hrumph. No matches for your search. Try again....',
