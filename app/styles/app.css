@@ -354,10 +354,6 @@ a.btn-exp:hover {
   font-size: 11px;
 }
 
-.tags-list {
-  border: 1px solid #ddd;
-  box-shadow: 2px 2px #ddd;
-}
 .editable .btn-tag {
   padding-top: 3px;
 }
@@ -426,6 +422,26 @@ a.btn-exp:hover {
 .tags-list {
   height: 120px;
   overflow: auto;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px #ddd;
+  border-radius: 8px;
+}
+
+.tags-list i {
+  vertical-align: middle;
+}
+
+.tags-list li {
+  cursor: pointer;
+  margin-left: -25px;
+  padding-left: 10px;
+  border: 1px solid transparent;;
+  margin-right: 10px;
+}
+
+.tags-list li:hover {
+  border: 1px solid #999;
+  border-radius: 4px;
 }
 
 /* user page */

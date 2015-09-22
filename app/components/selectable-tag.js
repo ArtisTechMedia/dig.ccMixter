@@ -1,17 +1,16 @@
 import Ember from 'ember';
 
+// <a href='#' {{action 'toggle' tag}} data-tag="{{catId}}-{{tag.id}}">
+
 export default Ember.Component.extend({
-  //tagName: 'a',
+  tagName: 'li',
   
-  actions: {
-    toggle: function() {
-      var tag = this.get('tag');
-      tag.toggleProperty('isSelected');
-      if( tag.get('isSelected') ) {
-         this.get('target').pushObject(tag);
-      } else {
-        this.get('target').removeObject(tag);
-      }
+  click: function() {
+    var tag = this.get('tag');
+    if( tag.toggleProperty('isSelected') ) {
+       this.get('target').pushObject(tag);
+    } else {
+      this.get('target').removeObject(tag);
     }
   }
 });
