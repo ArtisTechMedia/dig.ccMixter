@@ -4,6 +4,7 @@ import TagUtils from '../lib/tags';
 export default Ember.Route.extend({
   audioPlayer: Ember.inject.service(),
   queryOptions: Ember.inject.service(),
+  appEvents: Ember.inject.service(),
   
   queryParams: {
     offset: { refreshModel: true },
@@ -14,6 +15,7 @@ export default Ember.Route.extend({
 
   _setupWatcher: function() {
     this.get('queryOptions').on('optionsChanged',this,this._optionsWatcher);
+    this.get('appEvents').on('routeChanged',this,this._routeChange);
   }.on('init'),
   
   _optionsWatcher: function(optName) {
@@ -29,12 +31,14 @@ export default Ember.Route.extend({
     }
   },
 
-  enteringRoute: function() {
-    var opts = this.get('routeQueryOptions');
-    if( Object.keys(opts) ) {
-      this.get('queryOptions').applyRouteOptions( opts );
+  _routeChange: function(routeName) {
+    if( routeName === this.routeName ) {
+      var opts = this.get('routeQueryOptions');
+      if( Object.keys(opts) ) {
+        this.get('queryOptions').applyRouteOptions( opts );
+      }
     }
-  }.on('activate'),
+  },
   
   safeMergeParameters: function(...paramHashes) {
     var target = {};

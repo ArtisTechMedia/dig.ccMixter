@@ -4,12 +4,16 @@ import config from './config/environment';
 var Router = Ember.Router.extend({
     location: config.locationType,
     metrics: Ember.inject.service(),
+    appEvents: Ember.inject.service(),
     
-    willTransition() {
+    willTransition(from, to, transition) {
         this._super(...arguments);
         var appc = this.container.lookup('controller:application');
         if( appc ) {
             appc.set('loading',true);            
+        }
+        if( !(from.length === to.length && from[from.length-1].name === to[from.length-1].name) ) {
+          this.get('appEvents').trigger('routeChanged',transition.targetName);
         }
     },
     
@@ -56,8 +60,8 @@ Ember.Route.reopen({
 Router.map(function() {
   this.route('uploads', { path: '/files/:user/:upload_id' } );
   this.route('users', { path: '/people/:user_id' });
-  this.route('query'); /* dig deep */
-  this.route('dig');   /* text search */
+  this.route('query');/* dig deep */
+  this.route('dig');/* text search */
   this.route('free');
   this.route('video');
   this.route('ccplus');
@@ -67,6 +71,7 @@ Router.map(function() {
   this.route('nowplaying');
   this.route('unknown-upload');
   this.route('tags', { path: '/tags/:tags' } );
+  this.route('edpicks');
 });
 
 export default Router;

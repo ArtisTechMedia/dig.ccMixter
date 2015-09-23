@@ -65,7 +65,7 @@ var Source = UploadBasic.extend();
 
 var Trackback = Model.extend( {
     name: function() {
-        var name = this.get('pool_item_name');
+        var name = this.get('pool_item_name') + '';
         if( name.match(/^watch\?/) !== null ) {
             name = 'You Tube Video';
         }

@@ -17,7 +17,7 @@ export default {
         },
     navbar: {
         searchPlaceHolder: "genre, instrument, etc.",
-        options: 'options',
+        popular: 'popular',
         links: {
             film: 'music for film',
             games: 'music for games',
@@ -25,6 +25,7 @@ export default {
             free: 'free for commercial use',
             ccplus: 'royalty free licensed',
             licenses: 'licenses',
+            edpicks: 'editors picks',
         },
     },
     dlPopup: {
@@ -131,6 +132,10 @@ export default {
     
     video: {
         title: "Music for Film and Video",
+    },
+    
+    edpicks: {
+        title: "Editors' Picks",
     },
     
     licenses: {
