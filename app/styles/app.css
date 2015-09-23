@@ -36,7 +36,7 @@ span.light-color a {
 .center-text {
   text-align: center;
 }
-  
+
 .outlet-wrap {
   margin-bottom: 60px;
 }
@@ -47,9 +47,9 @@ span.light-color a {
 
 .page-banner {
   text-align: center;
-  min-height: 30px;
-  padding-top: 4px;
   background-color: antiquewhite;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .page-banner a {
@@ -558,11 +558,18 @@ a.btn-exp:hover {
   line-height: 1.2;
 }
 
+.project-icons {
+  /*color: #62c3d0; */
+  font-size: 30px;
+  text-align: center;
+  margin-top: -5px;
+}
+
 .project-glyph {
   background-position: -400px -0px;
   width: 155px;
   height: 114px;
-  margin-top: 111px;
+  margin-top: 104px;
 }
 
 .partners {
@@ -596,11 +603,6 @@ a.btn-exp:hover {
 
 .footer h1 {
   margin-left: 40px;
-}
-
-div.container-fluid.footer > div > div:nth-child(2) > h1
-{
-  margin-left: 0px;
 }
 
 .fa-heart {

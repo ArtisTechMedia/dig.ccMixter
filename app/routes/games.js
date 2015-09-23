@@ -8,7 +8,8 @@ export default PageableRoute.extend({
    },
 
     routeQueryParams: {
-        tags: 'experimental, ambient, electronica',
+        tags: 'loops,techno',
+        oneof: 'experimental, dubstep, electronica',
         type: 'any'        
     },
     

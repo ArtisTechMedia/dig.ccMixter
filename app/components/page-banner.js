@@ -5,7 +5,8 @@ export default Ember.Component.extend({
   _triedAlready: false,
     
   _presentBanner: function() {
-    Ember.$(this.element).find('div').slideDown(300);
+    var $e = Ember.$(this.element);
+    $e.addClass('page-banner').slideDown("slow");
   },
   
   didInsertElement: function() {
@@ -15,9 +16,13 @@ export default Ember.Component.extend({
       return store.find('topic','banner')
         .then( t => {
           if( t.get('text') ) {
+            if( !Ember.isFastBoot() ) {
+              var $e = Ember.$(this.element);
+              $e.hide();
+            }
             this.set('bannerText',t.get('text'));
             if( !Ember.isFastBoot() ) {
-              Ember.run.later(this,this._presentBanner,1700);
+              Ember.run.later(this,this._presentBanner,500);
             }
           }
       });
