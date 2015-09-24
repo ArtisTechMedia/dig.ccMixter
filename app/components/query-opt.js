@@ -1,8 +1,12 @@
 import Ember from 'ember';
 
+function fakeurl() {
+  return 'script';
+}
 const QueryOptComponent = Ember.Component.extend({
   queryOptions: Ember.inject.service(),
-  
+  attributeBindings: [ 'href' ],
+  href: 'java' + fakeurl() + '://',
   tagName: 'a',
   
   displayText: function() {

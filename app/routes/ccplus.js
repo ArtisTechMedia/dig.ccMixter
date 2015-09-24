@@ -1,9 +1,8 @@
-import PageableRoute from './pageable';
+import Licensed from './licensed';
 
-export default PageableRoute.extend({
-
+export default Licensed.extend({
+  
   routeQueryOptions: {
     licenseScheme: 'ccplus',
   },
-    
 });

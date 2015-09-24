@@ -46,7 +46,7 @@
             <li> {{#link-to 'video'  }}<i class="fa fa-fw fa-film"   ></i> {{qt 'navbar.links.film'}}{{/link-to}}</li>
             <li> {{#link-to 'games'  }}<i class="fa fa-fw fa-gamepad"></i> {{qt 'navbar.links.games'}}{{/link-to}}</li>
             <li class="divider"></li>            
-            <li> {{#link-to 'free'   }}<i class="fa fa-fw fa-beer"   ></i> {{qt 'navbar.links.free'}}{{/link-to}}</li>
+            <li> {{#link-to 'free' }}<i class="fa fa-fw fa-beer"   ></i> {{qt 'navbar.links.free'}}{{/link-to}}</li>
             <li> {{#link-to 'ccplus' }}<i class="fa fa-fw fa-usd"    ></i> {{qt 'navbar.links.ccplus'}}{{/link-to}}</li>
             <li class="divider"></li>            
             <li> {{#link-to 'edpicks'}}<i class="fa fa-fw fa-thumbs-o-up"></i> {{qt 'navbar.links.edpicks'}}{{/link-to}}</li>
@@ -62,14 +62,14 @@
 
 <article class="container-fluid center-text" id="qop">
   <form class="form-inline">
-    <div class="form-group">
-        <div class="btn-group">
-            {{query-opt 'licenseScheme' 'open'   (qt 'queryOptions.licenses.free')   activate=1 class="btn btn-primary btn-sm"}}
-            {{query-opt 'licenseScheme' 'ccplus' (qt 'queryOptions.licenses.ccplus') activate=1 class="btn btn-primary btn-sm"}}
-            {{query-opt 'licenseScheme' 'all'    (qt 'queryOptions.licenses.all')    activate=1 class="btn btn-primary btn-sm"}}
-        </div>
-        <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>        
-    </div>  
+      <div class="form-group fade {{if hiddenOptions.licenseScheme 'out' 'in'}}">
+          <div class="btn-group">
+              {{query-opt 'licenseScheme' 'open'   (qt 'queryOptions.licenses.free')   activate=1 class="btn btn-primary btn-sm"}}
+              {{query-opt 'licenseScheme' 'ccplus' (qt 'queryOptions.licenses.ccplus') activate=1 class="btn btn-primary btn-sm"}}
+              {{query-opt 'licenseScheme' 'all'    (qt 'queryOptions.licenses.all')    activate=1 class="btn btn-primary btn-sm"}}
+          </div>
+          <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>        
+      </div>
     <div class="form-group">
       <label class="btn btn-primary btn-sm">
         {{input type="checkbox" disabled=loading checked=queryOptions.instrumentalOnly }} {{t 'queryOptions.instrumental'}}

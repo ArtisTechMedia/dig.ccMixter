@@ -43,6 +43,8 @@ export default Ember.Controller.extend( {
     this.get('queryOptions').installOptions(queryOpts);
   }.on('init'),
   
+  hiddenOptions: Ember.Object.create(),
+  
   pageTitle: function() {
     var forRoute = this.get('currentPath');
     var title = this.get('title');
@@ -60,6 +62,7 @@ export default Ember.Controller.extend( {
   considerOptions: function() {
     if( !Ember.isFastBoot() ) {
       var route = this.container.lookup('route:' + this.get('currentPath'));
+      this.set('hiddenOptions', route.get('hiddenOptions'));
       this.toggleOptions( route instanceof Pageable );
     }
   }.observes('currentPath'),

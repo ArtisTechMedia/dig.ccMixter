@@ -15,7 +15,6 @@ export default Ember.Route.extend({
 
   _setupWatcher: function() {
     this.get('queryOptions').on('optionsChanged',this,this._optionsWatcher);
-    this.get('appEvents').on('routeChanged',this,this._routeChange);
   }.on('init'),
   
   _optionsWatcher: function(optName) {
@@ -24,22 +23,44 @@ export default Ember.Route.extend({
       this.onOptionsChanged(optName,this.get('queryOptions.' + optName));
     }
   },
-  
-  onOptionsChanged: function(optName) {
-    if( optName !== 'searchText' ) {
-      this.refresh();
+    
+  setupRoute: function() {
+    var opts = this.get('routeQueryOptions');
+    if( Object.keys(opts).length ) {
+      this.get('queryOptions').applyRouteOptions( opts );
     }
+  },
+  
+  onOptionsChanged: function() {
+    this.refresh();
   },
 
-  _routeChange: function(routeName) {
-    if( routeName === this.routeName ) {
-      var opts = this.get('routeQueryOptions');
-      if( Object.keys(opts) ) {
-        this.get('queryOptions').applyRouteOptions( opts );
-      }
-    }
+  setupController: function(controller,model) {
+    Ember.assert('The model passed to setupController is not the playlist:' + model,model.playlist);
+    this.get('audioPlayer').bindToNowPlaying(model.playlist);
+    this._super(...arguments);
   },
+
+  actions: {
   
+    togglePlay: function() {
+      this.get('audioPlayer').set('playlist',this.currentModel.playlist);
+      return true;
+    },
+    
+    doDownloadPopup: function(upload) {
+      var store = this.container.lookup('store:uploads');
+      store.info(upload.get('id'))
+        .then( details => {
+          this.controllerFor('application').send('doDownloadPopup',details);
+        });
+    },
+    
+  },
+
+  /*
+    model helpers
+  */
   safeMergeParameters: function(...paramHashes) {
     var target = {};
     Ember.merge(target,paramHashes[0]);
@@ -60,27 +81,6 @@ export default Ember.Route.extend({
     return target;
   },
     
-  actions: {
-    togglePlay: function() {
-      this.get('audioPlayer').set('playlist',this.currentModel.playlist);
-      return true;
-    },
-    
-    doDownloadPopup: function(upload) {
-      var store = this.container.lookup('store:uploads');
-      store.info(upload.get('id'))
-        .then( details => {
-          this.controllerFor('application').send('doDownloadPopup',details);
-        });
-    },
-  },
-    
-  setupController: function(controller,model) {
-    Ember.assert('The model passed to setupController is not the playlist:' + model,model.playlist);
-    this.get('audioPlayer').bindToNowPlaying(model.playlist);
-    this._super(...arguments);
-  },
-
   sysDefaultQueryArgs: function() {
     return {  
       tags: '', 
@@ -90,7 +90,7 @@ export default Ember.Route.extend({
       ord: 'desc',
       oneof: 'remix,extended_mix',
       f: 'json',
-      _cache_bust: (new Date()).getTime(),           
+    //  _cache_bust: (new Date()).getTime(),           
     };
   }.property(),
   
@@ -111,10 +111,12 @@ export default Ember.Route.extend({
     // Route specific additions
     var routeParams = this.get('routeQueryParams');
 
-    var userOptions = this.get('queryOptions.queryParams');
     // Ember's dynamic url parts (/:user_id)
     var dynParams = this.translateDynamicParamsToQuery(params);
 
+    // User set query options (must come after above line)
+    var userOptions = this.get('queryOptions.queryParams');
+    
     // query parameters (?foo=bar&offset=20) 
     var urlParams = transition.queryParams;
 

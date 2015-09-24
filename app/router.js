@@ -4,16 +4,12 @@ import config from './config/environment';
 var Router = Ember.Router.extend({
     location: config.locationType,
     metrics: Ember.inject.service(),
-    appEvents: Ember.inject.service(),
     
-    willTransition(from, to, transition) {
+    willTransition() {
         this._super(...arguments);
         var appc = this.container.lookup('controller:application');
         if( appc ) {
             appc.set('loading',true);            
-        }
-        if( !(from.length === to.length && from[from.length-1].name === to[from.length-1].name) ) {
-          this.get('appEvents').trigger('routeChanged',transition.targetName);
         }
     },
     
@@ -43,6 +39,29 @@ var Router = Ember.Router.extend({
 
 Ember.Route.reopen({
 
+    _entering: true,
+    
+    beforeModel: function() {
+      this._super(...arguments);
+      if( this._entering ) {
+        this.setupRoute();        
+        this._entering = false;
+      }
+    },
+    
+    deactivate: function() {
+      this._entering = true;
+    },
+    
+    /**
+      setupRoute is called when this route is
+      being transitioned into from another
+      route AOT a refresh or queryParam change
+      etc.
+    */
+    setupRoute: function() {
+    },
+    
     setTrackerURL: function(model,transition) {
         var rn = this.routeName;
         var url;
@@ -62,9 +81,7 @@ Router.map(function() {
   this.route('users', { path: '/people/:user_id' });
   this.route('query');/* dig deep */
   this.route('dig');/* text search */
-  this.route('free');
   this.route('video');
-  this.route('ccplus');
   this.route('games');
   this.route('morelike', { path: '/morelike/:upload_id' } );
   this.route('licenses');
@@ -72,6 +89,8 @@ Router.map(function() {
   this.route('unknown-upload');
   this.route('tags', { path: '/tags/:tags' } );
   this.route('edpicks');
+  this.route('free');
+  this.route('ccplus');
 });
 
 export default Router;
