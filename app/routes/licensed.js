@@ -6,11 +6,12 @@ export default PageableRoute.extend({
     licenseScheme: true,
   },
   
-  // this can happen when user 'resets'
   onOptionsChanged: function(optName) {
-    if( optName !== 'licenseScheme' ) {
-      this.refresh();
+    // this can happen when user 'resets'
+    if( optName === 'licenseScheme' ) {
+      this.applyRouteOptions();
     }
+    this._super(...arguments);
   },
   
 });

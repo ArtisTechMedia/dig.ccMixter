@@ -25,6 +25,10 @@ export default Ember.Route.extend({
   },
     
   setupRoute: function() {
+    this.applyRouteOptions();
+  },
+  
+  applyRouteOptions() {
     var opts = this.get('routeQueryOptions');
     if( Object.keys(opts).length ) {
       this.get('queryOptions').applyRouteOptions( opts );
@@ -127,7 +131,14 @@ export default Ember.Route.extend({
       total:  this.store.count(qparams)
     };
     
-    return Ember.RSVP.hash(retModel);
+    function checkForEmpty(model) {
+      if( !model || !model.playlist ) {
+        return { model: [ ], total: 0 };
+      }
+      return model;
+    }
+    
+    return Ember.RSVP.hash(retModel).then( checkForEmpty );
   },
   
 });

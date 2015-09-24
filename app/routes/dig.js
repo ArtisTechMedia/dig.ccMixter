@@ -19,7 +19,11 @@ export default PageableRoute.extend({
   }.observes('queryOptions.searchText'),
   
   didYouMean: function() {
-
+/*
+    function err(e) {
+      Ember.debug('Error fetching did you mean: ' + e );
+    }
+*/    
     var text = this.get('queryOptions.searchText');
     if( !text ) {
       return [ ];
@@ -28,7 +32,7 @@ export default PageableRoute.extend({
       artists: this.store.query({
                   dataview: 'user_basic',
                   limit: 40,
-                  minrx: 1,
+                  remixmin: 1,
                   f: 'json',
                   searchp: text
                 }),

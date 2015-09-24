@@ -1,11 +1,12 @@
 /* globals Ember */
 import TagUtils from '../lib/tags';
 import PageableController from './pageable';
-import { translationMacro as t } from "ember-i18n";
+import QuickText from '../mixins/quickt';
 
-export default PageableController.extend({
-  i18n:     Ember.inject.service(),
-  queryOptions: Ember.inject.service(),
+
+export default PageableController.extend(QuickText, {
+
+  queryOptions: Ember.inject.service(), // template needs this
   application: Ember.inject.controller('application'),
   
   matchAnyTags: false,  
@@ -20,7 +21,9 @@ export default PageableController.extend({
   
   categories: null,
   
-  title: t('queryOptions.deep'),
+  title: function() {
+    return this.qt( 'queryOptions.deep' );
+  }.property(),
   
   enoughForMatchAny: function() {
     return this.get('selectedTags.length') > 1;
@@ -34,12 +37,6 @@ export default PageableController.extend({
     }
   },
 
-  /*  
-  _pumpForObservers: function() {
-    this.set('tagQueryString','');
-  }.on('init'),
-  */
-  
   actions: {
   
     remove: function(tag) {

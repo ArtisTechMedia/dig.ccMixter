@@ -4,15 +4,13 @@ export default Ember.Component.extend({
   classNames: [ 'modal', 'fade' ],
   appEvents:    Ember.inject.service(),
   
-  $e: function() {
-    return Ember.$(this.element);
-  }.property('element'),
-  
+
   showModal: function() {
+    var $e = Ember.$(this.element);
     if( this.get('showing') ) {
-      this.get('$e').modal('show');
+      $e.modal('show');
     } else {
-      this.get('$e').modal('hide');
+      $e.modal('hide');
     }
   }.observes('showing'),
   
@@ -23,7 +21,8 @@ export default Ember.Component.extend({
   },
   
   didInsertElement: function() {
-    this.get('$e').on( 'hidden.bs.modal', () => {
+    var $e = Ember.$(this.element);
+    $e.on( 'hidden.bs.modal', () => {
       this.set('showing',false);
       this.get('appEvents').trigger('popup.closed');
     });
@@ -31,7 +30,7 @@ export default Ember.Component.extend({
   },
   
   willDestroyElement: function() {
-    var $e = this.get('$e');
+    var $e = Ember.$(this.element);
     $e.off('.bs.modal');
     $e.modal('hide');    
   },

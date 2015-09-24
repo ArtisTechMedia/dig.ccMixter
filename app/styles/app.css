@@ -453,6 +453,21 @@ a.btn-exp:hover {
   border-radius: 4px;
 }
 
+.empty-query li {
+  margin-bottom: 15px;
+}
+
+.empty-query  li {
+  margin-top: 35px;
+  line-height: 2.0;
+}
+
+.empty-query  li > i {
+  vertical-align: middle;
+  color: orange;
+  font-size: 20px;
+}
+
 /* user page */
 .img-circle {
   box-shadow: 4px 4px 8px #999;

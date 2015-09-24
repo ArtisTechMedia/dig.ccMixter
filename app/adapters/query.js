@@ -21,6 +21,21 @@ export default Ember.Object.extend( {
   _query: function(qString,isSingleton) {
     var url = this.queryHost + qString;
 
+    function browserSuccess(r) {
+        if( isSingleton ) {
+          r = r[0];
+        }
+        return r;
+    }
+
+    function browserError(r) {
+      if( r.responseText && r.responseText.match(/^<pre>/) ) {
+        //something went south at ccMixter and there's a mysql error.
+        Ember.debug(r.responseText);
+        return isSingleton ? 0 : [ ];
+      }  
+    }
+        
     if ( Ember.isFastBoot() ) {    
       var ajax = this._serverAjax();
       
@@ -36,14 +51,8 @@ export default Ember.Object.extend( {
           url: url,
           method: 'GET',
           dataType: 'json'
-        };
-      return Ember.RSVP.resolve(Ember.$.ajax(args))
-        .then( function(r) { 
-          if( isSingleton ) {
-            r = r[0];
-          }
-          return r;
-        });
+        };      
+      return Ember.RSVP.resolve(Ember.$.ajax(args)).then( browserSuccess, browserError );
     }
   },
 

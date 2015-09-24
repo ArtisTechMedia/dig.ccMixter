@@ -1,0 +1,25 @@
+<div class="col-md-6 col-md-offset-3">
+  <div class="jumbotron empty-query">
+    <h3>wups, no matches for that combination of tags...</h3>
+      <ul>
+        <li>
+          Try removing tags by clicking on the tags marked <i class="fa fa-2x fa-times-circle"></i>
+        </li>
+        {{#if enoughForMatchAny}}
+          <li>
+            The default search is for music that matches <strong>all</strong> the tags.
+            Try a search for <strong>any</strong> combination of them: 
+            <label class="btn btn-primary btn-xs">
+              {{input type="checkbox" checked=matchAnyTags disabled=application.loading}} {{t 'tags.match'}}
+            </label>
+          </li>
+        {{/if}}
+        {{#unless queryOptions.optionsAreClean}}
+          <li>
+            {{t 'playlist.tryReset'}} 
+                    <a href='#' class="btn btn-sm btn-warning" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
+          </li>
+        {{/unless}}
+      </ul>
+  </div>
+</div>

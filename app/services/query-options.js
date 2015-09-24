@@ -7,13 +7,18 @@ export default Ember.Service.extend(Ember.Evented, {
     and will trigger queryParams.optionsChanged
     events
   */
-  _updating: null,
+  _options: null,
   
   /**
     used internally to avoid noisy eventing
   */
   _ignoreChange: false,
-    
+
+  /**
+    Temporarily disable any option in this hash
+  */    
+  hiddenOptions: Ember.Object.create(),
+      
   /*
     Allows a route to setup initial values
     when entering the route. This will update
@@ -30,22 +35,25 @@ export default Ember.Service.extend(Ember.Evented, {
   */  
   applyDefaults: function() {
     var properties = { };
-    var updating = this._updating;
+    var options = this._options;
     
-    for( var k in updating ) {
-        properties[k] = updating[k].defaultValue;
+    for( var k in options ) {
+        properties[k] = options[k].defaultValue;
     }
 
     this.setProperties(properties);  
   },
   
-  installOptions: function( updating ) {
+  installOptions: function( options ) {
 
     function optionsAreClean() {
-        var updating = this._updating;
-        for( var k in updating ) {
-          if(this.get(k) !== updating[k].defaultValue) {
-            return false;
+        var options = this._options;
+        var hidden  = this.get('hiddenOptions');
+        for( var k in options ) {
+          if( !(k in hidden) ) {
+            if(this.get(k) !== options[k].defaultValue) {
+              return false;
+            }
           }
         }
         return true;
@@ -53,10 +61,10 @@ export default Ember.Service.extend(Ember.Evented, {
     
     function queryParams() {
         var qp = { };
-        var updating = this._updating;
+        var options = this._options;
     
-        for( var k in updating ) {
-            var meta = updating[k];
+        for( var k in options ) {
+            var meta = options[k];
             var value = this.get(k);
             if( meta.model ) {
               if( value ) {
@@ -77,18 +85,18 @@ export default Ember.Service.extend(Ember.Evented, {
     }
     
     function _a(...args) {
-      return Object.keys(updating).concat(args);
+      return Object.keys(options).concat(args);
     }    
     
-    this._updating = updating;      
+    this._options = options;      
     
-    var names = Object.keys(updating);
+    var names = Object.keys(options);
     
     this.applyDefaults();
 
     names.forEach( k => { this.addObserver(k,this,optionsChanged); } );
 
-    this.set('optionsAreClean', Ember.computed.apply(null,_a(optionsAreClean)));
+    this.set('optionsAreClean', Ember.computed.apply(null,_a('hiddenOptions', optionsAreClean)));
     this.set('queryParams',     Ember.computed.apply(null,_a(queryParams)));
   },  
   

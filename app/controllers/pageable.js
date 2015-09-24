@@ -23,4 +23,9 @@ export default Ember.Controller.extend({
   _optionsWatcher: function() {
     this.set('offset',0);
   },
+  
+  modelIsEmpty: function() {
+    var m = this.get('model');
+    return !(m && m.total);
+  }.property('model'),
 });
