@@ -46,13 +46,13 @@
       <li>
           <a  href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{qt 'navbar.popular'}} <i class="fa fa-chevron-down"></i></a>
           <ul class="dropdown-menu">
-            <li> {{#link-to 'video'  }}<i class="fa fa-fw fa-film"   ></i> {{qt 'navbar.links.film'}}{{/link-to}}</li>
-            <li> {{#link-to 'games'  }}<i class="fa fa-fw fa-gamepad"></i> {{qt 'navbar.links.games'}}{{/link-to}}</li>
+            <li> {{#link-to 'video' metricsAdapterName="GoogleAnalytics" metricsCategory="video menu item" metricsAction="click" metricsLabel="Top Nav" }}<i class="fa fa-fw fa-film"   ></i> {{qt 'navbar.links.film'}}{{/link-to}}</li>
+            <li> {{#link-to 'games' metricsAdapterName="GoogleAnalytics" metricsCategory="games menu item" metricsAction="click" metricsLabel="Top Nav" }}<i class="fa fa-fw fa-gamepad"></i> {{qt 'navbar.links.games'}}{{/link-to}}</li>
             <li class="divider"></li>            
-            <li> {{#link-to 'free' }}<i class="fa fa-fw fa-beer"   ></i> {{qt 'navbar.links.free'}}{{/link-to}}</li>
-            <li> {{#link-to 'ccplus' }}<i class="fa fa-fw fa-usd"    ></i> {{qt 'navbar.links.ccplus'}}{{/link-to}}</li>
+            <li> {{#link-to 'free' metricsAdapterName="GoogleAnalytics" metricsCategory="free menu item" metricsAction="click" metricsLabel="Top Nav"}}<i class="fa fa-fw fa-beer"   ></i> {{qt 'navbar.links.free'}}{{/link-to}}</li>
+            <li> {{#link-to 'ccplus' metricsAdapterName="GoogleAnalytics" metricsCategory="ccplus menu item" metricsAction="click" metricsLabel="Top Nav"}}<i class="fa fa-fw fa-usd"    ></i> {{qt 'navbar.links.ccplus'}}{{/link-to}}</li>
             <li class="divider"></li>            
-            <li> {{#link-to 'edpicks'}}<i class="fa fa-fw fa-thumbs-o-up"></i> {{qt 'navbar.links.edpicks'}}{{/link-to}}</li>
+            <li> {{#link-to 'edpicks' metricsAdapterName="GoogleAnalytics" metricsCategory="edpicks menu item" metricsAction="click" metricsLabel="Top Nav"}}<i class="fa fa-fw fa-thumbs-o-up"></i> {{qt 'navbar.links.edpicks'}}{{/link-to}}</li>
           </ul>
       </li>
     </ul>    

@@ -37,7 +37,10 @@ export default PageableController.extend(QuickText, {
     if( this.categories === null ) {
       var tagStore = this.container.lookup('store:tags');
       tagStore.query( { categories: this.catNames, details: true } )
-        .then( tags => this.set('categories',tags) );
+        .then( tags => {
+            tags.instr = tags.instr.rejectBy('name','instrumental');
+            this.set('categories',tags);
+          });
     }
   },
 

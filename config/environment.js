@@ -10,7 +10,7 @@ module.exports = function(environment) {
             {
                 name: 'GoogleAnalytics',
                 config: {
-                    id: 'UA-XXXX-Y'
+                    id: 'UA-2878955-3'
                 }
             }, 
         ],

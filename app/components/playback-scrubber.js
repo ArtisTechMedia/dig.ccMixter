@@ -26,11 +26,11 @@ export default Ember.Component.extend({
 
   loadingStyle: function() {
     try {
-      var loaded = this.get('media.bytesLoaded'),
-          total = this.get('media.bytesTotal'),
-          percent = 100 * (loaded / total);
-          
-      return new Ember.Handlebars.SafeString('width: ' + percent + '%;');
+      var loaded = this.get('media.bytesLoaded');      
+      if( loaded < 0  ) {
+        return 0;
+      }
+      return 100 * (loaded /  this.get('media.bytesTotal'));
     } catch(e) {
       console.error('loadingStyle', e.stack);
     }
@@ -38,10 +38,11 @@ export default Ember.Component.extend({
 
   positionStyle: function() {
     try {
-      var position = this.get('media.position'),
-          duration = this.get('media.duration'),
-          percent = 100 * (position / duration);
-      return new Ember.Handlebars.SafeString('width: ' + percent + '%;');
+      var position = this.get('media.position');
+      if( position < 0 ) {
+        return 0;
+      }
+      return 100 * (position / this.get('media.duration'));
     } catch(e) {
       console.error('loadingStyle', e.stack);
     }
