@@ -25,6 +25,10 @@ export default PageableController.extend(QuickText, {
     return this.qt( 'queryOptions.deep' );
   }.property(),
   
+  resetOffset: function() {
+    this.set('offset',0);
+  }.observes('selectedTags.[]'),
+  
   enoughForMatchAny: function() {
     return this.get('selectedTags.length') > 1;
   }.property('selectedTags.[]'),

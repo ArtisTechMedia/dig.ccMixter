@@ -21,9 +21,9 @@ var queryOpts = {
   },   
 
   recent: {
-    defaultValue: false,
-    queryParam: 'sinced',
-    model: '3 months ago' 
+    defaultValue: true,
+    queryParam: 'digrank',
+    model: '10000' 
   }, 
 }; 
 

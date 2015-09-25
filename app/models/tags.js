@@ -37,7 +37,7 @@ export default Query.extend({
         category: params.category,
         pair: 'remix',
         sort: 'name',
-        ord: 'ASC',
+        ord: 'asc',
         min: 10
       };
       if( params.details ) {
