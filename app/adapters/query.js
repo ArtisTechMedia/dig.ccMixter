@@ -13,11 +13,6 @@ export default Ember.Object.extend( {
   queryHost: 'http://ccmixter.org/api/query?',
   
 
-  _serverAjax: function() {
-      var ajax = this.container.lookup('ajax:node');
-      return ajax;
-  },
-  
   _query: function(qString,isSingleton) {
     var url = this.queryHost + qString;
 
@@ -36,9 +31,8 @@ export default Ember.Object.extend( {
       }  
     }
         
-    if ( Ember.isFastBoot() ) {    
-      var ajax = this._serverAjax();
-      
+    var ajax = this.get('ajax');
+    if( ajax ) { // we are in FastBoot       
       return ajax( url, 'GET', {} ).then( function( json ) {
             var arr = eval(json);
             if( isSingleton ) {

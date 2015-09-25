@@ -34,6 +34,9 @@ export default Ember.Object.extend({
   count: function(qparams) {
     var countParams = Ember.merge({},qparams);
     countParams.f = 'count';
+    delete countParams['limit'];
+    delete countParams['sort'];
+    delete countParams['ord'];
     return this.get('_adapter').queryOne(countParams);
   },
 

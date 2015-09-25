@@ -167,7 +167,7 @@ export default {
     },
     playlist: {
         noMatches: 'Hrumph. No matches for your search.',
-        tryReset: 'Trying resetting your options: ',
+        tryReset: 'Try resetting your options: ',
         loading: 'Hold on... ',
     },
     query: {

@@ -8,3 +8,22 @@
     </div>
 </div>
 {{partial "playlist"}}
+{{#if modelIsEmpty}}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="jumbotron empty-query">
+          <h1>wups, {{model.artist.name}} doesn't have that kind of music...</h1>
+            <ul>
+              {{#unless queryOptions.optionsAreClean}}
+                <li>
+                  {{t 'playlist.tryReset'}} 
+                    <a href='#' class="btn btn-sm btn-warning" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
+                </li>
+              {{/unless}}
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}

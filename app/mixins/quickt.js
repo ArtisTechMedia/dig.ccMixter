@@ -24,7 +24,12 @@ export default Ember.Mixin.create({
 */
   qt(lookup) {
     var t = this.get('i18n._locale').translations;
-    return t[lookup];
+    var str = t[lookup];
+    if( str.match(/\{\{/) !== null ) {
+      Ember.warn('You called qt() with a text that requires compilation: ' + lookup);
+      return this.get('i18n').t(lookup);
+    }
+    return str;
   }
 
 });

@@ -1,20 +1,14 @@
 import Ember from 'ember';
 import LicenseUtils from '../lib/licenses';
-import { translationMacro as t } from "ember-i18n";
+import QuickText from '../mixins/quickt';
 
-export default Ember.Controller.extend({
-  i18n: Ember.inject.service(),
+export default Ember.Controller.extend( QuickText, {
 
   icon: 'creative-commons',
   
-  _title: t('licenses.title'),
-  _byDesc: t('licenses.by'), 
-  _byncDesc: t('licenses.by-nc'), 
-  _ccplusDesc: t('licenses.ccplus'), 
-  _example: t('licenses.example'), 
-  _linkToLic: t('licenses.linkToLic'), 
-
-  title: Ember.computed.alias('_title'),
+  title: function() {
+    return this.qt('licenses.title');
+  }.property(),
   
   licenseInfo: function() {
     return {
@@ -24,12 +18,12 @@ export default Ember.Controller.extend({
         ccplusURL: 'http://tunetrack.net/license/ccmixter.org/files/djlang59/37792',
         byURL: 'http://creativecommons.org/licenses/by/3.0/',
         byncURL: 'http://creativecommons.org/licenses/by-nc/3.0/',
-        title: this.get('_title'),
-        byDesc: this.get('_byDesc'), 
-        byncDesc: this.get('_byncDesc'), 
-        ccplusDesc: this.get('_ccplusDesc'), 
-        example: this.get('_example'), 
-        linkToLic: this.get('_linkToLic'), 
+        title: this.qt('licenses.title'),
+        byDesc: this.qt('licenses.by'), 
+        byncDesc: this.qt('licenses.by-nc'), 
+        ccplusDesc: this.qt('licenses.ccplus'), 
+        example: this.qt('licenses.example'), 
+        linkToLic: this.qt('licenses.linkToLic'), 
       };
     }.property()
     

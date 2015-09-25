@@ -1,3 +1,4 @@
+{{#unless modelIsEmpty}}
 <div class="container play-list">
   <div class="row">
     <div class="col-md-9 col-md-offset-2 col-md-sm-12">
@@ -11,22 +12,9 @@
               <span class="artist-name light-color">{{#link-to 'users' upload.artist.id}}{{upload.artist.name}}{{/link-to}}</span>
             {{/unless}}
           </li>
-        {{else}}
-          <li>
-            <div class="jumbotron">
-              <div>
-                {{t 'playlist.noMatches'}}
-              </div>
-              {{#unless optionsAreClean}}
-                <div>
-                  {{t 'playlist.tryReset'}} 
-                          <a href='#' class="btn btn-sm btn-warning" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
-                </div>
-              {{/unless}}
-            </div>
-          </li>
         {{/each}}
       </ul>
     </div>
   </div>
 </div>
+{{/unless}}
