@@ -32,6 +32,7 @@ export default Ember.Controller.extend( {
   i18n:         Ember.inject.service(),
   audioPlayer:  Ember.inject.service(),  
   queryOptions: Ember.inject.service(),
+  appEvents:    Ember.inject.service(),
 
   searchCollector: '',
 
@@ -65,6 +66,11 @@ export default Ember.Controller.extend( {
     }
   }.observes('currentPath'),
     
+  watchForLicenseWidget: function() {
+    // fade {{if queryOptions.hiddenOptions.licenseScheme 'out' 'in'}}
+    this.get('appEvents').trigger( 'browser.script.run', 'slide-options', this.get('queryOptions.hiddenOptions.licenseScheme') );
+  }.observes('queryOptions.hiddenOptions.licenseScheme'),
+  
   _optionsShowing: false,
   
   toggleOptions: function(show) {

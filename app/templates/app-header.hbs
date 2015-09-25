@@ -62,7 +62,7 @@
 
 <article class="container-fluid center-text" id="qop">
   <form class="form-inline">
-      <div class="form-group fade {{if queryOptions.hiddenOptions.licenseScheme 'out' 'in'}}">
+      <div class="form-group sliding_out">
           <div class="btn-group">
               {{query-opt 'licenseScheme' 'open'   (qt 'queryOptions.licenses.free')   activate=1 class="btn btn-primary btn-sm"}}
               {{query-opt 'licenseScheme' 'ccplus' (qt 'queryOptions.licenses.ccplus') activate=1 class="btn btn-primary btn-sm"}}

@@ -10,10 +10,11 @@ function _makeQ(qparams) {
 }
 
 export default Ember.Object.extend( {
+
   queryHost: 'http://ccmixter.org/api/query?',
   
-
   _query: function(qString,isSingleton) {
+  
     var url = this.queryHost + qString;
 
     function browserSuccess(r) {
@@ -30,22 +31,31 @@ export default Ember.Object.extend( {
         return isSingleton ? 0 : [ ];
       }  
     }
-        
+     
+    function serverSucess( json ) {
+        var arr = eval(json);
+        if( isSingleton ) {
+          arr = arr[0];
+        }
+        return arr;
+    }   
+    
+    function serverError( /* r */ ) {
+        // kind of doesn't matter what happened here
+        // just don't crash the server
+        return isSingleton ? 0 : [ ];
+    }
+    
+    var args = {
+        url: url,
+        method: 'GET',
+        dataType: 'json'
+      };      
+    
     var ajax = this.get('ajax');
     if( ajax ) { // we are in FastBoot       
-      return ajax( url, 'GET', {} ).then( function( json ) {
-            var arr = eval(json);
-            if( isSingleton ) {
-              arr = arr[0];
-            }
-            return arr;
-          } );
+      return ajax( url, 'GET', {} ).then( serverSucess, serverError );
     } else {
-      var args = {
-          url: url,
-          method: 'GET',
-          dataType: 'json'
-        };      
       return Ember.RSVP.resolve(Ember.$.ajax(args)).then( browserSuccess, browserError );
     }
   },

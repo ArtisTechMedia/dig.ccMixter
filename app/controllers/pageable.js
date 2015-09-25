@@ -28,4 +28,8 @@ export default Ember.Controller.extend({
     var m = this.get('model');
     return !(m && m.total);
   }.property('model'),
+  
+  notALotHere: function() {
+    return !this.get('queryOptions.optionsAreClean') && (this.get('model.total') < 10) && (this.get('model.total') > 0);
+  }.property('model.total', 'queryOptions.optionsAreClean')
 });

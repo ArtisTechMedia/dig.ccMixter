@@ -38,12 +38,28 @@ export default Ember.Component.extend({
     Ember.run.next(this,adjustFooter);
   },
   
-  // not used but fun to write:
-  monitorDropdowns: function() {
-    Ember.$('[data-toggle="dropdown"] + ul li').click(function() {    
-      var text = Ember.$(this).data('dropdown-hint') || Ember.$(this).find('a').text();
-      Ember.$(this).closest('div').find('a strong').text(text);
-    });
+  slideOptions: function(hide) {
+    var $          = Ember.$;
+    var $e         = $('.sliding_out');
+    //var marginLeft = hide ? -($e.outerWidth() * 0.6)  : 0;
+
+    if( hide ) {
+      $e.fadeOut( { duration: "slow",
+                    progress: function() {
+                      $e.css( { marginLeft: "-=6px" } );
+                    },
+                  });
+    } else {
+      $e.fadeIn( { duration: "slow",
+                    progress: function() {
+                      $e.css( { marginLeft: "+=6px" } );
+                    },
+                    complete: function() {
+                      $e.animate( { marginLeft: 0 }, "slow" );
+                    },
+                  });
+    }
+    //$e.animate( { marginLeft }, "slow" );
   },
   
   hookOptionsButton: function() {

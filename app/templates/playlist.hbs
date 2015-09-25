@@ -6,5 +6,21 @@
   popup="popup" 
   clearOptions="clearOptions" 
   optionsAreClean=queryOptions.optionsAreClean}}
-
+{{#if notALotHere}}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="jumbotron empty-query">
+          <h3>eh, not a lot here...</h3>
+            <ul>
+                <li>
+                    You might consider resetting the options 
+                    <a href='#' class="btn btn-sm btn-warning" {{action "clearOptions"}}><i class="fa fa-power-off"></i> {{qt 'queryOptions.reset'}}</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}
 
