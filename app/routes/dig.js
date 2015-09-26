@@ -1,6 +1,5 @@
 /* global Ember */
 import PageableRoute from './pageable';
-import models from '../models/models';
 
 export default PageableRoute.extend({
 
@@ -19,47 +18,42 @@ export default PageableRoute.extend({
   }.observes('queryOptions.searchText'),
   
   didYouMean: function() {
-/*
-    function err(e) {
-      Ember.debug('Error fetching did you mean: ' + e );
-    }
-*/    
+
     var text = this.get('queryOptions.searchText');
     if( !text ) {
       return [ ];
     }
+    
+    var tagStore = this.container.lookup('store:tags');
+    
     var didYouMean = { 
-      artists: this.store.query({
-                  dataview: 'user_basic',
+      artists: this.store.searchUsers({
                   limit: 40,
                   remixmin: 1,
-                  f: 'json',
                   searchp: text
                 }),
-      genres: this.store.query({
-                  dataview: 'tags',
-                  f: 'json',
+      genres: tagStore.searchTags({
                   min: 5,
                   ids: text.w().join('_')
                 })
       };    
     
-    return Ember.RSVP.hash(didYouMean).then( result => {
-         return [ 
+    return Ember.RSVP.hash(didYouMean).then( result => 
+        [ 
           {
             name: 'dig.genre',
             route: 'tags',
             icon: 'tag',
-            items: models( result.genres, 'tag' )
+            items: result.genres,
           },
           {
             name: 'dig.artists',
             route: 'users',
             icon: 'user',
-            items: models( result.artists, 'userBasic'  )
+            items: result.artists
           }        
-        ];
-      });
+        ]
+      );
   },
 
   model: function(params, transition) {
@@ -69,6 +63,7 @@ export default PageableRoute.extend({
       main: this._model(params,transition),
       didYouMean: this.didYouMean()
     };
+    
     return Ember.RSVP.hash(q).then( r => {
       r.main.didYouMean = r.didYouMean;
       return r.main;

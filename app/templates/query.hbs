@@ -1,13 +1,13 @@
 <div class="page-header">
     <div class="container">
-    {{#if categories}}        
+    {{#if tags.remixCategories}}        
         <div class="row">
             <div class="col-md-1">
             </div>
-            {{#each catNames as |cat|}}
+            {{#each tags.remixCategoryNames as |cat|}}
                 <div class="col-sm-3">
                     <h4 class="center-text">{{t (mp 'tags.categories' cat)}}</h4>
-                    {{selectable-tags target=selectedTags tags=(get categories cat) catId=cat}}
+                    {{selectable-tags target=selectedTags tags=(get tags.remixCategories cat) catId=cat}}
                 </div>
             {{/each}}
         </div>

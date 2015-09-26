@@ -17,7 +17,7 @@ export default {
         },
     navbar: {
         searchPlaceHolder: "genre, instrument, etc.",
-        popular: 'popular',
+        popular: 'featured',
         links: {
             film: 'music for film',
             games: 'music for games',

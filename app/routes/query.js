@@ -4,7 +4,6 @@ import PageableRoute from './pageable';
 export default PageableRoute.extend({
   
   routeQueryParams: {
-    tags: '',
     type: 'all',
   },
   
@@ -28,9 +27,4 @@ export default PageableRoute.extend({
     });
   }.on('init'),
   
-  setupController: function() {
-      this._super(...arguments);
-      this.controllerFor('query').setupCategories();
-  },
-    
 });

@@ -13,7 +13,7 @@ export default PageableRoute.extend({
         
         function getArtistDetail( model ) {
             retModel = model;
-            return store.find('user',params.user_id);
+            return store.findUser(params.user_id);
         }
         
         function returnArtistDetail( model ) {

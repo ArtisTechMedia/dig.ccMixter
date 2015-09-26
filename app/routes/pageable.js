@@ -44,7 +44,7 @@ export default Ember.Route.extend({
     this.get('audioPlayer').bindToNowPlaying(model.playlist);
     this._super(...arguments);
   },
-
+ 
   actions: {
   
     togglePlay: function() {
@@ -87,13 +87,9 @@ export default Ember.Route.extend({
     
   sysDefaultQueryArgs: function() {
     return {  
-      tags: '', 
-      dataview: 'links_by',
       limit: 10,
       digrank: '280',
       oneof: 'remix,extended_mix',
-      f: 'json',
-    //  _cache_bust: (new Date()).getTime(),           
     };
   }.property(),
   
@@ -114,12 +110,12 @@ export default Ember.Route.extend({
     // Route specific additions
     var routeParams = this.get('routeQueryParams');
 
-    // Ember's dynamic url parts (/:user_id)
-    var dynParams = this.translateDynamicParamsToQuery(params);
-
     // User set query options (must come after above line)
     var userOptions = this.get('queryOptions.queryParams');
     
+    // Ember's dynamic url parts (/:user_id)
+    var dynParams = this.translateDynamicParamsToQuery(params);
+
     // query parameters (?foo=bar&offset=20) 
     var urlParams = transition.queryParams;
 
@@ -130,14 +126,7 @@ export default Ember.Route.extend({
       total:  this.store.count(qparams)
     };
     
-    function checkForEmpty(model) {
-      if( !model || !model.playlist ) {
-        return { model: [ ], total: 0 };
-      }
-      return model;
-    }
-    
-    return Ember.RSVP.hash(retModel).then( checkForEmpty );
+    return Ember.RSVP.hash(retModel);
   },
   
 });

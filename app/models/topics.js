@@ -1,5 +1,5 @@
 import Query from './query';
-import models from './models';
+import serialize from '../serializers/query';
 
 var nameMap = {
   banner: 223608
@@ -15,7 +15,7 @@ export default Query.extend({
       ids: id
     };
     return this.get('_adapter').queryOne(args)
-      .then( models('topic') );
+      .then( serialize('topic') );
   },
 
 });

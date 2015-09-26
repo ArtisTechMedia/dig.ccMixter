@@ -9,6 +9,10 @@ export default PageableController.extend(QuickText, {
   queryOptions: Ember.inject.service(), // template needs this
   application: Ember.inject.controller('application'),
   
+  title: function() {
+    return this.qt( 'queryOptions.deep' );
+  }.property(),
+  
   matchAnyTags: false,  
   
   selectedTags: [ ],
@@ -16,14 +20,6 @@ export default PageableController.extend(QuickText, {
   tagQueryString: function() {
     return TagUtils.create( { source: this.get('selectedTags').mapBy( 'id' ) } ).toString();
   }.property('selectedTags.[]'),
-  
-  catNames: ['genre', 'instr', 'mood'],
-  
-  categories: null,
-  
-  title: function() {
-    return this.qt( 'queryOptions.deep' );
-  }.property(),
   
   resetOffset: function() {
     this.set('offset',0);
@@ -33,17 +29,6 @@ export default PageableController.extend(QuickText, {
     return this.get('selectedTags.length') > 1;
   }.property('selectedTags.[]'),
   
-  setupCategories: function() {
-    if( this.categories === null ) {
-      var tagStore = this.container.lookup('store:tags');
-      tagStore.query( { categories: this.catNames, details: true } )
-        .then( tags => {
-            tags.instr = tags.instr.rejectBy('name','instrumental');
-            this.set('categories',tags);
-          });
-    }
-  },
-
   actions: {
   
     remove: function(tag) {

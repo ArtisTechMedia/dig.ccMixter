@@ -1,21 +1,19 @@
 /* globals Ember */
-import models from './models';
+import serialize from '../serializers/query';
 
 export default Ember.Object.extend({
   _adapter: function() {
     return this.container.lookup('adapter:query');
   }.property(),
   
+  query: function(params) {
+    return this.get('_adapter').query(params);
+  },
+  
   find: function(name,id) {
     if( name === 'user' ) {
       return this.findUser(id);
-    } else {
-      return this.findUpload(id);
     }
-  },
-  
-  fundUpload: function(id) {
-    return this.get('_adapter').find(name,id);
   },
   
   findUser: function(id) {
@@ -24,13 +22,15 @@ export default Ember.Object.extend({
       dataview: 'user_basic',
       f: 'json'
     };
-    return this.get('_adapter').queryOne(qparams).then( models('user') );
+    return this.get('_adapter').queryOne(qparams).then( serialize('user') );
   },
 
-  query: function(params) {
-    return this.get('_adapter').query(params);
+  searchUsers: function(params) {
+    params.dataview ='user_basic';
+    params.f = 'json';
+    return this.get('_adapter').query(params).then( serialize( 'userBasic' ) );
   },
-
+  
   count: function(qparams) {
     var countParams = Ember.merge({},qparams);
     countParams.f = 'count';
@@ -42,6 +42,8 @@ export default Ember.Object.extend({
   },
 
   playlist: function(params) {
-    return this.query(params).then( models('upload') );
+    params.dataview = 'links_by';
+    params.f = 'json';
+    return this.query(params).then( serialize('upload') );
   },
 });

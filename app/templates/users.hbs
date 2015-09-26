@@ -1,9 +1,9 @@
 <div class="page-header">
     <h1 class="center-text"><img class="img-circle" src="{{model.artist.avatarURL}}" /> {{model.artist.name}}</h1>
     <div class="center-text">
-        <a class="btn btn-info" href="{{model.artist.url}}"><i class="fa fa-external-link"></i> @ccMixter</a>
+        <a class="btn btn-info" href="{{model.artist.url}}" target="_blank"><i class="fa fa-external-link"></i> @ccMixter</a>
         {{#if model.artist.homepage}}
-            <a class="btn btn-info" href="{{model.artist.homepage}}"><i class="fa fa-external-link"></i> {{t 'user.homepage'}}</a>
+            <a class="btn btn-info" href="{{model.artist.homepage}}" target="_blank"><i class="fa fa-external-link"></i> {{t 'user.homepage'}}</a>
         {{/if}}
     </div>
 </div>

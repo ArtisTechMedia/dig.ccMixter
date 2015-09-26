@@ -1,15 +1,15 @@
-/* global FastBoot  */
+/* global Ember  */
 
 import soundManager from 'soundManager';
 
 export function initialize() { 
 
-    if( typeof FastBoot === 'undefined' ) {
-        soundManager.setup({
-          url: '/soundmanager/swf/',
-          debugMode: false
-        });
-    }
+  if( !Ember.isFastBoot() ) {
+    soundManager.setup({
+      url: '/soundmanager/swf/',
+      debugMode: false
+    });
+  }
 }
 
 export default {

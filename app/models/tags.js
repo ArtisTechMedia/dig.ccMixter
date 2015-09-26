@@ -1,59 +1,48 @@
 /* globals Ember */
 import Query from './query';
 import TagUtils from '../lib/tags';
-import models from './models';
-/**
+import serialize from '../serializers/query';
 
-  TODO - clean this up!!!!
-  
-  For single category pass in:
-    params = { category: 'genre' }
-    
-  This returns an instance of TagUtils with bare tags.
-  
-  If you want more detail set:
-    params = { category: 'genre', details: true }
-    
-  This will return an array of Tag models.
-  
-  For multiple categories :
-  
-    params = { categories: [ 'genre', 'mood' ] };
-    
-  This returns a hash :
-  
-    {
-      genre: ...
-      mood:  ...
-    }
-  The actual values in the hash depends on the 'details' option
-*/
 export default Query.extend({
-  query: function(params) {
-    var adapter = this.get('_adapter');
-    if( params.category ) {
-      var q = {   
-        f: 'json', 
-        category: params.category,
-        pair: 'remix',
-        sort: 'name',
-        ord: 'asc',
-        min: 10
-      };
-      if( params.details ) {
-        q.dataview = 'tags';
-        return adapter.query(q).then( models('tag') );
-      } else {
-        q.dataview ='tags_with_cat';
-        return adapter.query(q)
-          .then( function(results) {
-            return TagUtils.create( { source: results.mapBy( 'tags_tag' ) } );
-          });
-      }
-    } else if( params.categories ) {
-      var results = { };
-      params.categories.forEach( k => results[k] = this.query( { category: k, details: params.details } ) );
-      return Ember.RSVP.hash(results);
-    }    
+
+  // return a TagUtils object
+  forCategory: function(category,pairWith) {
+    var q = {   
+      f: 'json', 
+      category: category,
+      pair: pairWith,
+      sort: 'name',
+      ord: 'asc',
+      dataview: 'tags_with_cat'
+    };
+    return this.get('_adapter').query(q).then( r =>  TagUtils.create( { source: r.mapBy( 'tags_tag' ) } ));
+  },
+  
+  // return an array of Tag models
+  category: function(category,pairWith,minCount) {
+    var q = {   
+      f: 'json', 
+      category: category,
+      pair: pairWith,
+      sort: 'name',
+      ord: 'asc',
+      min: minCount,
+      dataview: 'tags'
+    };
+    return this.get('_adapter').query(q).then( serialize('tag') );
+  },
+  
+  // returns a hash with each category name as a property
+  // who's value is an array of Tag models
+  categories: function(categoryNames,pairWith,minCount) {
+    var results = { };
+    categoryNames.forEach( k => { results[k] = this.category( k, pairWith, minCount ); } );
+    return Ember.RSVP.hash(results);
+  },
+  
+  searchTags: function(params) {
+    params.dataview = 'tags';
+    params.f = 'json';
+    return this.get('adapter').then( serialize( 'tag' ) );
   },
 });

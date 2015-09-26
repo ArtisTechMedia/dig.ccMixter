@@ -18,6 +18,7 @@ export default {
         
         var STORE_TAGS = 'store:tags';
         app.register(STORE_TAGS, Tags);
+        app.inject('service:tags','store', STORE_TAGS);
         
         var STORE_TOPICS = 'store:topics';
         app.register(STORE_TOPICS, Topics);
