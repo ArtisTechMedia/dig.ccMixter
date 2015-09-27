@@ -15,7 +15,7 @@ export default Ember.Component.extend({
       var store = this.container.lookup('store:topics');
       return store.find('topic','banner')
         .then( t => {
-          if( t.get('text') ) {
+          if( t.get('text') && t.get('text').trim() ) {
             if( !Ember.isFastBoot() ) {
               var $e = Ember.$(this.element);
               $e.hide();
