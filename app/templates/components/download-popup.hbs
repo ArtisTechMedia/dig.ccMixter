@@ -1,30 +1,12 @@
 {{#modal-popup subTitle=(t 'dlPopup.download')  showing=true title=upload.name}}
-  <div class="row">
+  <div class="row download-popup">
     <div class="col-md-5">
       <div class="col-panel">
         <p class="text-primary">{{{t 'dlPopup.toUseThisMusic'}}}</p>
         <div>
-        {{!
-
-<div class="tabbable">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab">Section 1</a></li>
-    <li><a href="#tab2" data-toggle="tab">Section 2</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane active" id="tab1">
-      <p>I'm in Section 1.</p>
-    </div>
-    <div class="tab-pane" id="tab2">
-      <p>I'm in Section 2.</p>
-    </div>
-  </div>
-</div>        
-        
-        }}
           <ul class="nav nav-tabs">
-            <li role="presentation" class="{{if plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'plain'}}>{{t 'dlPopup.plainText'}}</a></li>
-            <li role="presentation" class="{{unless plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'html'}}>{{t 'dlPopup.HTML'}}</a></li>
+            <li class="{{if plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'plain'}}>{{t 'dlPopup.plainText'}}</a></li>
+            <li class="{{unless plainSelected 'active'}}"><a href="#" {{action 'selectFormat' 'html'}}>{{t 'dlPopup.HTML'}}</a></li>
           </ul>
           <textarea id="attributionText" readonly="1" cols="30" rows="2">{{#if plainSelected}}{{t 'dlPopup.licenseTextPlain' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url}}{{else}}{{{t 'dlPopup.licenseTextHTML' songTitle=upload.name artistName=upload.artist.name year=upload.licenseYear licenseName=upload.license_name filePageURL=upload.url licenseURL=upload.licenseURL}}}{{/if}}{{#if upload.featuring}} {{#if plainSelected}}{{t 'dlPopup.featuring' ft=upload.featuring}}{{else}}{{{t 'dlPopup.featuringHTML' ft=upload.featuring}}}{{/if}}{{/if}}</textarea>
           <div class="text-center">
@@ -36,18 +18,12 @@
     <div class="col-md-6">
       <ul class="actions actions-centered">
         <li>
-          <a class="btn btn-success btn-lg" href="{{upload.mediaURL}}" download><i class="fa fa-2x fa-cloud-download pull-left"></i> {{t 'dlPopup.downloadButtonText'}} <small>{{downloadSize}}</small></a>
+          <a class="btn btn-info btn-lg" href="{{upload.mediaURL}}" download><i class="fa fa-2x fa-cloud-download pull-left"></i> {{t 'dlPopup.downloadButtonText'}} <small>{{downloadSize}}</small></a>
         </li>
         <li class="license-badge">
           <a href="{{upload.licenseURL}}"><img src="{{upload.licenseLogoURL}}" /></a>          
           <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
         </li>
-        {{#if upload.purchaseLogoURL}}
-          <li class="license-badge">
-            <a href="{{upload.purchaseLicenseURL}}"><img src="{{upload.purchaseLogoURL}}" /></a>
-            <a {{action "popup" "license"}}><i class="fa fa-question-circle"></i></a>
-          </li>
-        {{/if}}
         <li> 
           <p>
             {{#if upload.isOpen}} 
@@ -57,21 +33,16 @@
             {{/if}}
           </p>
         </li>
-      </ul>
-    </div><!-- col -->
-  </div><!-- row --> 
-  {{#if upload.isCCPlus}}
-    <div class="row">
-      <div class="col-xs-12 text-center padded10">
-        <ul class="actions actions-centered">
+       {{#if upload.isCCPlus}}
           <li>
-            <a href='{{upload.purchaseLicenseURL}}' class="btn btn-success"><i class="fa fa-usd"></i> {{t 'dlPopup.buyALicense1'}}</a>
+            <a href='{{upload.purchaseLicenseURL}}' class="btn btn-info btn-lg">
+            <img src="{{upload.purchaseLogoURL}}" class="pull-left" />  {{t 'dlPopup.buyALicense1'}}</a>
           </li>
           <li>
             <p>{{t 'dlPopup.buyALicense2'}}</p>
           </li>
-        </ul>
-      </div>
-    </div>
-  {{/if}}        
+        {{/if}}        
+      </ul>
+    </div><!-- col -->
+  </div><!-- row --> 
 {{/modal-popup}}

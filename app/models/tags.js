@@ -15,7 +15,7 @@ export default Query.extend({
       ord: 'asc',
       dataview: 'tags_with_cat'
     };
-    return this.get('_adapter').query(q).then( r =>  TagUtils.create( { source: r.mapBy( 'tags_tag' ) } ));
+    return this.query(q).then( r =>  TagUtils.create( { source: r.mapBy( 'tags_tag' ) } ));
   },
   
   // return an array of Tag models
@@ -29,7 +29,7 @@ export default Query.extend({
       min: minCount,
       dataview: 'tags'
     };
-    return this.get('_adapter').query(q).then( serialize('tag') );
+    return this.query(q).then( serialize('tag') );
   },
   
   // returns a hash with each category name as a property
@@ -43,6 +43,6 @@ export default Query.extend({
   searchTags: function(params) {
     params.dataview = 'tags';
     params.f = 'json';
-    return this.get('adapter').then( serialize( 'tag' ) );
+    return this.query(params).then( serialize( 'tag' ) );
   },
 });

@@ -10,6 +10,10 @@ export default Ember.Object.extend({
     return this.get('_adapter').query(params);
   },
   
+  queryOne: function(params) {
+    return this.get('_adapter').queryOne(params);
+  },
+  
   find: function(name,id) {
     if( name === 'user' ) {
       return this.findUser(id);

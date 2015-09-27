@@ -31,5 +31,6 @@ export default Ember.Controller.extend({
   
   notALotHere: function() {
     return !this.get('queryOptions.optionsAreClean') && (this.get('model.total') < 10) && (this.get('model.total') > 0);
-  }.property('model.total', 'queryOptions.optionsAreClean')
+  }.property('model.total', 'queryOptions.optionsAreClean'),
+  
 });

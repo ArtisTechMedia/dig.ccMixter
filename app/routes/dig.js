@@ -3,11 +3,12 @@ import PageableRoute from './pageable';
 
 export default PageableRoute.extend({
 
+  templateName: 'dig',
+  
   routeQueryParams: function() {
       return { 
            searchp: this.get('queryOptions.searchText'),
            search_type: 'all',
-           dataview: 'links_by'
           };
     }.property('queryOptions.searchText'),
 

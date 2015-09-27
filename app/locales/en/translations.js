@@ -30,7 +30,7 @@ export default {
     },
     dlPopup: {
         freeToUse: "Free to use in commercial projects.",
-        forNonComm: "For non commercial projects only.",
+        forNonComm: "For noncommercial projects only.",
         toUseThisMusic: "To use this music you are <mark>required</mark> to give credit to the musicians.",
         download:  "Download",
         buyALicense1: "Buy a License",

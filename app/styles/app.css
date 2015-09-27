@@ -127,18 +127,6 @@ nav article i.fa-question-circle {
   opacity: 0.5;
 }
 
-/* playlist */
-
-.actions {
-  padding-left: 0px;
-}
-.actions li {
-  margin-bottom: 15px;  
-}
-.actions-centered li {
-  text-align: center;
-}
-
 /* upload page */
 
 .upload-page .extras li {
@@ -211,6 +199,11 @@ a > small:after {
 .col-panel p {
   margin-top: 7px;
   margin-bottom: 15px;
+}
+
+.download-popup a.btn img {
+  margin-right: 8px;
+  margin-left: -8px;
 }
 
 /* audio player */
@@ -391,6 +384,21 @@ a.btn-exp:hover {
 }
 
 /* playlist */
+
+.actions {
+  padding-left: 0px;
+}
+.actions li {
+  margin-bottom: 15px;  
+}
+.actions-centered li {
+  text-align: center;
+}
+
+.play-list .artist-name a:hover {
+  border-bottom: 1px dashed;
+}
+
 .play-list li {
   margin-bottom: 2px;
   font-size: 22px;

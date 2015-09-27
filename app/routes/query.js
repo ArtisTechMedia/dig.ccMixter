@@ -1,30 +1,24 @@
-/* globals Ember */
 import PageableRoute from './pageable';
+
+function queryParamProperty() {
+  return function() {
+    return {
+      tags: this.controller.get('tagQueryString'),
+      type: this.controller.get('matchAnyTags') ? 'any' : 'all',
+    };
+  }.property('controller.matchAnyTags','controller.tagQueryString');
+}
 
 export default PageableRoute.extend({
   
-  routeQueryParams: {
-    type: 'all',
-  },
+  templateName: 'query',
   
-  _refreshParams: function() {
-    var c = this.controllerFor('query');
-    this.set('routeQueryParams.type', c.get('matchAnyTags') ? 'any' : 'all' );
-    this.set('routeQueryParams.tags', c.get('tagQueryString') );
-  },
-  
-  _doRefresh: function() {
-    this._refreshParams();
-    this.refresh();
-  },
-    
-  _init: function() {
-    Ember.run.next(this,function() {
-      var c = this.controllerFor('query');
-      c.addObserver('matchAnyTags',this,this._doRefresh);
-      c.addObserver('tagQueryString', this,this._doRefresh);
-      this._refreshParams();
-    });
-  }.on('init'),
+  setupController: function() {
+    this._super(...arguments);
+    this.set('routeQueryParams', queryParamProperty() );
+    this.addObserver('controller.matchAnyTags',this,this.refresh);
+    this.addObserver('controller.tagQueryString',this,this.refresh);
+    this.get('routeQueryParams'); // observers won't take until you do this.
+  }
   
 });

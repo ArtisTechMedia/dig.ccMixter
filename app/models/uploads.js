@@ -37,7 +37,7 @@ export default Query.extend({
       dataview: 'trackbacks',
       limit: 25 // TODO: get this from ENV or anywhere else!!
     };
-    return this.get('_adapter').query(trackbacksQ).then( serialize('trackback') );
+    return this.query(trackbacksQ).then( serialize('trackback') );
   },
   
   remixes: function(forId) {
@@ -46,7 +46,7 @@ export default Query.extend({
       f: 'json',
       dataview: 'links_u'
     };
-    return this.get('_adapter').query(remixesQ).then( serialize('remix') );
+    return this.query(remixesQ).then( serialize('remix') );
   },
   
   sources: function(forId) {
@@ -56,7 +56,7 @@ export default Query.extend({
       dataview: 'links_u',
       datasource: 'uploads'
     };
-    return this.get('_adapter').query(sourcesQ).then( serialize('source') );
+    return this.query(sourcesQ).then( serialize('source') );
   },
   
   info: function(id) {
@@ -65,7 +65,7 @@ export default Query.extend({
       f: 'json',
       dataview: 'default'
     };    
-    return this.get('_adapter').queryOne(uploadQ).then( serialize('detail') );
+    return this.queryOne(uploadQ).then( serialize('detail') );
   },
   
 });

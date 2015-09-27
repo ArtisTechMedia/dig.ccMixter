@@ -24,6 +24,11 @@ export default Ember.Object.extend( {
         return r;
     }
 
+    function jqueryError(  jqXHR,  textStatus,  errorThrown )
+    {
+      throw errorThrown;
+    }
+    
     function browserError(r) {
       if( r.responseText && r.responseText.match(/^<pre>/) ) {
         //something went south at ccMixter and there's a mysql error.
@@ -49,7 +54,9 @@ export default Ember.Object.extend( {
     var args = {
         url: url,
         method: 'GET',
-        dataType: 'json'
+        dataType: 'json',
+        error: jqueryError,
+        
       };      
     
     var ajax = this.get('ajax');

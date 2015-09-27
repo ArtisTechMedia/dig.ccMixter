@@ -14,7 +14,7 @@ export default Query.extend({
       dataview: 'topics',
       ids: id
     };
-    return this.get('_adapter').queryOne(args)
+    return this.queryOne(args)
       .then( serialize('topic') );
   },
 
