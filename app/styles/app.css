@@ -723,3 +723,68 @@ a.btn-exp:hover {
   padding-bottom: 50px;
 
 }
+
+@media screen and (max-width: 670px){
+
+#qop .form-inline {
+  display: none;
+}
+
+.paging {
+  position: initial;
+  width: 100%;
+  padding: 0px;
+  text-align: center;
+  background-color: transparent;
+}
+.paging ul {
+  margin: 0px;
+}
+.paging > div {
+  display: none;
+}
+.upload-page .actions {
+  text-align: center;
+}
+
+.upload-page .tags {
+  padding-left: 35px;
+}
+
+.upload-page .remixes ul,
+.upload-page .trackbacks ul {
+  max-height: 150px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px #ddd;
+  border-radius: 8px;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding: 0px;
+}
+.trackbacks h3 + a {
+  display: none;
+}
+
+.play-list li {
+  margin-bottom: 15px;
+}
+
+.play-list li .artist-name {
+    display: block;
+    margin-left: 60px;
+}
+
+.play-list ul {
+  margin-top: 18px;
+}
+
+.page-header h1 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.no-hit-suggestion {
+  display: none;
+}
+}
