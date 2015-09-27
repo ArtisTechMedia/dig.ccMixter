@@ -1,13 +1,6 @@
-{{#if application.digDeep}}
-  {{partial "dig-deep"}}
-{{else}}
-  {{page-header title=title icon=icon subTitle=subTitle}}
-{{/if}}
+{{page-header title=title icon=icon subTitle=subTitle}}
 {{partial "playlist"}}
-{{#if application.digDeep}}
-  {{#if modelIsEmpty}}
-    {{partial 'empty-query'}}
-  {{/if}}
-{{else}}
-  {{partial "empty-playlist"}}
+{{#if modelIsEmpty}}
+  {{partial 'empty-query'}}
 {{/if}}
+
