@@ -724,11 +724,7 @@ a.btn-exp:hover {
 
 }
 
-@media screen and (max-width: 670px){
-
-#qop .form-inline {
-  display: none;
-}
+@media screen and (max-width: 770px){
 
 .paging {
   position: initial;
@@ -736,13 +732,46 @@ a.btn-exp:hover {
   padding: 0px;
   text-align: center;
   background-color: transparent;
+  border: 0px;
 }
+
 .paging ul {
   margin: 0px;
 }
+
 .paging > div {
   display: none;
 }
+
+.btn-warning {
+  display: none;
+}
+
+}
+
+@media screen and (max-width: 670px){
+
+#qop .form-inline {
+  display: none;
+}
+
+.navbar-brand {
+  margin-top: -8px;
+}
+
+#qop {
+  margin: 0px
+}
+
+.page-header h1 small {
+  display: block;
+}
+
+.page-header h1 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .upload-page .actions {
   text-align: center;
 }
@@ -762,6 +791,7 @@ a.btn-exp:hover {
   margin-right: 10%;
   padding: 0px;
 }
+
 .trackbacks h3 + a {
   display: none;
 }
@@ -779,12 +809,17 @@ a.btn-exp:hover {
   margin-top: 18px;
 }
 
-.page-header h1 {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
 .no-hit-suggestion {
   display: none;
 }
+
+div.loaded.bar {
+  display: none;
+}
+
+.playback-scrubber.pull-left {
+  display: none;
+}
+
+
 }

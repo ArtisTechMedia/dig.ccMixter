@@ -2,21 +2,23 @@
               icon=icon 
               subTitle=subTitle 
               }}
-    <div class="did-you-mean well">
-        {{#if hasDidYouMean}} 
-          {{#each model.didYouMean as |group|}}
-              <div>
-                  {{#if group.items}}
-                      <strong>{{t group.name}}</strong>
-                      {{#each group.items as |item|}}
-                          {{#link-to group.route item.id}}<i class="fa fa-{{group.icon}}"></i> {{item.name}}{{/link-to}}
-                      {{/each}}
-                  {{/if}}
-              </div>
-            {{/each}}
-        {{else}}
-            {{t 'dig.notFound'}} {{#link-to 'query' class="btn btn-success"}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
-        {{/if}}        
-    </div>                    
+{{#if hasDidYouMean}} 
+  <div class="did-you-mean well">
+    {{#each model.didYouMean as |group|}}
+      <div>
+        {{#if group.items}}
+          <strong>{{t group.name}}</strong>
+          {{#each group.items as |item|}}
+            {{#link-to group.route item.id}}<i class="fa fa-{{group.icon}}"></i> {{item.name}}{{/link-to}}
+          {{/each}}
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>                    
+{{else}}
+  <div class="did-you-mean well no-hit-suggestion">
+    {{t 'dig.notFound'}} {{#link-to 'query' class="btn btn-success"}}<i class="fa fa-tags"></i> {{t 'queryOptions.deep'}}{{/link-to}}
+  </div>                    
+{{/if}}        
 {{partial "playlist"}}
 
