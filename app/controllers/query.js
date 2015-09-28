@@ -1,5 +1,5 @@
 /* globals Ember */
-import TagUtils from '../lib/tags';
+import { TagUtils } from 'ccm-core';
 import PageableController from './pageable';
 import QuickText from '../mixins/quickt';
 

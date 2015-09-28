@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import LicenseUtils from '../lib/licenses';
+import { LicenseUtils } from 'ccm-core';
 import QuickText from '../mixins/quickt';
 
 export default Ember.Controller.extend( QuickText, {

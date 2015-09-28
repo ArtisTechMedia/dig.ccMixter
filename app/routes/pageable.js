@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import TagUtils from '../lib/tags';
+import { TagUtils } from 'ccm-core';
 
 export default Ember.Route.extend({
   audioPlayer: Ember.inject.service(),

@@ -38,7 +38,8 @@
     "ember-export-application-global": "^1.0.2",
     "ember-i18n": "4.1.2",
     "ember-metrics": "0.2.0",
-    "rsvp": "^3.1.0"
-  },
+    "rsvp": "^3.1.0",
+    "ccm-core": "ArtisTechMedia/ccm-core.git#master"
+    },
   "dependencies": {}
 }
