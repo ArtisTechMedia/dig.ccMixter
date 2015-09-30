@@ -24,6 +24,7 @@
     "ember-cli": "1.13.1",
     "ember-cli-app-version": "0.4.0",
     "ember-cli-babel": "^5.0.0",
+    "ember-cli-ccm-core": "git://github.com/artistechmedia/ember-cli-ccm-core.git#fa7e73c0d0007a81ebbb12b60e2c7e34d2dd12b8",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.0",
     "ember-cli-fastboot": "ArtisTechMedia/ember-cli-fastboot.git#master",
@@ -38,8 +39,7 @@
     "ember-export-application-global": "^1.0.2",
     "ember-i18n": "4.1.2",
     "ember-metrics": "0.2.0",
-    "rsvp": "^3.1.0",
-    "ccm-core": "ArtisTechMedia/ccm-core.git#master"
-    },
+    "rsvp": "^3.1.0"
+  },
   "dependencies": {}
 }
