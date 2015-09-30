@@ -61,7 +61,7 @@
     <div class="col-md-5 col-md-offset-1 col-sm-12 trackbacks">
       <div class="center-text">
         <h3 class="inlined">{{t 'upload.trackbacks'}}</h3>
-        <a href="#" {{action 'popup' 'trackback-form' (h upload=model)}} class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> {{t 'upload.addTrackback'}}</a>
+        <a href="#" {{action 'popup' 'trackback-form' (h upload=model)}} class="btn btn-sm btn-success"><i class="fa fa-plus"></i> {{t 'upload.addTrackback'}}</a>
       </div>
       <ul class="list-group remix-list">
       {{#each model.trackbacks as |tb|}}
