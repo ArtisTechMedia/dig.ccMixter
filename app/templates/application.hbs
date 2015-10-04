@@ -8,6 +8,6 @@
 {{partial "app-footer"}}
 {{outlet "modal"}}
 {{#if audioPlayer.nowPlaying}} 
-  {{audio-player}}
+  {{audio-player userAction="playlistActions"}}
 {{/if}}
 {{browser-scripts playerShowing=audioPlayer.nowPlaying}}

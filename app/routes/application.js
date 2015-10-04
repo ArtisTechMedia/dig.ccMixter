@@ -63,6 +63,13 @@ export default Ember.Route.extend( {
       this.get('queryOptions').applyDefaults();
     },
     
+    playlistActions: function(actionType, model) {
+      if( actionType === 'title' ) {
+        this.transitionTo( 'uploads', model.artist.id, model.id );
+      } else if( actionType === 'artist') {
+        this.transitionTo( 'users', model.artist.id );
+      }
+    }
   },
   
 });

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Pageable from '../routes/pageable';
 import { translationMacro as t } from "ember-i18n";
 
 var queryOpts = {
@@ -21,7 +20,7 @@ var queryOpts = {
   },   
 
   recent: {
-    defaultValue: true,
+    defaultValue: false,
     queryParam: 'digrank',
     model: '10000' 
   }, 
@@ -62,7 +61,7 @@ export default Ember.Controller.extend( {
     if( !Ember.isFastBoot() ) {
       var route = this.container.lookup('route:' + this.get('currentPath'));
       this.set('queryOptions.hiddenOptions', route.get('hiddenOptions') || {});
-      this.toggleOptions( route instanceof Pageable );
+      this.toggleOptions( route.get('wantsOptions') );
     }
   }.observes('currentPath'),
     
@@ -112,8 +111,8 @@ export default Ember.Controller.extend( {
   },
   
   licenseInfo: function() {
-    var licController = this.container.lookup('controller:licenses');
-    return licController.get('licenseInfo');
+    var licRoute = this.container.lookup('route:licenses');
+    return licRoute.model();
   }.property(),
       
 });

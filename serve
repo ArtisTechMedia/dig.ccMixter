@@ -1,0 +1,2 @@
+#!/bin/sh
+ember fastboot --serve-assets --no-build --port 4000

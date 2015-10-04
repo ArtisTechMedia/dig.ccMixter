@@ -8,6 +8,8 @@ export default Ember.Route.extend({
   
   templateName: "pageable",
   
+  wantsOptions: true,
+
   queryParams: {
     offset: { refreshModel: true },
   },

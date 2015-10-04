@@ -7,7 +7,7 @@
           <li class="clearfix text-nowrap">
             <a class="btn btn-lg btn-info"  href="#" {{action "togglePlay" upload}}>{{#if upload.media.isPlaying }}<i class="fa fa-stop"></i>{{else}}<i class="fa fa-play"></i>{{/if}}</a>
             <a class="btn btn-lg btn-warning" href="#" {{action "popup" "download" (h upload=upload)}}><i class="fa fa-cloud-download"></i></a>
-            <span class="song-title">{{#link-to 'uploads' upload.artist.id upload.id}}{{{upload.name}}}{{/link-to}}</span> 
+            <span class="song-title">{{{link-to upload.name 'uploads' upload.artist.id upload.id}}}</span> 
             {{#unless skipUserListing}}
               <span class="artist-name light-color">{{#link-to 'users' upload.artist.id}}{{upload.artist.name}}{{/link-to}}</span>
             {{/unless}}

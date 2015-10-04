@@ -27,12 +27,14 @@ N.B. Whenever prompted to resolve conflicts always pick the 'canary' version
 
 * `git clone <repository-url> <your-dig-directory>`
 * change into your dig directory
-* `git checkout fastboot` (I think)
+* `git checkout fastboot`
 * `npm cache clean && bower cache clean`
 * `nvm use v0.12.7` 
 * `npm install && bower install`
 * change directory ./hacks
 * `./setup_hacks`
+* `ember install ArtisTechMedia/ember-cli-ccm-core.git#master
+
 
 ## Build
 
@@ -47,11 +49,6 @@ Running production mode is unstable as of this writing
 * `ember fastboot --serve-assets --no-build`
 * [http://localhost:3000](http://localhost:3000).
 
-## Development
 
-To do a build every time you launch:
-
-* `ember fastboot --serve-assets`
-* [http://localhost:3000](http://localhost:3000).
 
 
