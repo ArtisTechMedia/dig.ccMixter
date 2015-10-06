@@ -1,6 +1,6 @@
 {
   "name": "dig.ccMixter",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A music discovery site owned by ArtisTech Media, founded by Creative Commons",
   "private": true,
   "directories": {
